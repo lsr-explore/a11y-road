@@ -1,0 +1,34 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "a11y",
+    "docusaurus",
+    "frontmatter",
+    "infima",
+    "markdownlint",
+    "cspell",
+    "biomejs",
+    "biome",
+    "sandpack",
+    "codesandbox",
+    "radix",
+    "vitest",
+    "jsdom",
+    "axecore",
+    "lhci",
+    "tseslint",
+    "noEmit",
+    "swizzle",
+    "swizzled",
+    "pnpm",
+    "prismjs",
+    "clsx"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "build",
+    ".docusaurus",
+    "pnpm-lock.yaml"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "config": {
+    "default": true,
+    // Allow long lines — docs tend to have them
+    "MD013": false,
+    // Allow inline HTML/JSX — needed for MDX
+    "MD033": false
+  }
+}
