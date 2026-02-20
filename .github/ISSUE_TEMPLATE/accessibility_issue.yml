@@ -1,0 +1,52 @@
+name: Accessibility Issue
+description: Report an accessibility barrier or WCAG violation
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve accessibility! Please describe the barrier you encountered.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the accessibility barrier or issue.
+      placeholder: What is the barrier and how does it affect you?
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      description: Which page has the issue?
+      placeholder: https://lsr-explore.github.io/a11y-road/...
+    validations:
+      required: true
+  - type: dropdown
+    id: wcag
+    attributes:
+      label: WCAG criteria (if known)
+      description: Which WCAG success criterion does this relate to?
+      options:
+        - Perceivable
+        - Operable
+        - Understandable
+        - Robust
+        - Not sure
+    validations:
+      required: false
+  - type: textarea
+    id: assistive-tech
+    attributes:
+      label: Assistive technology
+      description: What assistive technology were you using, if any?
+      placeholder: "e.g., VoiceOver on macOS, NVDA, JAWS, keyboard-only navigation"
+    validations:
+      required: false
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should happen instead?
+    validations:
+      required: true
