@@ -25,10 +25,5 @@
     "prismjs",
     "clsx"
   ],
-  "ignorePaths": [
-    "node_modules",
-    "build",
-    ".docusaurus",
-    "pnpm-lock.yaml"
-  ]
+  "ignorePaths": ["node_modules", "build", ".docusaurus", "pnpm-lock.yaml"]
 }

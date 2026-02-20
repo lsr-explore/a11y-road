@@ -7,9 +7,10 @@
  *   - @testing-library/jest-dom matchers (toBeInTheDocument, etc.)
  *   - Coverage instrumentation (@vitest/coverage-v8)
  */
-import { useState } from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useState } from 'react';
+import { describe, expect, it } from 'vitest';
 
 function Counter({ initial = 0 }: { initial?: number }) {
   const [count, setCount] = useState(initial);
@@ -25,24 +26,24 @@ function Counter({ initial = 0 }: { initial?: number }) {
   );
 }
 
-describe("Test toolchain validation", () => {
-  it("renders a React component in jsdom", () => {
+describe('Test toolchain validation', () => {
+  it('renders a React component in jsdom', () => {
     render(<Counter />);
-    expect(screen.getByText("Count:")).toBeInTheDocument();
+    expect(screen.getByText('Count:')).toBeInTheDocument();
   });
 
-  it("supports jest-dom matchers", () => {
+  it('supports jest-dom matchers', () => {
     render(<Counter />);
-    const button = screen.getByRole("button", { name: "Increment" });
+    const button = screen.getByRole('button', { name: 'Increment' });
     expect(button).toBeVisible();
-    expect(button).toHaveTextContent("Increment");
+    expect(button).toHaveTextContent('Increment');
   });
 
-  it("handles state updates and re-renders", () => {
+  it('handles state updates and re-renders', () => {
     render(<Counter initial={5} />);
-    expect(screen.getByTestId("count")).toHaveTextContent("5");
+    expect(screen.getByTestId('count')).toHaveTextContent('5');
 
-    fireEvent.click(screen.getByRole("button"));
-    expect(screen.getByTestId("count")).toHaveTextContent("6");
+    fireEvent.click(screen.getByRole('button'));
+    expect(screen.getByTestId('count')).toHaveTextContent('6');
   });
 });
