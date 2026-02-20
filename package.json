@@ -72,7 +72,7 @@
     "playwright": "^1.58.2",
     "storybook": "^10.2.10",
     "storybook-addon-docusaurus": "^0.3.3",
-    "typescript": "~5.6.2",
+    "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.0",
     "vitest": "^4.0.18"
   },
