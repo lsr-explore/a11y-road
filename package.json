@@ -32,7 +32,10 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "---------------------- husky ---------": "",
-    "prepare": "husky"
+    "prepare": "husky",
+    "---------------------- clean ---------": "",
+    "clean": "rm -rf dist build .storybook-static",
+    "clean:all": "rm -rf node_modules dist build .storybook-static && pnpm cache clean"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
@@ -95,7 +98,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "biome check --write --no-errors-on-unmatched",
-      "eslint --no-errors-on-unmatched"
+      "eslint --no-error-on-unmatched-pattern"
     ],
     "*.{css,json}": "biome check --write --no-errors-on-unmatched",
     "*.{md,mdx}": "markdownlint-cli2"
