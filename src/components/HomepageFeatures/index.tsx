@@ -1,4 +1,7 @@
 import Translate, { translate } from '@docusaurus/Translate';
+import MountainSvg from '@site/static/img/undraw_docusaurus_mountain.svg';
+import ReactSvg from '@site/static/img/undraw_docusaurus_react.svg';
+import TreeSvg from '@site/static/img/undraw_docusaurus_tree.svg';
 import Heading from '@theme/Heading';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
@@ -17,7 +20,7 @@ const FeatureList: FeatureItem[] = [
       message: 'Easy to Use',
       description: 'Title for the Easy to Use feature on the homepage',
     }),
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: MountainSvg,
     description: (
       <Translate
         id="homepage.features.easyToUse.description"
@@ -35,7 +38,7 @@ const FeatureList: FeatureItem[] = [
       description:
         'Title for the Focus on What Matters feature on the homepage',
     }),
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: TreeSvg,
     description: (
       <Translate
         id="homepage.features.focusOnWhatMatters.description"
@@ -52,7 +55,7 @@ const FeatureList: FeatureItem[] = [
       message: 'Powered by React',
       description: 'Title for the Powered by React feature on the homepage',
     }),
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: ReactSvg,
     description: (
       <Translate
         id="homepage.features.poweredByReact.description"
@@ -84,8 +87,8 @@ export default function HomepageFeatures(): ReactNode {
     <section className={styles.features}>
       <div className="container">
         <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+          {FeatureList.map((props) => (
+            <Feature key={props.title} {...props} />
           ))}
         </div>
       </div>

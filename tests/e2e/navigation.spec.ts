@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("homepage loads and has title", async ({ page }) => {
   await page.goto("/");
-  await expect(page).toHaveTitle(/My Site/);
+  await expect(page).toHaveTitle(/Hello from A11y Road | A11y Road/);
 });
 
 test("docs page is reachable from navbar", async ({ page, isMobile }) => {

@@ -1,4 +1,6 @@
 ---
+title: Create a Document
+description: Learn how to create and organize documentation pages in Docusaurus.
 sidebar_position: 2
 ---
 

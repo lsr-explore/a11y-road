@@ -1,4 +1,6 @@
 ---
+title: Manage Docs Versions
+description: Learn how to manage and maintain multiple versions of your documentation.
 sidebar_position: 1
 ---
 
