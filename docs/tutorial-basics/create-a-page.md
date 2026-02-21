@@ -1,4 +1,6 @@
 ---
+title: Create a Page
+description: Learn how to create standalone pages using React or Markdown.
 sidebar_position: 1
 ---
 

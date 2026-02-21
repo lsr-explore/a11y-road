@@ -1,4 +1,6 @@
 ---
+title: Translate your site
+description: Learn how to translate your Docusaurus site using the i18n feature.
 sidebar_position: 2
 ---
 

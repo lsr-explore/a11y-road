@@ -28,11 +28,16 @@
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report",
     "test:a11y": "playwright test --grep @a11y",
+    "---------------------- lighthouse ---------": "",
+    "lighthouse": "lhci autorun",
     "---------------------- storybook ---------": "",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "---------------------- husky ---------": "",
-    "prepare": "husky"
+    "prepare": "husky",
+    "---------------------- clean ---------": "",
+    "clean": "rm -rf dist build .storybook-static",
+    "clean:all": "rm -rf node_modules dist build .storybook-static && pnpm cache clean"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
@@ -65,6 +70,7 @@
     "eslint": "^9.39.2",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-storybook": "^10.2.10",
+    "gray-matter": "^4.0.3",
     "husky": "^9.1.7",
     "jsdom": "^28.1.0",
     "lint-staged": "^16.2.7",
@@ -95,7 +101,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "biome check --write --no-errors-on-unmatched",
-      "eslint --no-errors-on-unmatched"
+      "eslint --no-error-on-unmatched-pattern"
     ],
     "*.{css,json}": "biome check --write --no-errors-on-unmatched",
     "*.{md,mdx}": "markdownlint-cli2"

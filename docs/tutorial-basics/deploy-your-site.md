@@ -1,4 +1,6 @@
 ---
+title: Deploy your site
+description: Learn how to build and deploy your Docusaurus site to production.
 sidebar_position: 5
 ---
 
@@ -18,7 +20,7 @@ npm run build
 
 The static files are generated in the `build` folder.
 
-## Deploy your site
+## Test and Deploy your site
 
 Test your production build locally:
 
