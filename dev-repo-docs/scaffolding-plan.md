@@ -1,39 +1,117 @@
 # Scaffolding Plan
 
 This document describes the tooling, quality checks, testing, and structure
-planned for the a11y-road Docusaurus site before content authoring begins.
+for the a11y-road Docusaurus site. It tracks decisions made during setup and
+the current state of each area.
+
+## Status Key
+
+- Done -- implemented and working
+- Planned -- decided but not yet implemented
+- Deferred -- intentionally postponed
+- Removed -- evaluated and rejected
 
 ## Tooling Overview
 
-| Tool                                       | Purpose                                                        |
-| ------------------------------------------ | -------------------------------------------------------------- |
-| **Biome**                                  | Formatting + general linting for TS, TSX, JSON, CSS            |
-| **ESLint** + **eslint-plugin-jsx-a11y**    | A11y-specific linting rules that complement Biome's coverage   |
-| **markdownlint-cli2**                      | Lint Markdown/MDX content (heading structure, list style, etc.) |
-| **cspell**                                 | Spell checking across docs and code                            |
-| **Vitest** + **React Testing Library**     | Component tests for custom React components                    |
-| **Playwright** + **@axe-core/playwright**  | E2E tests and automated a11y audits against the built site     |
-| **husky** + **lint-staged**                | Pre-commit hooks to run linters on staged files                |
-| **Lighthouse CI** (`@lhci/cli`)            | Performance, a11y, SEO scoring in CI                           |
+| Tool | Purpose | Status |
+| --- | --- | --- |
+| **Biome** | Formatting + general linting for TS, TSX, JSON, CSS | Done |
+| **ESLint** + **eslint-plugin-jsx-a11y** | A11y-specific linting rules that complement Biome | Done |
+| **markdownlint-cli2** | Lint Markdown/MDX content (heading structure, list style, etc.) | Done |
+| **cspell** | Spell checking across docs and code | Done |
+| **Vitest** + **React Testing Library** | Component tests + doc structure validation | Done |
+| **Playwright** + **@axe-core/playwright** | E2E tests and automated a11y audits against the built site | Done |
+| **husky** + **lint-staged** | Pre-commit hooks to run linters on staged files | Done |
+| **Lighthouse CI** (`@lhci/cli`) | Performance, a11y, SEO scoring in CI | Done |
+| **gray-matter** | Frontmatter parsing for doc structure tests | Done |
 
-### Biome + ESLint Together
+### Biome + ESLint Together (Done)
 
 Rather than choosing one or the other, this project uses both:
 
 - **Biome** handles formatting and general code quality linting. It is fast
   (Rust-based), replaces Prettier, and has its own set of a11y rules.
 - **ESLint** with `eslint-plugin-jsx-a11y` provides additional accessibility
-  rules that Biome does not yet cover (and vice versa). ESLint is configured
-  for linting only — no formatting rules, no Prettier.
+  rules that Biome does not yet cover. ESLint is configured for linting
+  only -- no formatting rules, no Prettier.
 - Overlapping rules are disabled in ESLint to avoid duplicate diagnostics.
-  Biome's `a11y` rule group and `eslint-plugin-jsx-a11y` have partial overlap,
-  so the ESLint config explicitly disables rules already covered by Biome.
+  The ESLint config explicitly disables every `jsx-a11y` rule already covered
+  by Biome's `a11y` rule group, with comments mapping each to its Biome
+  equivalent.
 - Gap: neither tool lints Markdown/MDX content, so `markdownlint-cli2` fills
   that role.
 
-## Interactive Components
+### Storybook (Removed)
 
-### UI Primitives — Radix UI (not shadcn)
+Storybook was initially scaffolded but has been removed:
+
+- Too heavy for a documentation site with few custom components.
+- `storybook-addon-docusaurus` was pinned to Docusaurus v2 (peer dep conflict).
+- The a11y addon's checks are already covered by axe-core in Playwright,
+  Biome a11y rules, and eslint-plugin-jsx-a11y.
+- **Alternative**: `@docusaurus/theme-live-codeblock` can provide interactive
+  component examples directly in MDX pages when needed (deferred until
+  components exist to demonstrate).
+
+Removed packages: `storybook`, `@storybook/react-webpack5`,
+`@storybook/addon-a11y`, `@storybook/addon-docs`, `@storybook/addon-onboarding`,
+`@storybook/addon-webpack5-compiler-swc`, `eslint-plugin-storybook`,
+`storybook-addon-docusaurus`.
+
+### Vercel Agent Skills (Partial)
+
+Evaluated three Vercel agent skills:
+
+- **web-design-guidelines** -- Kept. Covers UI/UX and accessibility review
+  rules. Inlined into `.agents/skills/web-design-guidelines/SKILL.md` to
+  avoid fetching from GitHub on every use.
+- **vercel-composition-patterns** -- Removed. Targets complex stateful
+  component architectures (compound components, context patterns). Too
+  specialized for a docs site with simple presentational components.
+- **vercel-react-best-practices** -- Removed. ~80% of its 57 rules target
+  Next.js features (server components, server actions, Suspense streaming,
+  SWR data fetching) that don't apply to a static Docusaurus site.
+
+## Doc Structure Validation (Done)
+
+A Vitest test (`tests/docs-structure.test.ts`) dynamically discovers all
+`.md`/`.mdx` files in `docs/` and validates:
+
+1. **Required frontmatter**: `title`, `description`, `sidebar_position` must
+   be present (parsed with `gray-matter`).
+2. **Single H1**: Exactly one `#` heading per file (code blocks excluded).
+3. **Orphan detection**: Every subdirectory containing docs must have a
+   `_category_.json` file.
+
+### markdownlint configuration
+
+- `MD013` (line length) disabled -- docs tend to have long lines.
+- `MD033` (inline HTML) disabled -- MDX uses JSX in Markdown.
+- `MD025` `front_matter_title` set to `""` -- docs use both frontmatter
+  `title` (for metadata/SEO) and an explicit `# Heading` (for content).
+  Without this, markdownlint counts the frontmatter title as an H1 and
+  reports a false duplicate.
+
+## Lighthouse CI (Done)
+
+Configured in `lighthouserc.js`:
+
+- Audits 4 representative pages: homepage, a doc page, a nested doc page,
+  and the blog index.
+- Uses `staticDistDir` to serve the build output directly (no separate
+  server needed).
+- Assertion thresholds:
+  - **Accessibility**: error below 0.9 (strict for an a11y-focused site)
+  - **Performance**: warn below 0.8
+  - **Best practices**: warn below 0.9
+  - **SEO**: warn below 0.9
+- Results uploaded to temporary public storage (viewable via URL in CI logs).
+- Added to CI pipeline after E2E tests.
+- Local run: `pnpm lighthouse` (requires a prior `pnpm build`).
+
+## Interactive Components (Planned)
+
+### UI Primitives -- Radix UI (not shadcn)
 
 The site will include interactive elements (quizzes, toggles, embedded editors).
 **Radix UI primitives** are recommended over shadcn/ui:
@@ -49,7 +127,7 @@ The site will include interactive elements (quizzes, toggles, embedded editors).
   `@radix-ui/react-dialog` are ideal for building quiz interactions and
   accessible toggles.
 
-### Quiz Component
+### Quiz Component (Planned)
 
 A reusable `<Quiz>` MDX component for end-of-page knowledge checks:
 
@@ -57,22 +135,25 @@ A reusable `<Quiz>` MDX component for end-of-page knowledge checks:
 - Accepts questions/answers via props or frontmatter.
 - Provides immediate feedback with accessible announcements (live regions).
 - Styled with CSS modules to match the Docusaurus theme.
-- No backend needed — purely client-side, no score persistence (for now).
+- No backend needed -- purely client-side, no score persistence (for now).
 
-### Embedded Code Editor — Sandpack
+### Embedded Code Editor -- Sandpack (Planned)
 
 For interactive code snippets where developers can edit and run code:
 
 - **Sandpack** (`@codesandbox/sandpack-react`) is recommended over Docusaurus's
   built-in `theme-live-codeblock` (which uses react-live).
 - Sandpack supports multi-file editing, npm package imports, and a real bundler
-  — needed for demonstrating accessible component patterns with dependencies.
+  -- needed for demonstrating accessible component patterns with dependencies.
 - Can be wrapped as an `<A11yCodeEditor>` MDX component that loads two tabs:
   "Inaccessible" and "Accessible" versions of the same snippet.
 - Sandpack's theming supports dark/light mode and can sync with the Docusaurus
   color mode.
+- **Bundle size concern**: Sandpack adds significant JS weight. Should be
+  lazy-loaded only on pages that use it (React `lazy()` + `Suspense` or
+  Docusaurus `BrowserOnly`).
 
-### Demo Site (Separate Repository)
+### Demo Site (Planned -- Separate Repository)
 
 A companion site demonstrating real accessibility issues and fixes:
 
@@ -83,228 +164,44 @@ A companion site demonstrating real accessibility issues and fixes:
 - This keeps the docs site simple (static content) and the demo site focused
   (interactive examples with intentional a11y failures).
 
-## Internationalization (i18n)
+## Internationalization (Deferred)
 
 Docusaurus has built-in i18n support. The scaffolding prepares for this:
 
-- `docusaurus.config.ts` already has `i18n.defaultLocale: 'en'` and a `locales`
-  array. Adding a new language is a config change + translated content files.
+- `docusaurus.config.ts` has `i18n.defaultLocale: 'en'` with `locales: ['en', 'es']`
+  and locale configs for both English and Spanish.
 - `pnpm write-translations` generates translation JSON files for UI strings.
 - Translated docs go in `i18n/<locale>/docusaurus-plugin-content-docs/current/`.
-- No additional packages needed — this is built into Docusaurus.
-- **For now**: leave `locales: ['en']` and structure content so it is easy to
-  translate later (avoid hardcoded English strings in components, use the
-  Docusaurus `<Translate>` component for UI text).
+- No additional packages needed -- this is built into Docusaurus.
+- **For now**: structure content so it is easy to translate later (avoid
+  hardcoded English strings in components, use the Docusaurus `<Translate>`
+  component for UI text).
 
-## Theme (Dark/Light Toggle)
+## Theme (Done)
 
-Docusaurus already provides a dark/light toggle via Infima. The current config
+Docusaurus provides a dark/light toggle via Infima. The current config
 has `respectPrefersColorScheme: true`, which auto-detects the OS preference.
 No additional packages needed. Custom CSS variables in `src/css/custom.css`
 control the palette for both modes.
 
 When building custom components (quiz, code editor), use Infima CSS variables
 (`--ifm-color-primary`, `--ifm-background-color`, etc.) so they respond to
-theme changes automatically. Sandpack's theme can be bound to the Docusaurus
-color mode via the `useColorMode` hook.
+theme changes automatically.
 
-## Package Installation
-
-### Dev dependencies
-
-```bash
-pnpm add -D \
-  @biomejs/biome \
-  eslint \
-  eslint-plugin-jsx-a11y \
-  @eslint/js \
-  typescript-eslint \
-  markdownlint-cli2 \
-  cspell \
-  vitest \
-  @testing-library/react \
-  @testing-library/jest-dom \
-  @vitejs/plugin-react \
-  jsdom \
-  playwright \
-  @playwright/test \
-  @axe-core/playwright \
-  husky \
-  lint-staged \
-  @lhci/cli 
-```
-
-### Runtime dependencies
-
-```bash
-pnpm add \
-  @radix-ui/react-radio-group \
-  @radix-ui/react-accordion \
-  @radix-ui/react-tabs \
-  @codesandbox/sandpack-react
-```
-
-## Scripts to Add (package.json)
-
-```json
-{
-  "scripts": {
-    "lint": "biome check . && eslint src/ docs/",
-    "lint:fix": "biome check --write . && eslint src/ docs/ --fix",
-    "format": "biome format --write .",
-    "lint:md": "markdownlint-cli2 \"docs/**/*.md\" \"docs/**/*.mdx\" \"blog/**/*.md\" \"blog/**/*.mdx\"",
-    "spellcheck": "cspell \"docs/**\" \"blog/**\" \"src/**\"",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:e2e": "playwright test",
-    "test:a11y": "playwright test --grep @a11y",
-    "prepare": "husky",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
-  }
-}
-```
-
-## Configuration Files to Create
-
-### `biome.json`
-
-- Enable formatting and general linting for TS, TSX, CSS, JSON.
-- Enable the `a11y` rule group.
-- Do **not** enable formatting rules that overlap with ESLint — Biome owns all
-  formatting; ESLint owns only the a11y rules Biome does not cover.
-- Ignore `build/`, `.docusaurus/`, `node_modules/`.
-
-### `eslint.config.js` (flat config)
-
-- Use `typescript-eslint` for TS parsing.
-- Enable `eslint-plugin-jsx-a11y` recommended rules.
-- Disable rules already covered by Biome (e.g., if Biome covers
-  `noAriaHiddenOnFocusable`, disable the equivalent ESLint rule).
-- No formatting rules — Biome handles all formatting.
-- Scope to `src/` only.
-
-### `.markdownlint-cli2.jsonc`
-
-- Enable default rules.
-- Disable `MD013` (line length) since docs tend to have long lines.
-- Disable `MD033` (inline HTML) since MDX uses JSX in Markdown.
-
-### `cspell.json`
-
-- Add project-specific words: `a11y`, `docusaurus`, `frontmatter`, `mdx`,
-  `radix`, `sandpack`, `infima`, etc.
-- Point to `docs/`, `blog/`, and `src/` directories.
-
-### `vitest.config.ts`
-
-- Use `@vitejs/plugin-react`.
-- Set environment to `jsdom`.
-- Include `src/**/*.test.{ts,tsx}`.
-
-### `playwright.config.ts`
-
-- Run against `http://localhost:3000` (a served build).
-- Use the `webServer` option to auto-start `pnpm build && pnpm serve` before
-  tests.
-- Create test projects for desktop and mobile viewports.
-
-### `.husky/pre-commit`
-
-- Run `lint-staged`.
-
-### `lint-staged` (in `package.json`)
-
-```json
-{
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "biome check --write --no-errors-on-unmatched",
-      "eslint --no-errors-on-unmatched"
-    ],
-    "*.{css,json}": "biome check --write --no-errors-on-unmatched",
-    "*.{md,mdx}": "markdownlint-cli2"
-  }
-}
-```
-
-## Proposed Directory Structure
-
-```text
-a11y-road/
-├── .github/
-│   └── workflows/
-│       ├── ci.yml                  # PR checks: lint, typecheck, build, test, a11y
-│       └── deploy.yml              # Build and deploy to GitHub Pages on push to main
-├── blog/
-│   ├── authors.yml
-│   └── tags.yml
-├── docs/                           # Markdown/MDX content (auto-generates sidebar)
-├── src/
-│   ├── components/
-│   │   ├── Quiz/
-│   │   │   ├── index.tsx
-│   │   │   ├── styles.module.css
-│   │   │   └── __tests__/
-│   │   │       └── Quiz.test.tsx
-│   │   ├── A11yCodeEditor/
-│   │   │   ├── index.tsx
-│   │   │   └── styles.module.css
-│   │   └── HomepageFeatures/
-│   │       ├── index.tsx
-│   │       └── styles.module.css
-│   ├── css/
-│   │   └── custom.css
-│   ├── theme/                      # Swizzled Docusaurus theme components (if any)
-│   └── pages/
-│       ├── index.tsx
-│       └── index.module.css
-├── static/
-│   └── img/
-├── tests/
-│   └── e2e/                        # Playwright E2E and a11y tests
-│       ├── navigation.spec.ts
-│       └── a11y-audit.spec.ts
-├── biome.json
-├── eslint.config.js
-├── cspell.json
-├── .markdownlint-cli2.jsonc
-├── vitest.config.ts
-├── playwright.config.ts
-├── docusaurus.config.ts
-├── sidebars.ts
-├── tsconfig.json
-└── package.json
-```
-
-### Key changes from the default scaffold
-
-| Change                                                       | Rationale                                                     |
-| ------------------------------------------------------------ | ------------------------------------------------------------- |
-| Remove `docs/tutorial-basics/` and `docs/tutorial-extras/`   | Template content — replaced with real a11y workflow docs       |
-| Remove sample blog posts                                     | Template content                                              |
-| Remove `src/pages/markdown-page.md`                          | Template page                                                 |
-| Remove template SVGs from `static/img/`                      | Docusaurus placeholder illustrations                          |
-| Add `src/components/Quiz/`                                   | Reusable end-of-page knowledge check component                |
-| Add `src/components/A11yCodeEditor/`                         | Sandpack wrapper for accessible/inaccessible code comparison  |
-| Add `src/theme/`                                             | Conventional location for swizzled Docusaurus theme overrides |
-| Add `tests/e2e/`                                             | Playwright E2E and a11y audit tests                           |
-| Component tests co-located in `src/components/*/__tests__/`  | Keeps tests next to the code they cover                       |
-| Add `.github/workflows/`                                     | CI/CD for a public repo on GitHub Pages                       |
-
-## CI Workflows
+## CI Workflows (Done)
 
 ### `ci.yml` (runs on pull requests)
 
 1. Install dependencies (`pnpm install --frozen-lockfile`)
-2. Run `biome check .`
-3. Run `eslint src/`
-4. Run `markdownlint-cli2`
-5. Run `cspell`
-6. Run `pnpm typecheck`
-7. Run `pnpm build` (also validates broken links)
-8. Run `vitest run` (component tests)
-9. Run `playwright test` (E2E + a11y audits against the build)
-10. Run Lighthouse CI against the build
+2. Biome check
+3. ESLint
+4. markdownlint
+5. Spellcheck
+6. TypeScript type checking
+7. Production build (also validates broken links via `onBrokenLinks: 'throw'`)
+8. Vitest (component tests + doc structure validation)
+9. Playwright E2E + a11y audits (installs Chromium, uploads report artifact)
+10. Lighthouse CI (performance, a11y, SEO, best practices thresholds)
 
 ### `deploy.yml` (runs on push to main)
 
@@ -312,35 +209,72 @@ a11y-road/
 2. Build the site
 3. Deploy to GitHub Pages using `actions/deploy-pages`
 
-## .gitignore Additions
+## Current Directory Structure
 
 ```text
-# Test artifacts
-test-results/
-playwright-report/
-
-# Lighthouse
-.lighthouseci/
+a11y-road/
+├── .agents/skills/             # Agent skills (web-design-guidelines)
+├── .github/
+│   ├── CODEOWNERS
+│   ├── ISSUE_TEMPLATE/
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── workflows/
+│       ├── ci.yml
+│       ├── codeql.yml
+│       └── deploy.yml
+├── blog/
+│   ├── authors.yml
+│   └── tags.yml
+├── dev-repo-docs/              # Internal planning docs (not published)
+├── docs/                       # Markdown/MDX content (auto-generates sidebar)
+│   ├── intro.md
+│   ├── tutorial-basics/
+│   │   └── _category_.json
+│   └── tutorial-extras/
+│       └── _category_.json
+├── src/
+│   ├── components/
+│   │   ├── HomepageFeatures/
+│   │   │   └── __tests__/
+│   │   └── ...
+│   ├── css/
+│   │   └── custom.css
+│   ├── __mocks__/              # Vitest mocks for @theme and @docusaurus
+│   └── pages/
+│       └── index.tsx
+├── static/
+│   └── img/
+├── tests/
+│   ├── docs-structure.test.ts  # Doc frontmatter + structure validation
+│   └── e2e/                    # Playwright E2E + a11y audit tests
+├── biome.json
+├── cspell.json
+├── eslint.config.mjs
+├── lighthouserc.js
+├── .markdownlint-cli2.jsonc
+├── vitest.config.ts
+├── playwright.config.ts
+├── docusaurus.config.ts
+├── sidebars.ts
+├── tsconfig.json
+├── CLAUDE.md
+└── package.json
 ```
 
-## Repo hygiene / contributor experience
+## Repo Hygiene / Contributor Experience
 
-1. Add .nvmrc (or .tool-versions) + packageManager in package.json.
-2. Add CONTRIBUTING.md with the exact “local dev loop” and “before you push” commands.
-3. Add a docs/CONTRIBUTING.md for content authoring conventions (frontmatter, headings, image rules, etc.).
-4. Add CODEOWNERS (even if it’s just you) so PR checks feel “real”.
-
-## Accessibility-specific niceties for the docs site itself
-
-1. Add a simple “Accessibility Statement” page and link it in footer.
-
-   - Add a “Known limitations” section for any third-party widgets (Sandpack, embeds).
+| Item | Status |
+| --- | --- |
+| `.nvmrc` + `packageManager` in package.json | Done |
+| CODEOWNERS | Done |
+| Issue templates | Done |
+| PR template | Done |
+| Pre-commit hooks (husky + lint-staged) | Done |
+| CONTRIBUTING.md | Planned |
+| Accessibility Statement page (linked in footer) | Planned |
 
 ## Open Questions
 
-- **Biome + ESLint rule overlap audit**: Before configuring, do a side-by-side
-  comparison of Biome's `a11y` rules vs `eslint-plugin-jsx-a11y` recommended
-  rules to determine exactly which rules to disable where.
 - **Demo site tech stack**: Should the companion demo site also be Docusaurus,
   or a plain Vite + React app (simpler for demonstrating raw HTML/component
   a11y issues without Docusaurus abstractions)?
@@ -350,15 +284,32 @@ playwright-report/
 - **Sandpack bundle size**: Sandpack adds significant JS weight. Consider
   lazy-loading it only on pages that use it (React `lazy()` + `Suspense` or
   Docusaurus `BrowserOnly`).
+- **Live codeblock vs Sandpack**: For simple single-component demos,
+  `@docusaurus/theme-live-codeblock` may be sufficient. Sandpack is better
+  for multi-file, dependency-heavy examples. May use both.
 
-## Order of Implementation
+## Implementation Progress
 
-1. Install dev dependencies and runtime dependencies
-2. Configure Biome and ESLint (with rule overlap audit)
-3. Configure markdownlint and cspell
-4. Configure Vitest and Playwright
-5. Set up husky + lint-staged
-6. Create GitHub Actions workflows (CI + deploy)
-7. Scaffold `Quiz` and `A11yCodeEditor` component stubs
-8. Prepare i18n structure (use `<Translate>` in components, keep `locales: ['en']`)
-9. Update CLAUDE.md with new scripts and conventions
+### Phase 1: Scaffolding (Done)
+
+1. ~~Install dev dependencies~~ Done
+2. ~~Configure Biome and ESLint (with rule overlap audit)~~ Done
+3. ~~Configure markdownlint and cspell~~ Done
+4. ~~Configure Vitest and Playwright~~ Done
+5. ~~Set up husky + lint-staged~~ Done
+6. ~~Create GitHub Actions workflows (CI + deploy)~~ Done
+7. ~~Configure Lighthouse CI~~ Done
+8. ~~Add doc structure validation tests~~ Done
+9. ~~Evaluate and remove Storybook~~ Done
+10. ~~Evaluate and curate agent skills~~ Done
+
+### Phase 2: Content & Components (Next)
+
+1. Replace template docs with real a11y workflow content
+2. Replace template blog posts
+3. Update homepage content and features
+4. Scaffold Quiz component (Radix-based)
+5. Scaffold A11yCodeEditor component (Sandpack-based)
+6. Add Accessibility Statement page
+7. Add CONTRIBUTING.md
+8. Prepare i18n structure (`<Translate>` in components, keep `locales: ['en', 'es']`)
