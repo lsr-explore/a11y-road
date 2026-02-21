@@ -1,4 +1,6 @@
 ---
+title: Create a Blog Post
+description: Learn how to create and publish blog posts in Docusaurus.
 sidebar_position: 3
 ---
 

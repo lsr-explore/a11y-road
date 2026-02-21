@@ -1,4 +1,6 @@
 ---
+title: Deploy your site
+description: Learn how to build and deploy your Docusaurus site to production.
 sidebar_position: 5
 ---
 

@@ -1,4 +1,6 @@
 ---
+title: Tutorial Intro
+description: Get started with Docusaurus and discover what you can build in 5 minutes.
 sidebar_position: 1
 ---
 

@@ -1,4 +1,6 @@
 ---
+title: Congratulations
+description: You have completed the Docusaurus tutorial and learned the basics.
 sidebar_position: 6
 ---
 
