@@ -27,5 +27,3 @@ coverage/
 # Lighthouse
 .lighthouseci/
 
-*storybook.log
-storybook-static
