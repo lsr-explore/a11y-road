@@ -28,6 +28,8 @@
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report",
     "test:a11y": "playwright test --grep @a11y",
+    "---------------------- lighthouse ---------": "",
+    "lighthouse": "lhci autorun",
     "---------------------- storybook ---------": "",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
