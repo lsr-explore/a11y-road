@@ -1,0 +1,39 @@
+name: PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title format
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          PATTERN='^(feat|fix|bugfix|docs|a11y|chore|refactor|test|ci|perf|style): .+'
+          if [[ ! "$PR_TITLE" =~ $PATTERN ]]; then
+            echo "::error::PR title must start with a type prefix."
+            echo ""
+            echo "Expected format: <type>: <description>"
+            echo ""
+            echo "Valid prefixes:"
+            echo "  feat:     — new feature"
+            echo "  fix:      — bug fix"
+            echo "  bugfix:   — bug fix (alias)"
+            echo "  docs:     — documentation changes"
+            echo "  a11y:     — accessibility improvement"
+            echo "  chore:    — maintenance, dependencies, CI config"
+            echo "  refactor: — code restructuring (no behavior change)"
+            echo "  test:     — adding or updating tests"
+            echo "  ci:       — CI/CD workflow changes"
+            echo "  perf:     — performance improvement"
+            echo "  style:    — formatting, whitespace (no logic change)"
+            echo ""
+            echo "Example: \"a11y: add skip-to-content link\""
+            echo ""
+            echo "Got: \"$PR_TITLE\""
+            exit 1
+          fi
+          echo "PR title is valid: $PR_TITLE"
