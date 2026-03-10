@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes a11y-pulse {
+  0%, 100% {
+    outline-color: #ef4444;
+  }
+  50% {
+    outline-color: #fbbf24;
+  }
+}
+
+.a11y-highlight-pulse {
+  animation: a11y-pulse 0.6s ease-in-out infinite;
+}

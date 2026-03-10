@@ -1,0 +1,10 @@
+{
+  "name": "@maple-valley-health/maple-valley-health-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@maple-valley-health/maple-valley-health"
+    ]
+  }
+}

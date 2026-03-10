@@ -1,0 +1,93 @@
+'use client';
+
+import { useState } from 'react';
+import type { ResolvedInstance } from '@maple-valley-health/a11y-kit';
+import { highlightElement } from '@maple-valley-health/a11y-kit';
+
+const levelColors: Record<string, string> = {
+  A: 'bg-blue-100 text-blue-800',
+  AA: 'bg-purple-100 text-purple-800',
+  AAA: 'bg-orange-100 text-orange-800',
+};
+
+const methodLabels: Record<string, string> = {
+  automated: 'Automated',
+  manual: 'Manual',
+  'semi-automated': 'Semi-auto',
+};
+
+export function IssueCard({ resolved }: { resolved: ResolvedInstance }) {
+  const [expanded, setExpanded] = useState(false);
+  const { instance, definition } = resolved;
+
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        type="button"
+        className="w-full px-4 py-3 text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+        aria-expanded={expanded}
+      >
+        <span className="font-medium text-sm text-gray-900">{definition.title}</span>
+        <svg
+          className={`w-4 h-4 text-gray-500 transition-transform ${expanded ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {expanded && (
+        <div className="px-4 py-3 border-t border-gray-100 bg-gray-50 space-y-3">
+          <p className="text-sm text-gray-700">{instance.description}</p>
+          <p className="text-xs text-gray-500 italic">{definition.description}</p>
+
+          <div className="flex flex-wrap gap-1">
+            {definition.wcagCriteria.map((c) => (
+              <span
+                key={c.id}
+                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${levelColors[c.level] || ''}`}
+              >
+                {c.id} ({c.level})
+              </span>
+            ))}
+          </div>
+
+          <div>
+            <p className="text-xs font-medium text-gray-500 mb-1">Impacted Users</p>
+            <div className="flex flex-wrap gap-1">
+              {definition.impactedUsers.map((u) => (
+                <span key={u} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-red-50 text-red-700">
+                  {u}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex flex-wrap gap-1">
+              {definition.tags.map((t) => (
+                <span key={t} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-gray-200 text-gray-700">
+                  {t}
+                </span>
+              ))}
+              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-100 text-teal-800">
+                {methodLabels[definition.testingMethod]}
+              </span>
+            </div>
+
+            <button
+              onClick={() => highlightElement(instance.elementSelector)}
+              type="button"
+              className="text-xs font-medium text-teal-700 hover:text-teal-900 underline"
+            >
+              Highlight
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
