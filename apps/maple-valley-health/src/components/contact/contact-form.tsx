@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useA11yMode } from '../providers/a11y-mode-provider';
 import { A11yDemo } from '../a11y-demo';
+import { useA11yMode } from '../providers/a11y-mode-provider';
 
 interface FormErrors {
   name?: string;
@@ -10,14 +10,14 @@ interface FormErrors {
   message?: string;
 }
 
-export function ContactForm() {
+export const ContactForm = () => {
   const { isAccessible } = useA11yMode();
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
     const formData = new FormData(form);
     const newErrors: FormErrors = {};
 
@@ -64,11 +64,7 @@ export function ContactForm() {
           </A11yDemo>
           {errors.name && (
             <A11yDemo instanceId="contact-error-announcement">
-              <p
-                id="name-error"
-                role="alert"
-                className="mt-1 text-sm text-red-600"
-              >
+              <p id="name-error" role="alert" className="mt-1 text-sm text-red-600">
                 {errors.name}
               </p>
             </A11yDemo>
@@ -137,9 +133,7 @@ export function ContactForm() {
         </A11yDemo>
         {errors.name && (
           <A11yDemo instanceId="contact-error-announcement">
-            <p className="mt-1 text-sm text-red-600">
-              {errors.name}
-            </p>
+            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
           </A11yDemo>
         )}
       </A11yDemo>
@@ -152,9 +146,7 @@ export function ContactForm() {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
           style={{ outline: 'none' }}
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-        )}
+        {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
       </div>
 
       <div>
@@ -165,9 +157,7 @@ export function ContactForm() {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
           style={{ outline: 'none' }}
         />
-        {errors.message && (
-          <p className="mt-1 text-sm text-red-600">{errors.message}</p>
-        )}
+        {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
       </div>
 
       <button
@@ -179,4 +169,4 @@ export function ContactForm() {
       </button>
     </form>
   );
-}
+};

@@ -1,24 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/jest",
-    "jsx": "preserve",
-    "types": [
-      "jest",
-      "node"
-    ]
+    "outDir": "./out-tsc/vitest",
+    "jsx": "react-jsx",
+    "types": ["vitest/globals", "node"],
+    "lib": ["dom", "dom.iterable", "esnext"]
   },
   "include": [
-    "jest.config.ts",
-    "jest.config.cts",
+    "vitest.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.tsx",
     "src/**/*.spec.tsx",
-    "src/**/*.test.js",
-    "src/**/*.spec.js",
-    "src/**/*.test.jsx",
-    "src/**/*.spec.jsx",
+    "specs/**/*.test.ts",
+    "specs/**/*.spec.ts",
+    "specs/**/*.test.tsx",
+    "specs/**/*.spec.tsx",
     "src/**/*.d.ts"
   ],
   "references": [

@@ -7,9 +7,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     title: 'Missing alt text',
     description:
       'Images that convey meaning must have descriptive alternative text. Without it, screen reader users have no way to understand the image content.',
-    wcagCriteria: [
-      { id: '1.1.1', title: 'Non-text Content', level: 'A' },
-    ],
+    wcagCriteria: [{ id: '1.1.1', title: 'Non-text Content', level: 'A' }],
     impactedUsers: ['Screen reader users', 'Users with images disabled'],
     tags: ['images'],
     testingMethod: 'automated',
@@ -19,9 +17,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     title: 'Low contrast text',
     description:
       'Text must have a contrast ratio of at least 4.5:1 against its background for normal text, or 3:1 for large text. Low contrast makes content difficult or impossible to read for users with low vision.',
-    wcagCriteria: [
-      { id: '1.4.3', title: 'Contrast (Minimum)', level: 'AA' },
-    ],
+    wcagCriteria: [{ id: '1.4.3', title: 'Contrast (Minimum)', level: 'AA' }],
     impactedUsers: ['Low vision users', 'Users in bright environments'],
     tags: ['color', 'contrast'],
     testingMethod: 'automated',
@@ -31,9 +27,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     title: 'Missing page language',
     description:
       'The <html> element must have a lang attribute so screen readers can select the correct pronunciation rules and voice profile.',
-    wcagCriteria: [
-      { id: '3.1.1', title: 'Language of Page', level: 'A' },
-    ],
+    wcagCriteria: [{ id: '3.1.1', title: 'Language of Page', level: 'A' }],
     impactedUsers: ['Screen reader users'],
     tags: ['html', 'language'],
     testingMethod: 'automated',
@@ -56,9 +50,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     title: 'No visible focus indicator',
     description:
       'Interactive elements must have a visible focus indicator so keyboard users can tell which element has focus. Removing outline with CSS breaks this.',
-    wcagCriteria: [
-      { id: '2.4.7', title: 'Focus Visible', level: 'AA' },
-    ],
+    wcagCriteria: [{ id: '2.4.7', title: 'Focus Visible', level: 'AA' }],
     impactedUsers: ['Keyboard users', 'Users with motor disabilities'],
     tags: ['forms', 'focus'],
     testingMethod: 'manual',
@@ -68,9 +60,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     title: 'Form errors not announced',
     description:
       'Error messages must be programmatically associated with their inputs (via aria-describedby) and announced to screen readers (via role="alert"). Visual-only errors are invisible to assistive technology.',
-    wcagCriteria: [
-      { id: '3.3.1', title: 'Error Identification', level: 'A' },
-    ],
+    wcagCriteria: [{ id: '3.3.1', title: 'Error Identification', level: 'A' }],
     impactedUsers: ['Screen reader users'],
     tags: ['forms', 'errors'],
     testingMethod: 'semi-automated',
@@ -82,8 +72,7 @@ export const issueInstances: A11yIssueInstance[] = [
     id: 'landing-hero-img-alt',
     issueId: 'missing-alt-text',
     pageId: 'landing',
-    description:
-      'The hero image has no alt attribute, making it invisible to screen reader users.',
+    description: 'The hero image has no alt attribute, making it invisible to screen reader users.',
     elementSelector: '[data-a11y-id="landing-hero-img-alt"]',
   },
   {
@@ -98,8 +87,7 @@ export const issueInstances: A11yIssueInstance[] = [
     id: 'landing-page-language',
     issueId: 'missing-page-language',
     pageId: 'landing',
-    description:
-      'The <html> element is missing a lang attribute on this page.',
+    description: 'The <html> element is missing a lang attribute on this page.',
     elementSelector: '[data-a11y-id="landing-page-language"]',
   },
   {

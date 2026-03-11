@@ -46,3 +46,15 @@ Thumbs.db
 out
 
 test-output
+
+# Playwright
+playwright-report/
+blob-report/
+test-results/
+
+# Coverage
+coverage/
+*.lcov
+
+# Biome
+.biome/

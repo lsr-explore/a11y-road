@@ -1,23 +1,16 @@
-import type {
-  A11yIssueDefinition,
-  A11yIssueInstance,
-  ResolvedInstance,
-} from './types';
+import type { A11yIssueDefinition, A11yIssueInstance, ResolvedInstance } from './types';
 
 export class A11yRegistry {
   private definitions: A11yIssueDefinition[];
   private instances: A11yIssueInstance[];
 
-  constructor(
-    definitions: A11yIssueDefinition[],
-    instances: A11yIssueInstance[],
-  ) {
+  constructor(definitions: A11yIssueDefinition[], instances: A11yIssueInstance[]) {
     this.definitions = definitions;
     this.instances = instances;
   }
 
   getDefinition(id: string): A11yIssueDefinition | undefined {
-    return this.definitions.find((d) => d.id === id);
+    return this.definitions.find((def) => def.id === id);
   }
 
   getDefinitions(): A11yIssueDefinition[] {
@@ -36,15 +29,15 @@ export class A11yRegistry {
 
   getAllResolved(): ResolvedInstance[] {
     return this.instances
-      .map((i) => this.resolve(i))
-      .filter((r): r is ResolvedInstance => r !== null);
+      .map((inst) => this.resolve(inst))
+      .filter((result): result is ResolvedInstance => result !== null);
   }
 
   getResolvedByPage(pageId: string): ResolvedInstance[] {
     return this.instances
-      .filter((i) => i.pageId === pageId)
-      .map((i) => this.resolve(i))
-      .filter((r): r is ResolvedInstance => r !== null);
+      .filter((inst) => inst.pageId === pageId)
+      .map((inst) => this.resolve(inst))
+      .filter((result): result is ResolvedInstance => result !== null);
   }
 
   getInstanceCountByDefinition(): Map<string, number> {

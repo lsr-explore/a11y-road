@@ -18,7 +18,7 @@
     "target": "es2022",
     "customConditions": ["@maple-valley-health/source"],
     "paths": {
-      "@maple-valley-health/a11y-kit": ["libs/a11y-kit/src/index.ts"]
+      "@maple-valley-health/a11y-kit": ["./libs/a11y-kit/src/index.ts"]
     }
   }
 }

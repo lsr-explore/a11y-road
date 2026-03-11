@@ -3,13 +3,11 @@
 import Link from 'next/link';
 import { A11yDemo } from '../a11y-demo';
 
-export function CtaSection() {
+export const CtaSection = () => {
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold text-gray-900">
-          Ready to Schedule an Appointment?
-        </h2>
+        <h2 className="text-3xl font-bold text-gray-900">Ready to Schedule an Appointment?</h2>
         <p className="mt-2 text-gray-600 max-w-xl mx-auto">
           Our team is here to help. Contact us today to book your visit.
         </p>
@@ -37,4 +35,4 @@ export function CtaSection() {
       </div>
     </section>
   );
-}
+};

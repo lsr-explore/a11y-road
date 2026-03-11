@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @keyframes a11y-pulse {
-  0%, 100% {
+  0%,
+  100% {
     outline-color: #ef4444;
   }
   50% {

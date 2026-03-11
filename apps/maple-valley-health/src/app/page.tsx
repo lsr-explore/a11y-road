@@ -1,8 +1,8 @@
+import { CtaSection } from '../components/landing/cta-section';
 import { HeroSection } from '../components/landing/hero-section';
 import { ServicesOverview } from '../components/landing/services-overview';
-import { CtaSection } from '../components/landing/cta-section';
 
-export default function LandingPage() {
+const LandingPage = () => {
   return (
     <main>
       <HeroSection />
@@ -10,4 +10,5 @@ export default function LandingPage() {
       <CtaSection />
     </main>
   );
-}
+};
+export default LandingPage;

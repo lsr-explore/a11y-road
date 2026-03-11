@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { useSidePanel } from '../providers/side-panel-provider';
+import { useEffect, useRef } from 'react';
 import { registry } from '../../data/issues-registry';
 import { getPageByRoute } from '../../data/page-metadata';
+import { useSidePanel } from '../providers/side-panel-provider';
 import { IssueCard } from './issue-card';
 
-export function SidePanel() {
+export const SidePanel = () => {
   const { isOpen, close } = useSidePanel();
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -21,24 +21,24 @@ export function SidePanel() {
 
     closeButtonRef.current?.focus();
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
         close();
         return;
       }
 
-      if (e.key === 'Tab' && panelRef.current) {
+      if (event.key === 'Tab' && panelRef.current) {
         const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
 
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
           last?.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
           first?.focus();
         }
       }
@@ -51,7 +51,6 @@ export function SidePanel() {
   return (
     <aside
       ref={panelRef}
-      role="complementary"
       aria-label="Accessibility issues panel"
       className={`shrink-0 w-96 max-w-[90vw] border-l border-gray-200 bg-white transition-all duration-300 ${
         isOpen ? 'ml-0' : '-mr-96'
@@ -69,8 +68,18 @@ export function SidePanel() {
             className="p-1 rounded hover:bg-gray-100 transition-colors"
             aria-label="Close panel"
           >
-            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-5 h-5 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -81,10 +90,10 @@ export function SidePanel() {
               No tracked accessibility issues for this page.
             </p>
           ) : (
-            resolved.map((r) => <IssueCard key={r.instance.id} resolved={r} />)
+            resolved.map((item) => <IssueCard key={item.instance.id} resolved={item} />)
           )}
         </div>
       </div>
     </aside>
   );
-}
+};

@@ -1,4 +1,4 @@
-export function highlightElement(selector: string, durationMs = 3000) {
+export const highlightElement = (selector: string, durationMs = 3000) => {
   const el = document.querySelector(selector);
   if (!el) return;
 
@@ -15,7 +15,7 @@ export function highlightElement(selector: string, durationMs = 3000) {
     htmlEl.style.outlineOffset = '';
     htmlEl.classList.remove('a11y-highlight-pulse');
   }, durationMs);
-}
+};
 
 export const highlightCss = `
 @keyframes a11y-pulse {

@@ -2,7 +2,7 @@
 
 import { A11yDemo } from '../a11y-demo';
 
-export function HeroSection() {
+export const HeroSection = () => {
   return (
     <section className="relative bg-teal-700 text-white">
       <div className="max-w-7xl mx-auto px-4 py-20 flex flex-col md:flex-row items-center gap-8">
@@ -11,8 +11,8 @@ export function HeroSection() {
             Your Health, Our Priority
           </h1>
           <p className="mt-4 text-lg text-teal-100 max-w-lg">
-            Maple Valley Health provides comprehensive family medicine,
-            preventive care, and wellness services for patients of all ages.
+            Maple Valley Health provides comprehensive family medicine, preventive care, and
+            wellness services for patients of all ages.
           </p>
         </div>
         <div className="flex-1 flex justify-center">
@@ -41,4 +41,4 @@ export function HeroSection() {
       </div>
     </section>
   );
-}
+};
