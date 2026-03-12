@@ -1,26 +1,10 @@
 # CLAUDE.md
 
-## Code Style
+Before executing any shell command:
 
-- **Arrow functions only** — no `function` declarations. Use `export const Foo = () => {}`.
-- **No single-character variables** — minimum 2 characters. Use descriptive names in callbacks (e.g., `item` not `r`, `criterion` not `c`, `event` not `e`, `left`/`right` not `a`/`b`).
-- **File naming** — kebab-case for all files and directories.
-- **`const` over `let`** where possible.
-- **Import ordering** — follow Biome defaults.
-
-## Test Conventions
-
-- **Co-located test files** — place `*.spec.tsx` next to the source file.
-- **Mock data in separate files** — keep mock/fixture data shareable, not inline in tests.
-
-## Workflow Preferences
-
-- **Do not commit** — I will review and commit manually using squash merges. Follow conventional commit style (`feat:`, `fix:`, `chore:`, etc.) when drafting messages.
-- **Do not push** to remote without asking.
-- **Proceed without asking** when running package.json scripts (`pnpm test`, `pnpm lint`, `pnpm build`, etc.).
-- **Ask before running** `pnpm install` or `pnpm add` — confirm dependency changes first.
-- **Run quality checks** after making changes to verify nothing broke.
-- **Update memory notes** when significant project changes are made.
+1. explain the command
+2. verify it is safe
+3. run the minimal version possible
 
 ## Project Conventions
 
