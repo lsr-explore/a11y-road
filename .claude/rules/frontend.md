@@ -12,8 +12,14 @@ Guidelines:
 
 - Use strict TypeScript
 - Prefer functional React components
-- Avoid `any`
-- Prefer semantic HTML
-- Follow accessibility best practices
+- Avoid `any` unless necessary and documented
+- Follow accessibility best practices that comply with WCAG 2.1 AA standards and ARIA guidelines
 - Use Tailwind utility classes consistently
 - Avoid deeply nested components
+- Prefer clear, readable component structure over abstraction for its own sake.
+
+## Semantic HTML
+
+- Prefer semantic HTML unless the example is intentionally demonstrating a problem.
+- Do not replace intentionally problematic markup unless asked.
+- When creating new examples, make the intended state obvious in naming and structure.

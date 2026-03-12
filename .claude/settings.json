@@ -9,32 +9,9 @@
       "Bash(ls *)",
       "Bash(find src *)",
       "Bash(cat package.json)",
-      "Bash(pnpm lint)",
-      "Bash(pnpm lint *)",
-      "Bash(pnpm typecheck)",
-      "Bash(pnpm test)",
-      "Bash(pnpm test *)",
-      "Bash(pnpm exec vitest *)",
-      "Bash(pnpm exec playwright test *)",
-      "Read(./src/**)",
-      "Read(./app/**)",
-      "Read(./components/**)",
-      "Read(./lib/**)",
-      "Read(./utils/**)",
-      "Read(./tests/**)",
-      "Read(./playwright/**)",
-      "Read(./vitest.config.*)",
-      "Read(./eslint.config.*)",
-      "Read(./biome.json)",
-      "Read(./tailwind.config.*)",
-      "Read(./postcss.config.*)",
-      "Read(./tsconfig*.json)",
-      "Read(./package.json)",
-      "Read(./Dockerfile)",
-      "Read(./docker-compose*.yml)",
-      "Read(./README.md)",
-      "Read(./CLAUDE.md)",
-      "Read(./.claude/**)"
+      "Bash(pnpm run *)",
+      "Bash(pnpm exec *)",
+      "Read(./**)"
     ],
     "ask": [
       "Bash(pnpm install *)",
@@ -67,13 +44,16 @@
       "Bash(curl * | sh)",
       "Bash(wget * | sh)",
       "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf /**)",
+      "Bash(rm -rf ~)",
       "Bash(npm publish *)",
       "Bash(pnpm publish *)"
     ]
   },
   "sandbox": {
     "enabled": true,
-    "autoAllowBashIfSandboxed": false,
+    "autoAllowBashIfSandboxed": true,
     "allowUnsandboxedCommands": false,
     "excludedCommands": ["git"],
     "filesystem": {
@@ -81,14 +61,19 @@
         "~/.ssh",
         "~/.aws",
         "~/.config",
-        "/.env",
-        "/.env.*"
+        "./.env",
+        "./.env.*"
       ],
       "denyWrite": [
+        "/etc",
         "//etc",
+        "/usr",
         "//usr",
+        "/bin",
         "//bin",
+        "/sbin",
         "//sbin",
+        "/opt",
         "//opt"
       ]
     },

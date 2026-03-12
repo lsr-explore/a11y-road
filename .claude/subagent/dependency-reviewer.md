@@ -12,6 +12,7 @@ Evaluate:
 - maintenance status
 - bundle size impact
 - necessity vs built-in alternatives
+- known CVEs (check via `pnpm audit` or npm advisory database)
 
 Prefer:
 
