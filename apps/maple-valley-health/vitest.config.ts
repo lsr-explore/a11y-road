@@ -16,8 +16,9 @@ export default defineConfig({
     root: __dirname,
     globals: true,
     environment: 'jsdom',
+    reporters: ['tree'],
     setupFiles: ['./src/test-setup.ts'],
-    include: ['src/**/*.{test,spec}.{ts,tsx}', 'specs/**/*.{test,spec}.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],

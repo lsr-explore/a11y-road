@@ -67,7 +67,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
   },
 ];
 
-export const issueInstances: A11yIssueInstance[] = [
+const issueInstances: A11yIssueInstance[] = [
   {
     id: 'landing-hero-img-alt',
     issueId: 'missing-alt-text',

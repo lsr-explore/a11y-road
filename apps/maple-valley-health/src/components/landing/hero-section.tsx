@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { A11yDemo } from '../a11y-demo';
 
 export const HeroSection = () => {
@@ -19,7 +20,7 @@ export const HeroSection = () => {
           <A11yDemo
             instanceId="landing-hero-img-alt"
             fixed={
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&h=400&fit=crop"
                 alt="A doctor in a white coat smiling and consulting with a patient in a modern clinic"
                 className="rounded-lg shadow-lg max-w-full h-auto"
@@ -28,8 +29,8 @@ export const HeroSection = () => {
               />
             }
             broken={
-              // eslint-disable-next-line jsx-a11y/alt-text
-              <img
+              // @ts-expect-error Intentionally missing alt to demonstrate a11y violation
+              <Image
                 src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&h=400&fit=crop"
                 className="rounded-lg shadow-lg max-w-full h-auto"
                 width={600}

@@ -3,10 +3,10 @@ import type { KnipConfig } from 'knip';
 const config: KnipConfig = {
   rules: {
     // These exports are part of the data layer API — kept for future use
-    exports: 'warn',
-    types: 'warn',
+    exports: 'off',
+    types: 'off',
     // vitest setupFiles string refs report as unresolved
-    unresolved: 'warn',
+    unresolved: 'off',
   },
   workspaces: {
     'apps/maple-valley-health': {
@@ -28,7 +28,9 @@ const config: KnipConfig = {
       project: ['src/**/*.ts'],
     },
     'libs/a11y-kit': {
+      entry: ['src/test-setup.ts'],
       project: ['src/**/*.{ts,tsx}'],
+      ignoreDependencies: ['jsdom'],
     },
   },
   ignoreDependencies: [

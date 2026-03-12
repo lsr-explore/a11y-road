@@ -6,17 +6,20 @@
     "dev": "nx dev",
     "build": "nx build",
     "lint": "nx run-many -t lint --no-tui",
+    "nx:reset": "nx reset",
     "format": "biome check --write .",
     "format:check": "biome check .",
+    "test:all": "vitest run --config apps/maple-valley-health/vitest.config.ts && vitest run --config libs/a11y-kit/vitest.config.ts",
+    "test:all:coverage": "vitest run --coverage --config apps/maple-valley-health/vitest.config.ts && vitest run --coverage --config libs/a11y-kit/vitest.config.ts",
     "test": "vitest run --config apps/maple-valley-health/vitest.config.ts",
     "test:watch": "vitest --config apps/maple-valley-health/vitest.config.ts",
     "test:coverage": "vitest run --coverage --config apps/maple-valley-health/vitest.config.ts",
     "e2e": "nx e2e",
-    "typecheck": "nx run-many -t typecheck",
+    "typecheck": "nx run-many -t typecheck --no-tui",
     "stylelint": "stylelint \"apps/**/*.css\" \"libs/**/*.css\"",
     "knip": "knip",
     "clean": "rm -rf dist out-tsc coverage test-output .next apps/*/.next apps/*/out-tsc apps/*/dist libs/*/dist .nx/cache",
-    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm knip && pnpm test"
+    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm typecheck && pnpm knip && pnpm test:all:coverage"
   },
   "private": true,
   "dependencies": {
@@ -69,10 +72,7 @@
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",
     "vitest": "^4.0.18",
-    "vitest-axe": "^0.1.0"
-  },
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ]
+    "vitest-axe": "^0.1.0",
+    "vitest-canvas-mock": "^1.1.3"
+  }
 }
