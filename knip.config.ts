@@ -9,7 +9,7 @@ const config: KnipConfig = {
     unresolved: 'off',
   },
   workspaces: {
-    'apps/maple-valley-health': {
+    'apps/a11y-road': {
       entry: [
         'src/app/**/page.tsx',
         'src/app/**/layout.tsx',
@@ -20,7 +20,7 @@ const config: KnipConfig = {
       ignore: ['src/data/a11y-issues.ts'],
       ignoreDependencies: [
         'jsdom',
-        '@maple-valley-health/a11y-kit',
+        '@a11y-road/a11y-kit',
       ],
     },
     'apps/maple-valley-health-e2e': {

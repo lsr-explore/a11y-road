@@ -1,10 +1,10 @@
 {
-  "name": "@maple-valley-health/maple-valley-health-e2e",
+  "name": "@a11y-road/maple-valley-health-e2e",
   "version": "0.0.1",
   "private": true,
   "nx": {
     "implicitDependencies": [
-      "@maple-valley-health/maple-valley-health"
+      "@a11y-road/a11y-road"
     ]
   }
 }

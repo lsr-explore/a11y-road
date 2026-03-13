@@ -17,7 +17,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@maple-valley-health/a11y-kit": ["../../libs/a11y-kit/src/index.ts"]
+      "@a11y-road/a11y-kit": ["../../libs/a11y-kit/src/index.ts"]
     },
     "types": ["node"],
     "outDir": "dist",
@@ -30,8 +30,8 @@
     "src/**/*.jsx",
     "../../libs/a11y-kit/src/**/*.ts",
     "../../libs/a11y-kit/src/**/*.tsx",
-    "../../apps/maple-valley-health/.next/types/**/*.ts",
-    "../../dist/apps/maple-valley-health/.next/types/**/*.ts",
+    "../../apps/a11y-road/.next/types/**/*.ts",
+    "../../dist/apps/a11y-road/.next/types/**/*.ts",
     "next-env.d.ts"
   ],
   "exclude": [

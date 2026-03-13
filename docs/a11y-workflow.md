@@ -205,7 +205,7 @@ See `.env.example` in the app directory for reference. To set locally, create a 
 NEXT_PUBLIC_SHOW_A11Y_TOOLS=false
 ```
 
-## Library: `@maple-valley-health/a11y-kit`
+## Library: `@a11y-road/a11y-kit`
 
 The reusable parts of the a11y system live in `libs/a11y-kit/`. Any Next.js or React app can use this library to implement the same pattern.
 
@@ -230,7 +230,7 @@ import {
   A11yRegistry,
   A11yModeProvider,
   A11yDemo,
-} from '@maple-valley-health/a11y-kit';
+} from '@a11y-road/a11y-kit';
 
 // Create a registry with your own data
 const registry = new A11yRegistry(myDefinitions, myInstances);

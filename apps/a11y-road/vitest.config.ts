@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@maple-valley-health/a11y-kit': path.resolve(__dirname, '../../libs/a11y-kit/src/index.ts'),
+      '@a11y-road/a11y-kit': path.resolve(__dirname, '../../libs/a11y-kit/src/index.ts'),
     },
   },
   test: {
@@ -22,7 +22,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      reportsDirectory: '../../coverage/apps/maple-valley-health',
+      reportsDirectory: '../../coverage/apps/a11y-road',
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/**/*.{test,spec}.{ts,tsx}', 'src/**/test-setup.ts', 'src/app/layout.tsx'],
     },

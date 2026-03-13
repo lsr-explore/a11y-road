@@ -1,5 +1,5 @@
-import type { A11yIssueDefinition, A11yIssueInstance } from '@maple-valley-health/a11y-kit';
-import { A11yRegistry } from '@maple-valley-health/a11y-kit';
+import type { A11yIssueDefinition, A11yIssueInstance } from '@a11y-road/a11y-kit';
+import { A11yRegistry } from '@a11y-road/a11y-kit';
 
 export const issueDefinitions: A11yIssueDefinition[] = [
   {

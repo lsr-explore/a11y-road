@@ -1,5 +1,5 @@
 {
-  "name": "@maple-valley-health/a11y-kit",
+  "name": "@a11y-road/a11y-kit",
   "version": "0.0.1",
   "private": true,
   "main": "./src/index.ts",

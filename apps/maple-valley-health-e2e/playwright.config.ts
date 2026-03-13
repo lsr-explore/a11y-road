@@ -24,7 +24,7 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npx nx run @maple-valley-health/maple-valley-health:dev',
+    command: 'npx nx run @a11y-road/a11y-road:dev',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
     cwd: workspaceRoot,

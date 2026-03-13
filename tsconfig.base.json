@@ -16,9 +16,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@maple-valley-health/source"],
+    "customConditions": ["@a11y-road/source"],
     "paths": {
-      "@maple-valley-health/a11y-kit": ["./libs/a11y-kit/src/index.ts"]
+      "@a11y-road/a11y-kit": ["./libs/a11y-kit/src/index.ts"]
     }
   }
 }
