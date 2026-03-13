@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import type { ResolvedInstance } from '@maple-valley-health/a11y-kit';
 import { highlightElement } from '@maple-valley-health/a11y-kit';
+import { useState } from 'react';
 
 const levelColors: Record<string, string> = {
   A: 'bg-blue-100 text-blue-800',
@@ -16,7 +16,7 @@ const methodLabels: Record<string, string> = {
   'semi-automated': 'Semi-auto',
 };
 
-export function IssueCard({ resolved }: { resolved: ResolvedInstance }) {
+export const IssueCard = ({ resolved }: { resolved: ResolvedInstance }) => {
   const [expanded, setExpanded] = useState(false);
   const { instance, definition } = resolved;
 
@@ -45,12 +45,12 @@ export function IssueCard({ resolved }: { resolved: ResolvedInstance }) {
           <p className="text-xs text-gray-500 italic">{definition.description}</p>
 
           <div className="flex flex-wrap gap-1">
-            {definition.wcagCriteria.map((c) => (
+            {definition.wcagCriteria.map((criterion) => (
               <span
-                key={c.id}
-                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${levelColors[c.level] || ''}`}
+                key={criterion.id}
+                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${levelColors[criterion.level] || ''}`}
               >
-                {c.id} ({c.level})
+                {criterion.id} ({criterion.level})
               </span>
             ))}
           </div>
@@ -58,9 +58,12 @@ export function IssueCard({ resolved }: { resolved: ResolvedInstance }) {
           <div>
             <p className="text-xs font-medium text-gray-500 mb-1">Impacted Users</p>
             <div className="flex flex-wrap gap-1">
-              {definition.impactedUsers.map((u) => (
-                <span key={u} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-red-50 text-red-700">
-                  {u}
+              {definition.impactedUsers.map((user) => (
+                <span
+                  key={user}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-red-50 text-red-700"
+                >
+                  {user}
                 </span>
               ))}
             </div>
@@ -68,9 +71,12 @@ export function IssueCard({ resolved }: { resolved: ResolvedInstance }) {
 
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap gap-1">
-              {definition.tags.map((t) => (
-                <span key={t} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-gray-200 text-gray-700">
-                  {t}
+              {definition.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-gray-200 text-gray-700"
+                >
+                  {tag}
                 </span>
               ))}
               <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-100 text-teal-800">
@@ -90,4 +96,4 @@ export function IssueCard({ resolved }: { resolved: ResolvedInstance }) {
       )}
     </div>
   );
-}
+};

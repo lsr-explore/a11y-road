@@ -19,7 +19,7 @@
       "{workspaceRoot}/.github/workflows/ci.yml"
     ]
   },
-  "nxCloudId": "69b06d9f065b6ab8839e2730",
+  "neverConnectToCloud": true,
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
@@ -59,9 +59,9 @@
       }
     },
     {
-      "plugin": "@nx/jest/plugin",
+      "plugin": "@nx/vite/plugin",
       "options": {
-        "targetName": "test"
+        "testTargetName": "test"
       }
     }
   ],

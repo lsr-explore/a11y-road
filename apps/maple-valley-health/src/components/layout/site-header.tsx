@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSidePanel } from '../providers/side-panel-provider';
 import { registry } from '../../data/issues-registry';
 import { getPageByRoute } from '../../data/page-metadata';
+import { useSidePanel } from '../providers/side-panel-provider';
 
 const showDemoTools = process.env.NEXT_PUBLIC_SHOW_A11Y_TOOLS !== 'false';
 
@@ -14,7 +14,7 @@ const navLinks = [
   ...(showDemoTools ? [{ href: '/a11y-summary', label: 'A11y Summary' }] : []),
 ];
 
-function SidePanelToggle() {
+const SidePanelToggle = () => {
   const { isOpen, toggle } = useSidePanel();
   const pathname = usePathname();
   const page = getPageByRoute(pathname);
@@ -25,26 +25,26 @@ function SidePanelToggle() {
       onClick={toggle}
       type="button"
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-        isOpen
-          ? 'bg-teal-700 text-white'
-          : 'bg-teal-50 text-teal-700 hover:bg-teal-100'
+        isOpen ? 'bg-teal-700 text-white' : 'bg-teal-50 text-teal-700 hover:bg-teal-100'
       }`}
       aria-label={isOpen ? 'Close accessibility issues panel' : 'Open accessibility issues panel'}
       aria-expanded={isOpen}
     >
       <span>Issues</span>
       {resolved.length > 0 && (
-        <span className={`inline-flex items-center justify-center h-5 min-w-5 px-1 rounded-full text-xs font-semibold ${
-          isOpen ? 'bg-teal-600 text-white' : 'bg-teal-200 text-teal-800'
-        }`}>
+        <span
+          className={`inline-flex items-center justify-center h-5 min-w-5 px-1 rounded-full text-xs font-semibold ${
+            isOpen ? 'bg-teal-600 text-white' : 'bg-teal-200 text-teal-800'
+          }`}
+        >
           {resolved.length}
         </span>
       )}
     </button>
   );
-}
+};
 
-export function SiteHeader() {
+export const SiteHeader = () => {
   const pathname = usePathname();
 
   return (
@@ -78,4 +78,4 @@ export function SiteHeader() {
       </div>
     </header>
   );
-}
+};

@@ -1,13 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import type { ResolvedInstance } from '@maple-valley-health/a11y-kit';
+import { useMemo, useState } from 'react';
 import { pages } from '../../data/page-metadata';
 
 type SortField = 'page' | 'issue' | 'level' | 'testingMethod';
 type SortDir = 'asc' | 'desc';
 
-export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
+export const SummaryTable = ({ resolved }: { resolved: ResolvedInstance[] }) => {
   const [filterPage, setFilterPage] = useState('all');
   const [filterCriterion, setFilterCriterion] = useState('all');
   const [sortField, setSortField] = useState<SortField>('page');
@@ -15,44 +15,46 @@ export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
 
   const allCriteria = useMemo(() => {
     const set = new Map<string, string>();
-    resolved.forEach((r) =>
-      r.definition.wcagCriteria.forEach((c) => set.set(c.id, `${c.id} ${c.title}`))
-    );
-    return Array.from(set.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+    resolved.forEach((item) => {
+      item.definition.wcagCriteria.forEach((criterion) => {
+        set.set(criterion.id, `${criterion.id} ${criterion.title}`);
+      });
+    });
+    return Array.from(set.entries()).sort((left, right) => left[0].localeCompare(right[0]));
   }, [resolved]);
 
   const filtered = useMemo(() => {
     let result = resolved;
     if (filterPage !== 'all') {
-      result = result.filter((r) => r.instance.pageId === filterPage);
+      result = result.filter((item) => item.instance.pageId === filterPage);
     }
     if (filterCriterion !== 'all') {
-      result = result.filter((r) =>
-        r.definition.wcagCriteria.some((c) => c.id === filterCriterion)
+      result = result.filter((item) =>
+        item.definition.wcagCriteria.some((criterion) => criterion.id === filterCriterion),
       );
     }
     return result;
   }, [resolved, filterPage, filterCriterion]);
 
   const sorted = useMemo(() => {
-    return [...filtered].sort((a, b) => {
+    return [...filtered].sort((left, right) => {
       let cmp = 0;
       switch (sortField) {
         case 'page':
-          cmp = a.instance.pageId.localeCompare(b.instance.pageId);
+          cmp = left.instance.pageId.localeCompare(right.instance.pageId);
           break;
         case 'issue':
-          cmp = a.definition.title.localeCompare(b.definition.title);
+          cmp = left.definition.title.localeCompare(right.definition.title);
           break;
         case 'level': {
           const levelOrder = { A: 1, AA: 2, AAA: 3 };
-          const aLevel = a.definition.wcagCriteria[0]?.level || 'A';
-          const bLevel = b.definition.wcagCriteria[0]?.level || 'A';
-          cmp = (levelOrder[aLevel] || 0) - (levelOrder[bLevel] || 0);
+          const leftLevel = left.definition.wcagCriteria[0]?.level || 'A';
+          const rightLevel = right.definition.wcagCriteria[0]?.level || 'A';
+          cmp = (levelOrder[leftLevel] || 0) - (levelOrder[rightLevel] || 0);
           break;
         }
         case 'testingMethod':
-          cmp = a.definition.testingMethod.localeCompare(b.definition.testingMethod);
+          cmp = left.definition.testingMethod.localeCompare(right.definition.testingMethod);
           break;
       }
       return sortDir === 'asc' ? cmp : -cmp;
@@ -61,7 +63,7 @@ export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+      setSortDir((dir) => (dir === 'asc' ? 'desc' : 'asc'));
     } else {
       setSortField(field);
       setSortDir('asc');
@@ -81,7 +83,7 @@ export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
     </button>
   );
 
-  const pageNameMap = Object.fromEntries(pages.map((p) => [p.id, p.name]));
+  const pageNameMap = Object.fromEntries(pages.map((page) => [page.id, page.name]));
 
   return (
     <div>
@@ -93,26 +95,29 @@ export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
           <select
             id="filter-page"
             value={filterPage}
-            onChange={(e) => setFilterPage(e.target.value)}
+            onChange={(event) => setFilterPage(event.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
           >
             <option value="all">All Pages</option>
-            {pages.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
+            {pages.map((page) => (
+              <option key={page.id} value={page.id}>
+                {page.name}
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label htmlFor="filter-criterion" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="filter-criterion"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Filter by WCAG Criterion
           </label>
           <select
             id="filter-criterion"
             value={filterCriterion}
-            onChange={(e) => setFilterCriterion(e.target.value)}
+            onChange={(event) => setFilterCriterion(event.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
           >
             <option value="all">All Criteria</option>
@@ -147,32 +152,32 @@ export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {sorted.map((r) => (
-              <tr key={r.instance.id} className="hover:bg-gray-50">
+            {sorted.map((item) => (
+              <tr key={item.instance.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium text-gray-900">
-                  {pageNameMap[r.instance.pageId] || r.instance.pageId}
+                  {pageNameMap[item.instance.pageId] || item.instance.pageId}
                 </td>
-                <td className="px-4 py-3 text-gray-700">{r.definition.title}</td>
-                <td className="px-4 py-3 text-gray-600 text-xs">{r.instance.description}</td>
+                <td className="px-4 py-3 text-gray-700">{item.definition.title}</td>
+                <td className="px-4 py-3 text-gray-600 text-xs">{item.instance.description}</td>
                 <td className="px-4 py-3">
-                  {r.definition.wcagCriteria.map((c) => (
+                  {item.definition.wcagCriteria.map((criterion) => (
                     <span
-                      key={c.id}
+                      key={criterion.id}
                       className="inline-block mr-1 mb-1 px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-800"
                     >
-                      {c.id} {c.title}
+                      {criterion.id} {criterion.title}
                     </span>
                   ))}
                 </td>
                 <td className="px-4 py-3">
-                  {r.definition.wcagCriteria.map((c) => c.level).join(', ')}
+                  {item.definition.wcagCriteria.map((criterion) => criterion.level).join(', ')}
                 </td>
                 <td className="px-4 py-3 text-gray-600">
-                  {r.definition.impactedUsers.join(', ')}
+                  {item.definition.impactedUsers.join(', ')}
                 </td>
                 <td className="px-4 py-3">
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-50 text-teal-800 capitalize">
-                    {r.definition.testingMethod}
+                    {item.definition.testingMethod}
                   </span>
                 </td>
               </tr>
@@ -189,4 +194,4 @@ export function SummaryTable({ resolved }: { resolved: ResolvedInstance[] }) {
       </div>
     </div>
   );
-}
+};

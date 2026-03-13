@@ -6,12 +6,7 @@ export const metadata = {
   description: 'A demo medical practice site for accessibility learning.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <LayoutShell>{children}</LayoutShell>
-  );
-}
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
+  return <LayoutShell>{children}</LayoutShell>;
+};
+export default RootLayout;

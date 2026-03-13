@@ -49,7 +49,15 @@ export default [
             "**/*.cjs",
             "**/*.mjs"
         ],
-        // Override or add rules here
-        rules: {}
+        rules: {
+            "@typescript-eslint/no-empty-function": ["error", { allow: ["arrowFunctions"] }],
+            "id-length": ["error", {
+                min: 2,
+                exceptions: ["_"],
+                exceptionPatterns: ["^_"],
+                properties: "never"
+            }],
+            "func-style": ["error", "expression", { allowArrowFunctions: true }]
+        }
     }
 ];

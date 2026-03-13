@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { registry, issueDefinitions } from '../../../data/issues-registry';
+import { issueDefinitions, registry } from '../../../data/issues-registry';
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const pageId = searchParams.get('page');
   const definitionId = searchParams.get('definition');
@@ -21,16 +21,14 @@ export async function GET(request: Request) {
   }
 
   if (definitionId) {
-    resolved = resolved.filter(
-      (r) => r.definition.id === definitionId,
-    );
+    resolved = resolved.filter((item) => item.definition.id === definitionId);
   }
 
   return NextResponse.json({
-    instances: resolved.map((r) => ({
-      ...r.instance,
-      definition: r.definition,
+    instances: resolved.map((item) => ({
+      ...item.instance,
+      definition: item.definition,
     })),
     total: resolved.length,
   });
-}
+};

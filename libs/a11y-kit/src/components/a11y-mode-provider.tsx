@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface A11yModeContextValue {
   isAccessible: boolean;
@@ -15,13 +15,13 @@ const A11yModeContext = createContext<A11yModeContextValue>({
 
 const STORAGE_KEY = 'a11y-kit-mode';
 
-export function A11yModeProvider({
+export const A11yModeProvider = ({
   children,
   storageKey = STORAGE_KEY,
 }: {
   children: ReactNode;
   storageKey?: string;
-}) {
+}) => {
   const [isAccessible, setIsAccessible] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -42,12 +42,10 @@ export function A11yModeProvider({
   const toggle = () => setIsAccessible((prev) => !prev);
 
   return (
-    <A11yModeContext.Provider value={{ isAccessible, toggle }}>
-      {children}
-    </A11yModeContext.Provider>
+    <A11yModeContext.Provider value={{ isAccessible, toggle }}>{children}</A11yModeContext.Provider>
   );
-}
+};
 
-export function useA11yMode() {
+export const useA11yMode = () => {
   return useContext(A11yModeContext);
-}
+};

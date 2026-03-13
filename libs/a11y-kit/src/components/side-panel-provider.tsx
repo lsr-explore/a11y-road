@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 interface SidePanelContextValue {
   isOpen: boolean;
@@ -17,7 +17,7 @@ const SidePanelContext = createContext<SidePanelContextValue>({
   toggle: () => {},
 });
 
-export function SidePanelProvider({ children }: { children: ReactNode }) {
+export const SidePanelProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -32,8 +32,8 @@ export function SidePanelProvider({ children }: { children: ReactNode }) {
       {children}
     </SidePanelContext.Provider>
   );
-}
+};
 
-export function useSidePanel() {
+export const useSidePanel = () => {
   return useContext(SidePanelContext);
-}
+};

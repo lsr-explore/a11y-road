@@ -1,16 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "preserve",
     "noEmit": true,
-    "emitDeclarationOnly": false,
+    "jsx": "preserve",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,17 +16,10 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@maple-valley-health/a11y-kit": [
-        "../../libs/a11y-kit/src/index.ts"
-      ]
+      "@/*": ["./src/*"],
+      "@maple-valley-health/a11y-kit": ["../../libs/a11y-kit/src/index.ts"]
     },
-    "types": [
-      "jest",
-      "node"
-    ],
+    "types": ["node"],
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
@@ -40,6 +28,8 @@
     "src/**/*.tsx",
     "src/**/*.js",
     "src/**/*.jsx",
+    "../../libs/a11y-kit/src/**/*.ts",
+    "../../libs/a11y-kit/src/**/*.tsx",
     "../../apps/maple-valley-health/.next/types/**/*.ts",
     "../../dist/apps/maple-valley-health/.next/types/**/*.ts",
     "next-env.d.ts"
@@ -48,13 +38,18 @@
     "out-tsc",
     "dist",
     "node_modules",
-    "jest.config.ts",
-    "jest.config.cts",
     "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
     "src/**/*.test.ts",
+    "src/**/*.test.tsx",
     ".next",
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../libs/a11y-kit"
+    }
   ]
 }

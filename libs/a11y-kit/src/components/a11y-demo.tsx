@@ -19,22 +19,14 @@ interface A11yDemoWrapperProps {
 
 type A11yDemoProps = A11yDemoToggleProps | A11yDemoWrapperProps;
 
-export function A11yDemo(props: A11yDemoProps) {
+export const A11yDemo = (props: A11yDemoProps) => {
   const { isAccessible } = useA11yMode();
   const { instanceId } = props;
 
   if ('children' in props && props.children !== undefined) {
-    return (
-      <div data-a11y-id={instanceId}>
-        {props.children}
-      </div>
-    );
+    return <div data-a11y-id={instanceId}>{props.children}</div>;
   }
 
   const { broken, fixed } = props as A11yDemoToggleProps;
-  return (
-    <div data-a11y-id={instanceId}>
-      {isAccessible ? fixed : broken}
-    </div>
-  );
-}
+  return <div data-a11y-id={instanceId}>{isAccessible ? fixed : broken}</div>;
+};

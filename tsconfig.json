@@ -7,6 +7,9 @@
       "path": "./apps/maple-valley-health-e2e"
     },
     {
+      "path": "./libs/a11y-kit"
+    },
+    {
       "path": "./apps/maple-valley-health"
     }
   ]
