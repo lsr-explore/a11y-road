@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx dev",
+    "dev": "nx dev @maple-valley-health/maple-valley-health",
     "build": "nx build",
     "lint": "nx run-many -t lint --no-tui",
     "nx:reset": "nx reset",
@@ -14,7 +14,7 @@
     "test": "vitest run --config apps/maple-valley-health/vitest.config.ts",
     "test:watch": "vitest --config apps/maple-valley-health/vitest.config.ts",
     "test:coverage": "vitest run --coverage --config apps/maple-valley-health/vitest.config.ts",
-    "e2e": "nx e2e",
+    "e2e": "nx e2e apps/maple-valley-health-e2e --no-tui",
     "typecheck": "nx run-many -t typecheck --no-tui",
     "stylelint": "stylelint \"apps/**/*.css\" \"libs/**/*.css\"",
     "knip": "knip",
