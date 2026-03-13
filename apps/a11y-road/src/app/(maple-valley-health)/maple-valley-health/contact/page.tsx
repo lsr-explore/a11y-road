@@ -1,4 +1,4 @@
-import { ContactForm } from '../../components/contact/contact-form';
+import { ContactForm } from '@/components/contact/contact-form';
 
 export const metadata = {
   title: 'Contact Us | Maple Valley Health',

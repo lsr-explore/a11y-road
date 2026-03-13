@@ -1,4 +1,4 @@
-import { registry } from '../../data/issues-registry';
+import { registry } from '@/data/issues-registry';
 import { SummaryTable } from './summary-table';
 
 export const metadata = {

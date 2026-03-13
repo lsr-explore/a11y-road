@@ -9,9 +9,9 @@ import { useSidePanel } from '../providers/side-panel-provider';
 const showDemoTools = process.env.NEXT_PUBLIC_SHOW_A11Y_TOOLS !== 'false';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/contact', label: 'Contact' },
-  ...(showDemoTools ? [{ href: '/a11y-summary', label: 'A11y Summary' }] : []),
+  { href: '/maple-valley-health', label: 'Home' },
+  { href: '/maple-valley-health/contact', label: 'Contact' },
+  ...(showDemoTools ? [{ href: '/maple-valley-health/a11y-summary', label: 'A11y Summary' }] : []),
 ];
 
 const SidePanelToggle = () => {
@@ -50,9 +50,20 @@ export const SiteHeader = () => {
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-teal-700">
-          Maple Valley Health
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            A11y Road
+          </Link>
+          <span className="text-gray-300" aria-hidden="true">
+            /
+          </span>
+          <Link href="/maple-valley-health" className="text-xl font-bold text-teal-700">
+            Maple Valley Health
+          </Link>
+        </div>
         <div className="flex items-center gap-6">
           <nav aria-label="Main navigation">
             <ul className="flex gap-6">

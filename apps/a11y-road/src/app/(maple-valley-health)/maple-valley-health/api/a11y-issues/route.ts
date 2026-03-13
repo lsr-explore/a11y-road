@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { issueDefinitions, registry } from '../../../data/issues-registry';
+import { issueDefinitions, registry } from '@/data/issues-registry';
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);

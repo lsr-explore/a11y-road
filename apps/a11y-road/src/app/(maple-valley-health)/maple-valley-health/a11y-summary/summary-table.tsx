@@ -2,7 +2,7 @@
 
 import type { ResolvedInstance } from '@a11y-road/a11y-kit';
 import { useMemo, useState } from 'react';
-import { pages } from '../../data/page-metadata';
+import { pages } from '@/data/page-metadata';
 
 type SortField = 'page' | 'issue' | 'level' | 'testingMethod';
 type SortDir = 'asc' | 'desc';
