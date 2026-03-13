@@ -58,3 +58,6 @@ coverage/
 
 # Biome
 .biome/
+
+# Next.js generated type declarations
+next-env.d.ts

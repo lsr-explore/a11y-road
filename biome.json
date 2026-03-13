@@ -10,7 +10,8 @@
       "!**/out-tsc",
       "!**/coverage",
       "!**/test-output",
-      "!**/.nx"
+      "!**/.nx",
+      "!**/next-env.d.ts"
     ],
     "ignoreUnknown": true
   },
