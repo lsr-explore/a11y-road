@@ -1,6 +1,6 @@
 'use client';
 
-import type { ResolvedInstance } from '@maple-valley-health/a11y-kit';
+import type { ResolvedInstance } from '@a11y-road/a11y-kit';
 import { useMemo, useState } from 'react';
 import { pages } from '../../data/page-metadata';
 

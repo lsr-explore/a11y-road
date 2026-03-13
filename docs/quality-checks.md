@@ -16,7 +16,7 @@ All quality checks can be run individually or together via `pnpm check:all`.
 
 ### ESLint — Accessibility Linting
 
-- **Config**: `apps/maple-valley-health/eslint.config.mjs`
+- **Config**: `apps/a11y-road/eslint.config.mjs`
 - **Run**: `pnpm lint`
 - Runs across all projects (app, a11y-kit lib, e2e) via `nx run-many`
 - Includes `eslint-plugin-jsx-a11y` (recommended ruleset) on the app
@@ -38,12 +38,12 @@ All quality checks can be run individually or together via `pnpm check:all`.
 
 ### Vitest — Unit & Component Tests
 
-- **Config**: `apps/maple-valley-health/vitest.config.ts`
+- **Config**: `apps/a11y-road/vitest.config.ts`
 - **Run**: `pnpm test` / `pnpm test:watch` / `pnpm test:coverage`
 - Uses jsdom environment with `@testing-library/react`
 - Accessibility testing via `vitest-axe` (axe-core integration)
 - Coverage via `@vitest/coverage-v8` (reporters: text, html, lcov)
-- Coverage output: `coverage/apps/maple-valley-health/`
+- Coverage output: `coverage/apps/a11y-road/`
 
 ### Playwright — E2E Tests
 

@@ -1,7 +1,7 @@
 'use client';
 
-import type { ResolvedInstance } from '@maple-valley-health/a11y-kit';
-import { highlightElement } from '@maple-valley-health/a11y-kit';
+import type { ResolvedInstance } from '@a11y-road/a11y-kit';
+import { highlightElement } from '@a11y-road/a11y-kit';
 import { useState } from 'react';
 
 const levelColors: Record<string, string> = {
