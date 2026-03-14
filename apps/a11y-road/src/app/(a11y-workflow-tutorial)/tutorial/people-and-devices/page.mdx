@@ -20,116 +20,63 @@
 
 It's tempting to start with WCAG criteria and work backward to users. But that's like studying traffic laws before you've ever seen a car. The standards make more sense once you understand the people they're designed to protect.
 
-This page introduces six groups of people, the assistive technologies they use, and a single question for each that you can ask yourself during development. We'll connect these to specific WCAG criteria in the next two pages.
+Below are six groups of people who use the web differently. Each has distinct needs, distinct tools, and a single question anyone on the product team can ask — whether you're designing, building, testing, or prioritizing. We'll connect these to specific WCAG criteria in the next two pages.
+
+Select any group to learn more about who they are, what they use, and what they rely on.
 
 ## How People Use the Web
 
-### Screen Reader Users
+### [Screen Reader Users](/tutorial/people-and-devices/screen-readers)
 
 Some people cannot see the screen at all. Others have enough vision to navigate in some contexts but rely on a screen reader for detailed content. Screen readers convert the page into spoken text or braille output, reading through the content in the order the DOM presents it.
 
-**Who:** People who are blind, have significant low vision, or have certain learning disabilities that make reading difficult.
+**Quick check:** *Can someone understand this page without seeing it?*
 
-**What they use:**
-- **JAWS** (Job Access With Speech) — the most widely used screen reader on Windows, common in professional settings
-- **NVDA** (NonVisual Desktop Access) — free, open-source Windows screen reader
-- **VoiceOver** — built into macOS, iOS, and iPadOS
-- **TalkBack** — built into Android
+[Learn more about screen reader users &rarr;](/tutorial/people-and-devices/screen-readers)
 
-**What they rely on:** Headings to scan page structure. Alt text to understand images. Form labels to know what to type. Link text that makes sense out of context. Proper ARIA roles on interactive widgets. Status messages that announce themselves without requiring the user to go find them.
-
-**Developer mental check:** *Can someone understand this page without seeing it?*
-
-{/* IMAGE: Screenshot of VoiceOver rotor menu showing a heading list — demonstrates how screen reader users navigate by structure, not visual scanning. */}
-
-### Keyboard-Only Users
+### [Keyboard-Only Users](/tutorial/people-and-devices/keyboard-only)
 
 Not everyone can use a mouse or trackpad. Some people navigate entirely with a keyboard — Tab to move between elements, Enter or Space to activate them, arrow keys to move within components, and Escape to dismiss.
 
-**Who:** People with motor impairments (cerebral palsy, muscular dystrophy, repetitive strain injuries, paralysis), power users who prefer the keyboard, and all screen reader users (since screen readers are keyboard-driven).
+**Quick check:** *Can I complete the entire task with Tab, Enter, and arrow keys?*
 
-**What they use:**
-- **Standard keyboard** — Tab, Shift+Tab, Enter, Space, arrow keys, Escape
-- **Switch devices** — one or two buttons that cycle through focusable elements (used by people with severe motor impairments)
-- **Sip-and-puff devices** — controlled by breath, mapped to keyboard actions
-- **Head-tracking and eye-tracking systems** — translate movement into cursor or keyboard input
+[Learn more about keyboard-only users &rarr;](/tutorial/people-and-devices/keyboard-only)
 
-**What they rely on:** Every interactive element reachable by keyboard. Visible focus indicators showing where they are. A logical tab order that matches the visual layout. No keyboard traps — if you can Tab into something, you must be able to Tab out. Alternatives to drag-and-drop and hover interactions.
-
-**Developer mental check:** *Can I complete the entire task with Tab, Enter, and arrow keys?*
-
-{/* IMAGE: Photo or illustration of a switch device or sip-and-puff device in use — most developers have never seen one, and it makes the "keyboard-only" category feel more concrete. */}
-
-### Low Vision Users
+### [Low Vision Users](/tutorial/people-and-devices/low-vision)
 
 Low vision is not the same as blindness. People with low vision have some usable sight, but not enough to read standard-sized text or navigate dense layouts comfortably. They use a combination of built-in browser features and dedicated software to magnify and reformat content.
 
-**Who:** People with macular degeneration, glaucoma, diabetic retinopathy, cataracts, and other conditions that reduce visual acuity. This group is large and growing — low vision becomes more common with age.
+**Quick check:** *Does the page still work at 200–400% zoom?*
 
-**What they use:**
-- **Browser zoom** — 200% to 400% or more
-- **OS-level magnifiers** — Windows Magnifier, macOS Zoom
-- **ZoomText** — commercial screen magnifier with text-to-speech
-- **High-contrast modes** and custom color schemes
-- **Increased default font sizes** at the OS or browser level
+[Learn more about low vision users &rarr;](/tutorial/people-and-devices/low-vision)
 
-**What they rely on:** Text that resizes without breaking the layout. Content that reflows into a single column at high zoom (no horizontal scrolling). Strong contrast between text and background. UI elements that remain visible and usable when colors are overridden. Tooltips and hover content that don't disappear when the user moves their magnifier toward them.
-
-**Developer mental check:** *Does the page still work at 200–400% zoom?*
-
-This is Dr. Reyes's experience. Her vision is declining, and she's discovering accessibility problems on her own clinic's website — not because nobody cared, but because nobody tested at 200% zoom.
-
-### Color Vision Differences
+### [Color Vision Differences](/tutorial/people-and-devices/color-vision)
 
 Color blindness affects roughly 8% of men and 0.5% of women of Northern European descent, with varying rates across populations. The most common form is red-green color blindness, but there are several types that affect how people distinguish colors.
 
-**Who:** People with protanopia, deuteranopia, tritanopia, or other forms of color vision deficiency. Also people using monochrome displays or e-ink readers.
+**Quick check:** *If I remove color, does the meaning remain clear?*
 
-**What they use:**
-- Most people with color vision differences don't use specialized software — they rely on the design itself being clear without depending on color alone
-- **Color filters** built into operating systems (Windows, macOS, iOS)
-- **Browser extensions** that simulate different types of color blindness (useful for designers and developers during testing)
+[Learn more about color vision differences &rarr;](/tutorial/people-and-devices/color-vision)
 
-**What they rely on:** Color never being the *only* way to convey information. Error states that use icons or text, not just red. Charts that use patterns or labels, not just color coding. Required fields marked with text or symbols, not just a color change. Sufficient contrast between adjacent colors.
-
-**Developer mental check:** *If I remove color, does the meaning remain clear?*
-
-{/* IMAGE: Side-by-side comparison of a form with error states — one using only red text, the other using red text + an error icon + descriptive message. Shows what "don't rely on color alone" looks like in practice. */}
-
-### Cognitive and Neurological Differences
+### [Cognitive and Neurological Differences](/tutorial/people-and-devices/cognitive-and-neurological)
 
 This is one of the broadest and most under-served categories. It includes a wide range of conditions that affect how people process information, maintain attention, remember steps, and recover from confusion.
 
-**Who:** People with ADHD, dyslexia, autism spectrum conditions, traumatic brain injury, memory impairments, anxiety disorders, and learning disabilities. Also people who are fatigued, stressed, or multitasking — which is almost everyone at some point.
+**Quick check:** *If someone is confused, does the interface help them recover?*
 
-**What they use:**
-- **Reading aids** — tools that highlight the current line of text, or read content aloud
-- **Simplified interfaces** — reader modes in browsers, distraction-free settings
-- **Password managers and autofill** — reduce memory burden
-- **Consistent, predictable interfaces** — the most important "assistive technology" for this group is just good design
+[Learn more about cognitive and neurological differences &rarr;](/tutorial/people-and-devices/cognitive-and-neurological)
 
-**What they rely on:** Consistent navigation across pages. Clear labels and instructions on forms. Error messages that explain what went wrong *and what to do about it*. Enough time to complete tasks (no aggressive timeouts). Predictable behavior — clicking the same kind of element should do the same kind of thing across the site.
-
-**Developer mental check:** *If someone is confused, does the interface help them recover?*
-
-### Deaf and Hard of Hearing Users
+### [Deaf and Hard of Hearing Users](/tutorial/people-and-devices/deaf-and-hard-of-hearing)
 
 For web applications, this primarily affects audio and video content. But it also has implications for any notification system that relies on sound.
 
-**Who:** People who are deaf, hard of hearing, or in environments where audio isn't practical (a noisy waiting room, a quiet library, a meeting where they can't turn on sound).
+**Quick check:** *Can someone use this without hearing the audio?*
 
-**What they use:**
-- **Captions** — synchronized text for video content
-- **Transcripts** — full text versions of audio or video content
-- **Visual notifications** — screen flashes, on-screen banners, or badge counts instead of (or in addition to) audio alerts
-
-**What they rely on:** Captions on all video content. Transcripts for audio-only content (podcasts, voice messages). Visual equivalents for any audio cues (notification sounds, error beeps). No information conveyed through sound alone.
-
-**Developer mental check:** *Can someone use this without hearing the audio?*
+[Learn more about deaf and hard of hearing users &rarr;](/tutorial/people-and-devices/deaf-and-hard-of-hearing)
 
 ## Putting It Together
 
-Six groups. Six questions. You don't need to memorize WCAG criteria to start thinking about web accessibility effectively. These questions work as a quick gut check during development:
+Six groups. Six questions. You don't need to memorize WCAG criteria to start thinking about web accessibility effectively. These questions work as a quick gut check at any stage of the product process:
 
 1. Can someone understand this page **without seeing it**?
 2. Can someone complete the task **with only a keyboard**?
@@ -140,13 +87,13 @@ Six groups. Six questions. You don't need to memorize WCAG criteria to start thi
 
 If you can answer "yes" to all six, you're covering a large portion of WCAG without having opened the spec. In the next page, we'll look at how these map to the formal WCAG structure — but these questions are what you'll actually use day-to-day.
 
-{/* IMAGE: A summary card or visual checklist of the six developer mental check questions — something readers could screenshot or print as a quick reference. */}
+{/* IMAGE: A summary card or visual checklist of the six quick check questions — something readers could screenshot or print as a quick reference. */}
 
 ## Key Takeaways
 
 - Start with people, not specifications. Understanding *who* uses assistive technology and *why* makes the standards feel practical rather than bureaucratic.
 - Assistive devices range from screen readers and switch devices to browser zoom and high-contrast mode. Many are built right into the operating system.
-- The six developer mental check questions cover a wide range of WCAG criteria in a format that's easy to remember and apply during development.
+- The six quick check questions cover a wide range of WCAG criteria in a format that's easy to remember and apply at any stage of the product process.
 - Low vision is not blindness. Color vision differences are not low vision. Cognitive differences are not intellectual disability. Each group has distinct needs.
 - Many assistive technology users don't identify as having a disability — they're just using the tools that work for them.
 

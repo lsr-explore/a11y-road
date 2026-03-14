@@ -21,6 +21,9 @@ export const TutorialSidebar = () => {
                 .map((page) => {
                   const href = `/tutorial/${page.slug}`;
                   const isCurrent = pathname === href;
+                  const isChildActive =
+                    page.children?.some((child) => pathname === `${href}/${child.slug}`) ?? false;
+                  const isExpanded = isCurrent || isChildActive;
 
                   return (
                     <li key={page.slug}>
@@ -35,6 +38,30 @@ export const TutorialSidebar = () => {
                       >
                         {page.title}
                       </Link>
+                      {page.children && isExpanded && (
+                        <ul className="ml-3 mt-1 space-y-1 border-l border-gray-200 pl-3">
+                          {page.children.map((child) => {
+                            const childHref = `${href}/${child.slug}`;
+                            const isChildCurrent = pathname === childHref;
+
+                            return (
+                              <li key={child.slug}>
+                                <Link
+                                  href={childHref}
+                                  className={`block rounded-md px-3 py-1.5 text-sm transition-colors ${
+                                    isChildCurrent
+                                      ? 'bg-indigo-50 text-indigo-700 font-medium'
+                                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                  }`}
+                                  aria-current={isChildCurrent ? 'page' : undefined}
+                                >
+                                  {child.title}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
                     </li>
                   );
                 })}

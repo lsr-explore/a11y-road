@@ -1,3 +1,4 @@
+import { AppFooter } from '@/components/layout/app-footer';
 import './global.css';
 
 export const metadata = {
@@ -8,7 +9,10 @@ export const metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        {children}
+        <AppFooter />
+      </body>
     </html>
   );
 };
