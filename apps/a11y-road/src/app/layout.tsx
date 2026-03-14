@@ -1,12 +1,15 @@
 import './global.css';
-import { LayoutShell } from '../components/layout/layout-shell';
 
 export const metadata = {
-  title: 'Maple Valley Health',
-  description: 'A demo medical practice site for accessibility learning.',
+  title: 'A11y Road',
+  description: 'Accessibility workflow tutorial and demo site for learning WCAG compliance.',
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  return <LayoutShell>{children}</LayoutShell>;
+  return (
+    <html lang="en">
+      <body className="min-h-screen flex flex-col">{children}</body>
+    </html>
+  );
 };
 export default RootLayout;

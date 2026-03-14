@@ -12,6 +12,7 @@ const config: KnipConfig = {
     'apps/a11y-road': {
       entry: [
         'src/app/**/page.tsx',
+        'src/app/**/page.mdx',
         'src/app/**/layout.tsx',
         'src/app/**/route.ts',
         'src/test-setup.ts',
@@ -21,6 +22,8 @@ const config: KnipConfig = {
       ignoreDependencies: [
         'jsdom',
         '@a11y-road/a11y-kit',
+        // Virtual module provided by @mdx-js/react
+        'mdx',
       ],
     },
     'apps/maple-valley-health-e2e': {

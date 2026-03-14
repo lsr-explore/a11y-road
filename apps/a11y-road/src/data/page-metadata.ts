@@ -5,8 +5,8 @@ export interface PageMeta {
 }
 
 export const pages: PageMeta[] = [
-  { id: 'landing', name: 'Landing Page', route: '/' },
-  { id: 'contact', name: 'Contact Page', route: '/contact' },
+  { id: 'landing', name: 'Landing Page', route: '/maple-valley-health' },
+  { id: 'contact', name: 'Contact Page', route: '/maple-valley-health/contact' },
 ];
 
 export const getPageById = (id: string): PageMeta | undefined => {
