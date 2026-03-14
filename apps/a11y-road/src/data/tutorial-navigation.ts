@@ -30,6 +30,7 @@ export const tutorialPages: TutorialPage[] = [
   // Standards & Law
   { slug: 'wcag-overview', title: 'Understanding WCAG', section: 'standards' },
   { slug: 'wcag-in-practice', title: 'WCAG in Practice', section: 'standards' },
+  { slug: 'wcag-people-map', title: 'WCAG by User Group', section: 'standards' },
   { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'standards' },
 
   // Workflow

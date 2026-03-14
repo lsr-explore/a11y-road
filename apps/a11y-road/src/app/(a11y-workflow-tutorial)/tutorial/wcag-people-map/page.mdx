@@ -1,0 +1,791 @@
+# WCAG by User Group
+
+---
+
+*Ava had been staring at the WCAG quick reference for ten minutes. "I can see how it's organized — principles, guidelines, criteria. But when I'm reviewing a design, I don't think in principles. I think about who's going to use it."*
+
+*"Same," Jordan said. "When I'm testing, I want to know: what do I check for screen reader users? What do I check for keyboard users? I don't want to scan all four principles every time."*
+
+*Priya nodded. "What if we flipped the map? Instead of starting with the spec and working toward people, start with the people and work toward the criteria."*
+
+*"Like a cheat sheet?" Marcus asked.*
+
+*"Like a lens," Priya said. "Same criteria, different way in."*
+
+---
+
+## A Different Way to Read WCAG
+
+The [Intopia WCAG 2.2 Map](https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf) is an excellent visual reference that organizes every success criterion by principle and guideline — the way WCAG itself is structured. It answers the question: **"What does WCAG say?"**
+
+This page answers a different question: **"Who does each criterion help?"**
+
+The same criteria appear here, but organized by the six user groups from [People & Assistive Devices](/tutorial/people-and-devices). Many criteria show up under multiple groups — that's not a mistake. It reflects how interconnected accessibility is. Fixing contrast helps low vision users *and* people with color vision differences. Good heading structure helps screen reader users *and* people with cognitive differences.
+
+Conformance levels are marked: **A** (minimum), **AA** (standard target), **AAA** (aspirational). Criteria new in WCAG 2.2 are noted.
+
+---
+
+## Screen Reader Users
+
+*Quick check: Can someone understand this without seeing it?*
+
+### Structure & Semantics
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.3.1</td>
+      <td>Info and Relationships</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>1.3.2</td>
+      <td>Meaningful Sequence</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.4.1</td>
+      <td>Bypass Blocks</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.4.6</td>
+      <td>Headings and Labels</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>2.4.10</td>
+      <td>Section Headings</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Text Alternatives
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.1.1</td>
+      <td>Non-text Content</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>1.2.1</td>
+      <td>Audio-only and Video-only</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>1.2.3</td>
+      <td>Audio Description or Media Alternative</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>1.2.5</td>
+      <td>Audio Description</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>1.2.8</td>
+      <td>Media Alternative</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Links, Buttons & Accessible Names
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.4.4</td>
+      <td>Link Purpose in Context</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.4.9</td>
+      <td>Link Purpose Link Only</td>
+      <td>AAA</td>
+    </tr>
+    <tr>
+      <td>4.1.2</td>
+      <td>Name, Role, Value</td>
+      <td>A</td>
+    </tr>
+  </tbody>
+</table>
+
+### Dynamic Content
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4.1.3</td>
+      <td>Status Messages</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>1.3.6</td>
+      <td>Identify Purpose</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Keyboard-Only Users
+
+*Quick check: Can I complete the entire task with Tab, Enter, and arrow keys?*
+
+### Reachability
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.1.1</td>
+      <td>Keyboard</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.1.2</td>
+      <td>No Keyboard Trap</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.1.4</td>
+      <td>Character Key Shortcuts</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.5.7</td>
+      <td>Dragging Movements (2.2)</td>
+      <td>AA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Focus
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.4.3</td>
+      <td>Focus Order</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.4.7</td>
+      <td>Focus Visible</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>2.4.11</td>
+      <td>Focus Not Obscured Minimum (2.2)</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>2.4.12</td>
+      <td>Focus Not Obscured Enhanced (2.2)</td>
+      <td>AAA</td>
+    </tr>
+    <tr>
+      <td>2.4.13</td>
+      <td>Focus Appearance (2.2)</td>
+      <td>AAA</td>
+    </tr>
+    <tr>
+      <td>3.2.1</td>
+      <td>On Focus</td>
+      <td>A</td>
+    </tr>
+  </tbody>
+</table>
+
+### Interaction
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.5.1</td>
+      <td>Pointer Gestures</td>
+      <td>A</td>
+      <td>Keyboard alternatives required</td>
+    </tr>
+    <tr>
+      <td>2.5.2</td>
+      <td>Pointer Cancellation</td>
+      <td>A</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2.5.4</td>
+      <td>Motion Actuation</td>
+      <td>A</td>
+      <td>Keyboard alternatives required</td>
+    </tr>
+    <tr>
+      <td>2.5.8</td>
+      <td>Target Size Minimum (2.2)</td>
+      <td>AA</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Low Vision Users
+
+*Quick check: Does the page still work at 200–400% zoom?*
+
+### Contrast
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Also helps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.3</td>
+      <td>Contrast Minimum</td>
+      <td>AA</td>
+      <td>Color Vision</td>
+    </tr>
+    <tr>
+      <td>1.4.6</td>
+      <td>Contrast Enhanced</td>
+      <td>AAA</td>
+      <td>Color Vision</td>
+    </tr>
+    <tr>
+      <td>1.4.11</td>
+      <td>Non-text Contrast</td>
+      <td>AA</td>
+      <td>Color Vision</td>
+    </tr>
+  </tbody>
+</table>
+
+### Resize & Reflow
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.4</td>
+      <td>Resize Text</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>1.4.10</td>
+      <td>Reflow</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>1.4.12</td>
+      <td>Text Spacing</td>
+      <td>AA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Hover & Visibility
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Also helps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.13</td>
+      <td>Content on Hover or Focus</td>
+      <td>AA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2.4.7</td>
+      <td>Focus Visible</td>
+      <td>AA</td>
+      <td>Keyboard</td>
+    </tr>
+    <tr>
+      <td>2.4.11</td>
+      <td>Focus Not Obscured Minimum (2.2)</td>
+      <td>AA</td>
+      <td>Keyboard</td>
+    </tr>
+    <tr>
+      <td>2.5.8</td>
+      <td>Target Size Minimum (2.2)</td>
+      <td>AA</td>
+      <td>Keyboard</td>
+    </tr>
+  </tbody>
+</table>
+
+### Images of Text
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.5</td>
+      <td>Images of Text</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>1.4.9</td>
+      <td>Images of Text No Exception</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Color Vision Differences
+
+*Quick check: If I remove color, does the meaning remain clear?*
+
+### Color Independence
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.1</td>
+      <td>Use of Color</td>
+      <td>A</td>
+    </tr>
+  </tbody>
+</table>
+
+### Contrast
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Also helps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.3</td>
+      <td>Contrast Minimum</td>
+      <td>AA</td>
+      <td>Low Vision</td>
+    </tr>
+    <tr>
+      <td>1.4.6</td>
+      <td>Contrast Enhanced</td>
+      <td>AAA</td>
+      <td>Low Vision</td>
+    </tr>
+    <tr>
+      <td>1.4.11</td>
+      <td>Non-text Contrast</td>
+      <td>AA</td>
+      <td>Low Vision</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Cognitive & Neurological Differences
+
+*Quick check: If someone is confused, does the interface help them recover?*
+
+### Predictability
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.2.1</td>
+      <td>On Focus</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>3.2.2</td>
+      <td>On Input</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>3.2.3</td>
+      <td>Consistent Navigation</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>3.2.4</td>
+      <td>Consistent Identification</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>3.2.6</td>
+      <td>Consistent Help (2.2)</td>
+      <td>A</td>
+    </tr>
+  </tbody>
+</table>
+
+### Input Assistance
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.3.1</td>
+      <td>Error Identification</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>3.3.2</td>
+      <td>Labels or Instructions</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>3.3.3</td>
+      <td>Error Suggestion</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>3.3.4</td>
+      <td>Error Prevention (Legal, Financial, Data)</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>3.3.7</td>
+      <td>Redundant Entry (2.2)</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>3.3.8</td>
+      <td>Accessible Authentication Minimum (2.2)</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <td>3.3.9</td>
+      <td>Accessible Authentication Enhanced (2.2)</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Time & Navigation
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Also helps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.2.1</td>
+      <td>Timing Adjustable</td>
+      <td>A</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2.2.2</td>
+      <td>Pause, Stop, Hide</td>
+      <td>A</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2.2.6</td>
+      <td>Timeouts</td>
+      <td>AAA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2.4.5</td>
+      <td>Multiple Ways</td>
+      <td>AA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2.4.6</td>
+      <td>Headings and Labels</td>
+      <td>AA</td>
+      <td>Screen Readers</td>
+    </tr>
+  </tbody>
+</table>
+
+### Readability
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.1.3</td>
+      <td>Unusual Words</td>
+      <td>AAA</td>
+    </tr>
+    <tr>
+      <td>3.1.4</td>
+      <td>Abbreviations</td>
+      <td>AAA</td>
+    </tr>
+    <tr>
+      <td>3.1.5</td>
+      <td>Reading Level</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Seizure & Motion
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.3.1</td>
+      <td>Three Flashes or Below Threshold</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2.3.2</td>
+      <td>Three Flashes</td>
+      <td>AAA</td>
+    </tr>
+    <tr>
+      <td>2.3.3</td>
+      <td>Animation from Interactions</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Deaf & Hard of Hearing Users
+
+*Quick check: Can someone use this without hearing the audio?*
+
+### Captions
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.2.2</td>
+      <td>Captions Prerecorded</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>1.2.4</td>
+      <td>Captions Live</td>
+      <td>AA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Transcripts & Alternatives
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Also helps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.2.1</td>
+      <td>Audio-only and Video-only</td>
+      <td>A</td>
+      <td>Screen Readers</td>
+    </tr>
+    <tr>
+      <td>1.2.3</td>
+      <td>Audio Description or Media Alternative</td>
+      <td>A</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.2.8</td>
+      <td>Media Alternative</td>
+      <td>AAA</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+### Sign Language
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.2.6</td>
+      <td>Sign Language Prerecorded</td>
+      <td>AAA</td>
+    </tr>
+  </tbody>
+</table>
+
+### Visual Equivalents
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>Title</th>
+      <th>Level</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.3.3</td>
+      <td>Sensory Characteristics</td>
+      <td>A</td>
+      <td>Don't rely on sound alone for instructions</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Using Both Maps Together
+
+The [Intopia WCAG 2.2 Map](https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf) and this people-based map are two views of the same information:
+
+- **Intopia map** — start with WCAG, find the criteria you need to meet. Best for compliance reviews and audits.
+- **People-based map** — start with who you're building for, find the criteria that matter most. Best for design reviews, testing plans, and building team empathy.
+
+Neither replaces the other. Use the Intopia map when you need to verify conformance. Use this map when you need to understand *why* a criterion matters and *who* it serves.
+
+## Resources
+
+- W3C — Web Content Accessibility Guidelines (WCAG) 2.2: https://www.w3.org/TR/WCAG22/
+- W3C — How to Meet WCAG (Quick Reference): https://www.w3.org/WAI/WCAG22/quickref/
+- Intopia — WCAG 2.2 Map (CC BY-SA 4.0): https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf
