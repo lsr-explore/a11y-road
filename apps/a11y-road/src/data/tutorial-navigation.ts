@@ -6,7 +6,7 @@ export interface TutorialSubPage {
 export interface TutorialPage {
   slug: string;
   title: string;
-  section: 'foundations' | 'standards' | 'workflow';
+  section: 'foundations' | 'standards' | 'business' | 'workflow';
   children?: TutorialSubPage[];
 }
 
@@ -31,7 +31,9 @@ export const tutorialPages: TutorialPage[] = [
   { slug: 'wcag-overview', title: 'Understanding WCAG', section: 'standards' },
   { slug: 'wcag-in-practice', title: 'WCAG in Practice', section: 'standards' },
   { slug: 'wcag-people-map', title: 'WCAG by User Group', section: 'standards' },
-  { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'standards' },
+  // The Business Case
+  { slug: 'business-case', title: 'The Business Case', section: 'business' },
+  { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'business' },
 
   // Workflow
   { slug: 'user-research', title: 'User Research', section: 'workflow' },
@@ -44,6 +46,7 @@ export const tutorialPages: TutorialPage[] = [
 
 export const tutorialSections = [
   { id: 'foundations' as const, title: 'Foundations' },
-  { id: 'standards' as const, title: 'Standards & Law' },
+  { id: 'standards' as const, title: 'Standards' },
+  { id: 'business' as const, title: 'The Business Case' },
   { id: 'workflow' as const, title: 'Workflow' },
 ];
