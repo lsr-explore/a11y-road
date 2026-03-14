@@ -1,3 +1,171 @@
-# WCAG Overview
+# Understanding WCAG
 
-Content coming soon. This page will introduce the Web Content Accessibility Guidelines, their structure, and conformance levels.
+---
+
+*The next morning, Priya dropped a link in the team chat: the Web Content Accessibility Guidelines. "I spent last night reading through this," she wrote. "It's... a lot."*
+
+*Marcus replied first. "Welcome to my world. The first time someone sent me the WCAG spec, I closed the tab after thirty seconds."*
+
+*"It reads like a legal document," Ava said.*
+
+*"That's because it partly is," Sana said. "But we don't need to read it like lawyers. We need to read it like a team that's trying to build a better product. Can someone give us the short version?"*
+
+*Priya typed for a minute, then sent: "Four principles. Three levels. A bunch of testable rules. I think I can walk us through it."*
+
+---
+
+## What Is WCAG?
+
+The **Web Content Accessibility Guidelines (WCAG)** are the international standard for web accessibility. Published by the World Wide Web Consortium (W3C) — the same organization behind HTML, CSS, and other web standards — WCAG defines what it means for web content to be accessible to people with disabilities.
+
+WCAG isn't a tool you install or a checklist you complete once. It's a framework of principles, guidelines, and testable success criteria that help teams build products more people can use.
+
+The current version is **WCAG 2.2**, published in October 2023. You may also encounter references to WCAG 2.1 (2018) and WCAG 2.0 (2008). Each version builds on the previous one — 2.2 includes everything from 2.1 and 2.0, plus new criteria.
+
+## The Four Principles: POUR
+
+Everything in WCAG flows from four principles. If you remember nothing else, remember these:
+
+### 1. Perceivable
+
+Information and user interface components must be presentable to users in ways they can perceive.
+
+If someone can't see an image, there must be a text alternative. If someone can't hear audio, there must be captions. The content needs to be available through more than one sense.
+
+**Examples:** alt text on images, captions on videos, sufficient color contrast, text that can be resized.
+
+### 2. Operable
+
+User interface components and navigation must be operable.
+
+If someone can't use a mouse, they must be able to use a keyboard. If an interaction requires precise timing, there must be a way to adjust or remove that constraint. Every function must be reachable.
+
+**Examples:** keyboard navigation, no keyboard traps, enough time to complete tasks, no content that flashes more than three times per second.
+
+### 3. Understandable
+
+Information and the operation of the user interface must be understandable.
+
+Content should be readable. Navigation should be predictable. When users make mistakes, the interface should help them recover. The page should behave the way people expect it to.
+
+**Examples:** clear error messages, consistent navigation, labels on form fields, language declared on the page.
+
+### 4. Robust
+
+Content must be robust enough that it can be interpreted reliably by a wide variety of user agents, including assistive technologies.
+
+The code behind the interface matters. Proper HTML semantics, valid markup, and correct ARIA usage ensure that screen readers and other tools can make sense of your content — today and as technology evolves.
+
+**Examples:** valid HTML, proper use of ARIA roles and properties, status messages that announce themselves to screen readers.
+
+## Conformance Levels: A, AA, AAA
+
+Each WCAG success criterion is assigned a conformance level:
+
+- **Level A** — The minimum. If these aren't met, some users will be completely blocked. Think of this as "the site is usable at all."
+- **Level AA** — The standard most organizations target. This is what laws and policies typically require. It covers the most common barriers without imposing unreasonable constraints.
+- **Level AAA** — The highest level. Aspirational for most sites. Some criteria (like requiring sign language interpretation for all video) may not be practical for every context.
+
+**In practice, aim for Level AA.** It's the target used by the ADA, the European Accessibility Act, Section 508, and most corporate accessibility policies. If you meet AA, you're addressing the vast majority of barriers.
+
+## How to Read a Success Criterion
+
+WCAG success criteria can look intimidating at first glance. Here's how to break one down.
+
+Take **1.4.3 Contrast (Minimum)** as an example:
+
+- **1** — the principle (Perceivable)
+- **4** — the guideline within that principle (Distinguishable)
+- **3** — the specific success criterion
+
+The criterion itself says:
+
+> The visual presentation of text and images of text has a contrast ratio of at least 4.5:1, except for large text (which requires 3:1), incidental text, and logotypes.
+
+Each criterion has:
+
+- **A level** — this one is AA
+- **A testable requirement** — contrast ratio of 4.5:1
+- **Exceptions** — large text, incidental text, logotypes
+- **Sufficient techniques** — specific ways to meet the criterion
+- **Failures** — specific ways to fail it
+
+You don't need to memorize the numbering system. What matters is understanding the pattern: each criterion is tied to a principle, has a clear requirement, and can be tested.
+
+## ARIA: A Brief Introduction
+
+**ARIA** (Accessible Rich Internet Applications) is a set of HTML attributes that help communicate meaning to assistive technologies. ARIA doesn't change how an element looks or behaves — it changes how it's announced to screen readers.
+
+For example, a `div` that functions as a button won't be announced as a button unless you add `role="button"`. A loading spinner won't announce itself unless you use `aria-live`.
+
+**The first rule of ARIA:** No ARIA is better than bad ARIA.
+
+If a native HTML element does what you need — `<button>`, `<nav>`, `<label>`, `<input>` — use it. Native elements come with built-in accessibility: keyboard behavior, screen reader announcements, and focus management. ARIA is a supplement for cases where native HTML isn't enough, not a replacement for writing semantic markup.
+
+Common ARIA patterns you'll encounter:
+
+- **`aria-label`** — provides an accessible name when visible text isn't available
+- **`aria-labelledby`** — points to another element that provides the name
+- **`aria-describedby`** — points to an element that provides additional description
+- **`aria-live`** — announces dynamic content changes to screen readers
+- **`role`** — declares what an element is (button, tab, dialog, etc.)
+
+We'll see these in action in the Workflow section when we cover development patterns.
+
+## How WCAG Connects to What You've Learned
+
+In [People & Assistive Devices](/tutorial/people-and-devices), we introduced six quick check questions. Those questions map directly to WCAG principles:
+
+<table>
+  <thead>
+    <tr>
+      <th>Quick check</th>
+      <th>WCAG principle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Can someone understand this without seeing it?</td>
+      <td>Perceivable</td>
+    </tr>
+    <tr>
+      <td>Can someone complete the task with only a keyboard?</td>
+      <td>Operable</td>
+    </tr>
+    <tr>
+      <td>Does the page work at 200–400% zoom?</td>
+      <td>Perceivable</td>
+    </tr>
+    <tr>
+      <td>Does meaning remain clear without color?</td>
+      <td>Perceivable</td>
+    </tr>
+    <tr>
+      <td>If someone is confused, does the interface help them recover?</td>
+      <td>Understandable</td>
+    </tr>
+    <tr>
+      <td>Can someone use this without hearing audio?</td>
+      <td>Perceivable</td>
+    </tr>
+  </tbody>
+</table>
+
+The quick checks are how you think about accessibility day-to-day. WCAG is how you verify and measure it. Both matter — but the questions come first.
+
+## Key Takeaways
+
+- WCAG is the international standard for web accessibility, organized around four principles: Perceivable, Operable, Understandable, and Robust (POUR).
+- Aim for **Level AA** conformance — it's what laws require and what covers the most common barriers.
+- Success criteria are testable requirements, each tied to a principle and a conformance level.
+- Use native HTML elements before reaching for ARIA. No ARIA is better than bad ARIA.
+- The six quick check questions from the previous section map directly to WCAG principles — they're the intuitive version of the same framework.
+
+## Resources
+
+- W3C — Web Content Accessibility Guidelines (WCAG) 2.2: https://www.w3.org/TR/WCAG22/
+- W3C — How to Meet WCAG (Quick Reference): https://www.w3.org/WAI/WCAG22/quickref/
+- W3C — Understanding WCAG 2.2: https://www.w3.org/WAI/WCAG22/Understanding/
+- W3C — ARIA Authoring Practices Guide (APG): https://www.w3.org/WAI/ARIA/apg/
+- Intopia — WCAG 2.2 Map: https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf
+- W3C — ARIA in HTML: https://www.w3.org/TR/html-aria/

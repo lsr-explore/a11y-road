@@ -1,0 +1,268 @@
+# WCAG in Practice
+
+---
+
+*Jordan had been quiet through most of the WCAG discussion. Finally, she spoke up. "I get the four principles. I get the levels. But there are dozens of success criteria. Where do we actually start?"*
+
+*Priya pulled up a report she'd bookmarked. "WebAIM scans a million websites every year. The same six issues come up over and over — they account for 96% of all detected failures."*
+
+*"Ninety-six percent?" Sana leaned forward. "Six issues?"*
+
+*"Six issues," Priya confirmed. "And none of them are obscure. Low contrast. Missing alt text. Missing form labels. Empty links. Empty buttons. Missing document language."*
+
+*Dr. Reyes spoke up. "Low contrast — that's the one I hit constantly. I increase the zoom, but if the contrast is poor, magnifying it doesn't help."*
+
+*"And keyboard focus issues aren't on that list," Marcus added, "but they're related — if the basics aren't right, the rest usually isn't either."*
+
+*"Then that's where we start," Sana said. "Fix the most common barriers first, then dig deeper."*
+
+---
+
+## The WebAIM Million
+
+Every year, WebAIM (Web Accessibility In Mind) analyzes the home pages of the top one million websites for accessibility errors. The results are consistently sobering — and consistently concentrated.
+
+In the most recent analysis, **96% of all detected WCAG failures** fell into just six categories:
+
+<table>
+  <thead>
+    <tr>
+      <th>Failure type</th>
+      <th>% of home pages</th>
+      <th>WCAG criteria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Low contrast text</td>
+      <td>79.1%</td>
+      <td>1.4.3 Contrast (Minimum)</td>
+    </tr>
+    <tr>
+      <td>Missing alt text for images</td>
+      <td>55.5%</td>
+      <td>1.1.1 Non-text Content</td>
+    </tr>
+    <tr>
+      <td>Missing form input labels</td>
+      <td>48.2%</td>
+      <td>1.3.1 Info and Relationships, 4.1.2 Name, Role, Value</td>
+    </tr>
+    <tr>
+      <td>Empty links</td>
+      <td>45.4%</td>
+      <td>2.4.4 Link Purpose</td>
+    </tr>
+    <tr>
+      <td>Empty buttons</td>
+      <td>29.6%</td>
+      <td>4.1.2 Name, Role, Value</td>
+    </tr>
+    <tr>
+      <td>Missing document language</td>
+      <td>15.8%</td>
+      <td>3.1.1 Language of Page</td>
+    </tr>
+  </tbody>
+</table>
+
+This doesn't mean other criteria don't matter. But if you're looking for the highest-impact starting point, these six issues are it.
+
+Let's look at each one.
+
+## 1. Low Contrast Text
+
+**The issue:** Text doesn't have enough visual contrast against its background. Light gray text on a white background, or dark blue text on a black background — designs that look subtle to some viewers but are unreadable for others.
+
+**Who it affects:** People with low vision, people with color vision differences, anyone using a screen in bright sunlight, and older adults whose contrast sensitivity naturally decreases with age.
+
+**The WCAG requirement (1.4.3 — Level AA):**
+
+- Normal text: contrast ratio of at least **4.5:1**
+- Large text (18pt / 24px or 14pt / 18.5px bold): contrast ratio of at least **3:1**
+- Logotypes and purely decorative text are exempt
+
+**What the fix looks like:**
+
+A contrast ratio is a number from 1:1 (no contrast — white on white) to 21:1 (maximum contrast — black on white). You don't need to calculate this yourself — tools do it instantly.
+
+The fix is usually straightforward: darken the text, lighten the background, or both. The challenge is getting design and development aligned on the constraints early, rather than fixing contrast after the visual design is finalized.
+
+**Quick check:** *Can you read all the text comfortably, or do you find yourself squinting?*
+
+## 2. Missing Alt Text for Images
+
+**The issue:** Images don't have text alternatives. When a screen reader encounters an image without alt text, it either skips it entirely or reads the file name — which might be something like `IMG_4382.jpg` or `hero-banner-v3-final.png`.
+
+**Who it affects:** Screen reader users, people browsing with images disabled (low bandwidth), and search engines (which rely on alt text to understand image content).
+
+**The WCAG requirement (1.1.1 — Level A):**
+
+- All non-decorative images must have a text alternative that serves the equivalent purpose.
+- Decorative images — those that add no information — should have an empty alt attribute (`alt=""`) so screen readers skip them.
+
+**What the fix looks like:**
+
+```html
+<!-- Missing alt text — screen reader reads filename or nothing -->
+<img src="/team/dr-reyes.jpg" />
+
+<!-- Descriptive alt text — screen reader announces the description -->
+<img src="/team/dr-reyes.jpg" alt="Dr. Reyes, family medicine physician" />
+
+<!-- Decorative image — screen reader skips it -->
+<img src="/decorative-divider.svg" alt="" />
+```
+
+The hard part isn't the HTML — it's deciding what to write. Good alt text depends on context. The same photo of Dr. Reyes might need different alt text on a team directory page ("Dr. Reyes, family medicine physician") versus in a news article ("Dr. Reyes speaking at the 2024 Maple Valley Community Health Fair").
+
+If you completed the [Try It Yourself](/tutorial/try-it-yourself) exercises, you practiced exactly this kind of judgment call.
+
+**Quick check:** *If the images didn't load, would you still understand the page?*
+
+## 3. Missing Form Input Labels
+
+**The issue:** Form fields (text inputs, selects, checkboxes, radio buttons) don't have associated labels. Visually, there might be text near the field — but if it isn't programmatically linked, a screen reader user hears nothing or something generic like "edit text."
+
+**Who it affects:** Screen reader users, voice control users (who navigate by saying label names), and anyone who benefits from clicking a label to focus its associated field.
+
+**The WCAG requirements:**
+
+- **1.3.1 Info and Relationships (Level A)** — structure and relationships conveyed visually must also be conveyed programmatically
+- **4.1.2 Name, Role, Value (Level A)** — all user interface components must have an accessible name
+
+**What the fix looks like:**
+
+```html
+<!-- No label — screen reader says "edit text" -->
+<input type="email" />
+
+<!-- Proper label — screen reader says "Email address, edit text" -->
+<label for="email">Email address</label>
+<input type="email" id="email" />
+
+<!-- Alternative: wrapping the input in the label -->
+<label>
+  Email address
+  <input type="email" />
+</label>
+```
+
+Placeholder text is not a label. It disappears when the user starts typing, which means the field loses its description at exactly the moment someone needs it. Use placeholders for supplementary hints, not as the only label.
+
+**Quick check:** *Does every form field have a visible, associated label?*
+
+## 4. Empty Links
+
+**The issue:** Links that have no text content. This typically happens with icon links (a magnifying glass for search, a logo linking to the homepage) or links wrapped around images without alt text. A screen reader announces "link" — but nothing about where it goes.
+
+**Who it affects:** Screen reader users, who navigate by pulling up a list of all links on the page. A list full of entries that just say "link" is useless.
+
+**The WCAG requirement (2.4.4 — Level A):**
+
+- The purpose of each link can be determined from the link text alone, or from the link text together with its programmatically determined context.
+
+**What the fix looks like:**
+
+```html
+<!-- Empty link — screen reader says "link" -->
+<a href="/search"><svg>...</svg></a>
+
+<!-- Fixed with aria-label -->
+<a href="/search" aria-label="Search"><svg aria-hidden="true">...</svg></a>
+
+<!-- Fixed with visually hidden text -->
+<a href="/search">
+  <svg aria-hidden="true">...</svg>
+  <span className="sr-only">Search</span>
+</a>
+```
+
+Also avoid vague link text like "click here" or "read more." Screen reader users often navigate by tabbing through links — "click here" repeated five times tells them nothing. Instead, use descriptive text: "Read more about our family medicine services."
+
+**Quick check:** *If you listed every link on the page by its text alone, would each one make sense?*
+
+## 5. Empty Buttons
+
+**The issue:** Buttons that have no accessible name. Like empty links, this usually happens with icon buttons — a hamburger menu, a close button, a play button — where the icon is the only content and no text alternative is provided.
+
+**Who it affects:** Screen reader users, who hear "button" with no indication of what it does. Voice control users, who can't activate a button by name if it doesn't have one.
+
+**The WCAG requirement (4.1.2 — Level A):**
+
+- All user interface components must have a name that can be programmatically determined.
+
+**What the fix looks like:**
+
+```html
+<!-- Empty button — screen reader says "button" -->
+<button><svg>...</svg></button>
+
+<!-- Fixed with aria-label -->
+<button aria-label="Open navigation menu"><svg aria-hidden="true">...</svg></button>
+
+<!-- Fixed with visually hidden text -->
+<button>
+  <svg aria-hidden="true">...</svg>
+  <span className="sr-only">Close dialog</span>
+</button>
+```
+
+Remember the icon exercise from [Try It Yourself](/tutorial/try-it-yourself): describe the **purpose**, not the appearance. "Open navigation menu" is better than "Hamburger icon." "Close dialog" is better than "X."
+
+**Quick check:** *Does every button have a name that describes what it does?*
+
+## 6. Missing Document Language
+
+**The issue:** The HTML document doesn't declare its language. Without a `lang` attribute on the `<html>` element, screen readers don't know which language rules to use for pronunciation. A screen reader set to English might try to read French text with English pronunciation — or vice versa.
+
+**Who it affects:** Screen reader users, especially multilingual users or those navigating sites in a non-default language. Also affects automatic translation tools and search engines.
+
+**The WCAG requirement (3.1.1 — Level A):**
+
+- The default human language of each web page can be programmatically determined.
+
+**What the fix looks like:**
+
+```html
+<!-- Missing language — screen reader guesses -->
+<html>
+
+<!-- Language declared — screen reader uses correct pronunciation -->
+<html lang="en">
+
+<!-- For pages with mixed languages, mark sections -->
+<p>The French word for hello is <span lang="fr">bonjour</span>.</p>
+```
+
+This is arguably the easiest fix on this entire list — one attribute on one element. Yet nearly 16% of the top million websites still get it wrong.
+
+**Quick check:** *Does the `<html>` element have a `lang` attribute?*
+
+## Putting It Together
+
+Six issues. Six fixes. None of them require advanced engineering. Low contrast is a design choice. Alt text is a content decision. Labels, links, buttons, and language are a few lines of HTML.
+
+The reason these issues persist at scale isn't that they're hard to fix — it's that they're easy to overlook. Nobody intends to ship a button with no name. It happens when accessibility isn't part of the process yet.
+
+That's what the Workflow section of this tutorial is about: making these checks routine, not heroic.
+
+## Key Takeaways
+
+- 96% of detected WCAG failures on the top million websites fall into six categories — and all six have straightforward fixes.
+- Low contrast is the most common issue (79.1% of sites). Use tools to check ratios early in the design process.
+- Missing alt text, form labels, link text, and button names are all variations of the same problem: content that's visible but not announced.
+- Declaring the document language (`lang="en"`) is one line of code — and one of the most commonly missed.
+- Placeholder text is not a form label.
+- Describe icon purpose, not icon appearance: "Search" not "magnifying glass."
+- These issues persist because accessibility isn't yet part of most teams' workflow — not because the fixes are complex.
+
+## Resources
+
+- WebAIM — The WebAIM Million (annual report): https://webaim.org/projects/million/
+- WebAIM — Contrast Checker: https://webaim.org/resources/contrastchecker/
+- W3C — Understanding Success Criterion 1.1.1 (Non-text Content): https://www.w3.org/WAI/WCAG22/Understanding/non-text-content
+- W3C — Understanding Success Criterion 1.4.3 (Contrast Minimum): https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum
+- W3C — Understanding Success Criterion 2.4.4 (Link Purpose): https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context
+- W3C — Understanding Success Criterion 3.1.1 (Language of Page): https://www.w3.org/WAI/WCAG22/Understanding/language-of-page
+- Deque — Writing Good Alt Text: https://www.deque.com/blog/great-alt-text-introduction/

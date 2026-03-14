@@ -1,3 +1,115 @@
-# What Is Accessibility?
+# What Is Web Accessibility?
 
-Content coming soon. This page will cover the fundamentals of digital accessibility and why it matters.
+---
+
+*Sana stared at the email from the clinic director for the third time that morning.*
+
+*"We've received a complaint. A patient's family member cannot use our Meet the Team page with a screen reader. They're trying to find a specialist for their father, and the page is — their words — 'completely unusable.' Please advise on timeline for a fix."*
+
+*She walked over to Marcus's desk. "Have you ever used a screen reader?"*
+
+*Marcus looked up from his keyboard — he'd stopped using a mouse two years ago after a wrist injury. "No. But I can tell you the Meet the Team page is rough even with just a keyboard. Half the cards aren't focusable. I've been tabbing past them for months."*
+
+*"Why didn't you say something?"*
+
+*"I did. It's in the backlog. Priority 4."*
+
+*Sana pulled up a chair. "I think it just became priority 1."*
+
+---
+
+## So What Is Web Accessibility?
+
+Web accessibility means that websites, tools, and technologies are designed and developed so that people with disabilities can use them. More specifically, people can perceive, understand, navigate, and interact with the web — and contribute to it.
+
+But that definition, while accurate, undersells what web accessibility really is. Consider two quotes that frame it better:
+
+> "The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect."
+>
+> — Tim Berners-Lee, W3C Director and inventor of the World Wide Web, 1997
+
+> "Accessibility: Essential for some, useful for all."
+>
+> — Shawn Lawton Henry, W3C Web Accessibility Initiative (WAI)
+
+That second quote is the one to sit with. Web accessibility isn't a special mode you bolt on for a small group. It's a quality of your product that affects everyone, like performance or security. And like performance and security, it's much cheaper to build in from the start than to retrofit later.
+
+## Who Benefits?
+
+The word "disability" often conjures a narrow picture: a person in a wheelchair, or someone who is blind. In reality, disability is a spectrum, and it includes far more people than most teams realize.
+
+### Permanent, Temporary, and Situational
+
+Think about disability in three categories:
+
+- **Permanent** — A person who is blind, deaf, or has a motor impairment. These are the conditions most people think of first.
+- **Temporary** — A broken arm, an eye infection, a concussion. These are time-limited but create the same barriers.
+- **Situational** — Holding a baby while trying to read lab results on a phone. Sitting in a bright waiting room where the screen glare makes low-contrast text invisible. Using a laptop on a train without a mouse.
+
+{/*IMAGE: Microsoft's Inclusive Design "Persona Spectrum" graphic showing permanent, temporary, and situational disabilities side by side (e.g., one arm → arm injury → holding a baby). Source: Microsoft Inclusive Design toolkit.*/}
+
+Marcus's wrist injury started as temporary. Two years later, he still navigates entirely by keyboard. The line between these categories is blurrier than it looks.
+
+When you build for web accessibility, you're building for all three. The ramp that a wheelchair user needs is the same ramp that helps a parent with a stroller, a delivery driver with a hand truck, and a traveler with a rolling suitcase.
+
+{/*IMAGE: A curb cut or ramp being used by multiple people — wheelchair user, parent with stroller, person with rolling luggage. Illustrates the "curb cut effect."*/}
+
+### The Numbers
+
+Approximately 1.3 billion people worldwide — about 16% of the global population — experience significant disability (WHO, 2023). In the United States, 1 in 4 adults has some type of disability (CDC). These are not edge cases.
+
+And those numbers only count permanent disability. They don't count the developer with a migraine, the surgeon with carpal tunnel, or the patient in a noisy ER trying to watch a video without captions.
+
+## Mental Models That Get in the Way
+
+Most teams don't ignore web accessibility out of malice. They operate under assumptions that feel reasonable but don't hold up. Here are the most common ones.
+
+### "People with disabilities don't use our site"
+
+This is the most pervasive assumption, and it's almost always wrong. You don't know who your users are with this level of detail. Analytics can't tell you who is struggling silently, giving up, or asking someone else to navigate for them.
+
+For a healthcare site like Maple Valley Health, the stakes are even higher. Patients and their families need to find providers, access medical information, and manage appointments. A family member who is blind, has low vision, or has a motor impairment isn't an edge case — they're exactly who needs this site most.
+
+{/*IMAGE: A simple diagram or stat graphic showing "1 in 4 US adults has a disability" (CDC) — could be an icon grid where 1 of every 4 figures is highlighted. Reinforces that this isn't a fringe population.*/}
+
+### "We can't measure it, so why invest?"
+
+You can't easily measure how many users gave up because your site was inaccessible. That doesn't mean they don't exist — it means your analytics have a blind spot. Inaccessible sites don't show bounce rates from screen reader users; they show *zero visits* because those users learned long ago not to bother.
+
+### "It's too expensive and takes too long"
+
+This is true — if you wait until the end. Retrofitting web accessibility is expensive for the same reason retrofitting mobile responsiveness was expensive: you're fighting decisions that are baked into the architecture.
+
+Teams that went through the mobile-responsive era will recognize the pattern. In the early days of smartphones, teams built desktop sites and then scrambled to make them work on small screens. It was painful and costly. Then mobile-first design emerged, and the cost dropped dramatically — not because the work disappeared, but because it was distributed across the normal development process instead of piled up at the end.
+
+Web accessibility follows the same arc. Building it in from the start is a modest, incremental cost. Retrofitting it is a project.
+
+## Introducing Maple Valley Health
+
+Throughout this tutorial, we'll follow a small team working on the website for Maple Valley Health, a community medical practice. You'll meet:
+
+- **Priya** — Tech lead. Sharp, pragmatic. She knows the codebase but is just starting to learn accessibility.
+- **Marcus** — Senior developer. Uses keyboard navigation daily due to a wrist injury. He's been quietly working around accessibility issues for years.
+- **Sana** — Product manager. Owns the roadmap and priorities. She's the one who decides what gets built next — and whether "show me the screen reader demo" becomes a standard part of acceptance criteria.
+- **Ava** — Designer. Visual thinker, initially skeptical that accessibility constraints won't limit her work.
+- **Jordan** — QA lead. Loves a good checklist. Will drive the testing and monitoring conversations.
+- **Dr. Reyes** — A physician at the clinic whose vision is declining. She represents the real users whose experience the team is trying to improve.
+
+Their project: the **Meet the Team** page — a directory of doctors, nurses, and staff that patients use to find and learn about their providers. Team members can be viewed, added, edited, and deleted. It's a straightforward CRUD interface, which makes it a perfect lens for accessibility: simple enough to understand quickly, complex enough to surface real issues.
+
+We'll return to this team and this page throughout the tutorial. Each section will open with a brief scene from their work — a conversation, a discovery, a "wait, that doesn't work?" moment — before diving into the concepts.
+
+## Key Takeaways
+
+- Web accessibility means people with disabilities can perceive, understand, navigate, and interact with the web.
+- Disability is a spectrum: permanent, temporary, and situational. Building for web accessibility benefits all three.
+- Most teams don't ignore web accessibility intentionally — they operate under assumptions that don't hold up.
+- Building it in from the start is far cheaper than retrofitting — the same lesson the industry learned with mobile-responsive design.
+
+## Resources
+
+- W3C — Introduction to Web Accessibility: https://www.w3.org/WAI/fundamentals/accessibility-intro/
+- WHO — Disability and Health Fact Sheet: https://www.who.int/news-room/fact-sheets/detail/disability-and-health
+- CDC — Disability Impacts All of Us: https://www.cdc.gov/disability-and-health/articles-documents/disability-impacts-all-of-us.html
+- WebAIM — The WebAIM Million (annual accessibility analysis): https://webaim.org/projects/million/
+- Microsoft — Inclusive Design: https://inclusive.microsoft.design/

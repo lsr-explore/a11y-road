@@ -119,6 +119,7 @@ const { isAccessible } = useA11yMode();
 ```
 
 Children mode is useful when:
+
 - Multiple issues are interleaved in the same markup (e.g. a form with label, focus, and error issues)
 - The issue affects an attribute on an element you can't wrap with toggle mode (e.g. `lang` on `<html>`)
 - You need to nest `A11yDemo` wrappers for multiple issues on the same element group
@@ -130,6 +131,7 @@ That's it. No other files need updating. The side panel and summary page pick up
 The side panel (`src/components/side-panel/side-panel.tsx`) reads the current route via `usePathname()`, maps it to a `pageId` using `page-metadata.ts`, then calls `getInstancesByPage(pageId)` from the registry. This returns `ResolvedInstance[]` — each instance joined with its definition.
 
 Each instance renders as an expandable `IssueCard` showing:
+
 - The definition's title (collapsed header)
 - The instance's description (instance-specific context)
 - The definition's description (general explanation)
@@ -149,6 +151,7 @@ This works because `A11yDemo` always renders a `<div data-a11y-id="<instanceId>"
 ## How the Summary Page Works
 
 The summary page (`src/app/a11y-summary/page.tsx`) is a server component that calls:
+
 - `getDefinitions()` — all issue definitions
 - `getAllInstances()` — all resolved instances
 - `getInstanceCountByDefinition()` — a `Map<definitionId, count>`
@@ -162,6 +165,7 @@ A card grid showing each definition with an instance count badge (e.g. "1 instan
 ### All Instances
 
 A client component (`SummaryTable`) with:
+
 - Filter dropdowns: by Page, by WCAG Criterion
 - Sortable columns: Page, Issue Type, Level, Testing Method
 - Columns: Page, Issue Type (definition title), Instance (instance description), WCAG Criteria, Level, Impacted Users, Testing Method
