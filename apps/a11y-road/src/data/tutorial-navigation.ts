@@ -7,16 +7,18 @@ export interface TutorialPage {
 export const tutorialPages: TutorialPage[] = [
   // Foundations
   { slug: 'what-is-accessibility', title: 'What Is Accessibility?', section: 'foundations' },
-  { slug: 'wcag-overview', title: 'WCAG Overview', section: 'foundations' },
-  { slug: 'assistive-devices', title: 'Assistive Devices', section: 'foundations' },
+  { slug: 'people-and-devices', title: 'People & Assistive Devices', section: 'foundations' },
+  { slug: 'wcag-overview', title: 'Understanding WCAG', section: 'foundations' },
+  { slug: 'wcag-in-practice', title: 'WCAG in Practice', section: 'foundations' },
+  { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'foundations' },
 
   // Workflow
   { slug: 'user-research', title: 'User Research', section: 'workflow' },
   { slug: 'product-and-design', title: 'Product & Design', section: 'workflow' },
   { slug: 'development', title: 'Development', section: 'workflow' },
+  { slug: 'dev-tools', title: 'Developer Tooling', section: 'workflow' },
   { slug: 'testing', title: 'Testing', section: 'workflow' },
-  { slug: 'monitoring', title: 'Monitoring', section: 'workflow' },
-  { slug: 'user-feedback', title: 'User Feedback', section: 'workflow' },
+  { slug: 'monitoring-and-feedback', title: 'Monitoring & Feedback', section: 'workflow' },
 ];
 
 export const tutorialSections = [
