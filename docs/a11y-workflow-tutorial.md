@@ -1,165 +1,129 @@
 # A11y Workflow Tutorial
 
-This will be an overview of Accessibility as applied to web development. My experience is in web software, so that will be the most fleshed out area, but I'd like to touch on all parts.
+An overview of accessibility as applied to web development, focused on web software but touching on all parts of the workflow.
 
-Each section should have a summary, references, and take aways.  Eventually, I might include a short 5 question multiple choice quiz at the end of each section, but that will be an add on later.
+## Format
 
-I'd like to use an example of a Meet the Team page with a list of doctors, nurses, etc. for the Maple Valley Health office.  Items on the list can be edited, deleted, added.  A form to add/edit will be part of the example that will be used throughout this tutorial.
+Each page follows a consistent structure:
 
-I want to information to stand on its own and then have a separate page, let's apply our knowledge.
+1. **Scene** — A short narrative vignette featuring the Maple Valley Health team encountering a real accessibility situation. These scenes ground the concepts in recognizable workplace moments.
+2. **Core content** — The teaching material, kept practical and direct.
+3. **Key takeaways** — Bullet-point summary of what to remember.
+4. **Resources** — Links to authoritative sources for deeper reading.
 
-WebAIM conducts an assessment every year of the million top websites.  They found that 96% fall into six categories - I'd like to make sure that people walk away with an understanding of at least these issues
-WCAG Failure Type	% of home pages
-Low contrast text	79.1%
-Missing alternative text for images	55.5%
-Missing form input labels	48.2%
-Empty links	45.4%
-Empty buttons	29.6%
-Missing document language	15.8%
+Future additions:
+- Short multiple-choice quiz at the end of each page
+- Code snippets embedded in workflow pages
+- "Let's Apply Our Knowledge" companion pages using the Maple Valley Health demo app
 
-I eventually will want to include some code snippets embedded in some of the pages
+## Running Example: Meet the Team
 
-## Overview
+A Meet the Team page for Maple Valley Health listing doctors, nurses, and staff. Items can be viewed, added, edited, and deleted. A form to add/edit will be used throughout the tutorial. The information stands on its own; companion exercise pages will be separate.
 
-I want to provide an overview of the tutorial, who it is for, how to use the companion demo
+## Narrative Approach
 
-## What is Accessibility
+Inspired by The Phoenix Project — concepts are introduced through short workplace scenarios featuring the Maple Valley Health web team. Characters encounter accessibility issues naturally through their work, making the material less abstract and more memorable. The scenes are brief (a few paragraphs), not a full narrative — enough to set context without overwhelming the teaching content.
 
-This should include a general definition
+### Cast (introduced gradually)
 
-There are a few quotes, I'd like to include - need to find the exact quote and who said it
+- **Priya** — Tech lead. Knows the codebase well, newer to accessibility. Asks the "why" questions.
+- **Marcus** — Senior developer. Has a repetitive strain injury, uses keyboard navigation heavily. Brings the lived-experience perspective.
+- **Sana** — Product manager. Owns the roadmap and priorities. Drives the point that PMs set the tone — when she asks for a screen reader demo, the team builds for it.
+- **Ava** — Designer. Thinks visually, pushes back when constraints feel limiting, but comes around when she sees the design benefits.
+- **Jordan** — QA lead. Methodical, wants checklists and processes. Drives the testing and monitoring pages.
+- **Dr. Reyes** — A physician at the clinic who is losing her vision. Surfaces the "real user" perspective without being reduced to a prop.
 
-- “Accessibility: Essential for some, useful for all.”  from Shawn Lawton Henry, W3C Web Accessibility Initiative (WAI) Program Lead
-- Disabilities are something that anyone can be a member of
-- "The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect,"  by Tim Berners-Lee, W3C Director and inventor of the World Wide Web. 1997
+## WebAIM Top 6 Failures
 
+WebAIM conducts an annual assessment of the top million websites. They found that 96% of failures fall into six categories:
 
-Users who rely on accessible experiences - give example of user's disabilities with links to W3c user personas and videos
+| WCAG Failure Type | % of home pages |
+|---|---|
+| Low contrast text | 79.1% |
+| Missing alternative text for images | 55.5% |
+| Missing form input labels | 48.2% |
+| Empty links | 45.4% |
+| Empty buttons | 29.6% |
+| Missing document language | 15.8% |
 
-Mental models
+These are covered in depth on the "WCAG in Practice" page.
 
-- Someone with xyz disability wouldn't ever use our website
-- If I can't count who is using our site, why should I invest in making it accessible?
-- Harm - if someone can't use the site, what is the harm?  Critical medical, banking, school sites for their children
-- Making something accessible takes too much time and is costly
-- Remember early days of mobile devices where so much rework was done to make something responsive and then mobile first practices started.
-- Permanent, temporary, situational
-- accessibility is someone else's job
-- Accessibility limits creativity
+---
 
-Accessible devices - By disability type, list accessible devices uses and a couple of aspects that they rely on in terms of accessibility
+## Page Structure
 
-WCAG - what is it.  Make sure to point out that it is the law and an international standard
+### Foundations (5 pages)
 
-ARIA - guidelines from W3C
+#### 1. What Is Accessibility?
 
-While talking about WCAG and Aria, talk a little bit about W3C
+Definition, key quotes (Berners-Lee, Shawn Lawton Henry), permanent/temporary/situational disabilities, mental models and misconceptions, the mobile-responsive analogy, who benefits. Introduces the Maple Valley Health team and the Meet the Team running example.
 
-## WCAG mapped to assistive devices
+Mental models to address:
+- "People with disabilities don't use our site"
+- "We can't measure the users, so why invest?"
+- "It takes too much time and costs too much"
+- "It's someone else's job"
+- "Accessibility limits creativity"
+- The mobile-responsive parallel — remember how much rework happened before mobile-first?
 
-There are a lot of maps and checklists of the WCAG success criteria, I'd like to present a disability focused way of thinking about WCAG.  I had brainstormed this with Chatgpt - see the doc wcag-mapping.md for initial thoughts.
+#### 2. People & Assistive Devices
 
-## Workflow sections
+Disability types mapped to assistive technologies (screen readers, switch devices, voice control, magnifiers). W3C user personas and videos. The "developer mental check" questions from wcag-mapping.md. People-first framing — start with who, then what they use.
 
-### User Research
+#### 3. Understanding WCAG
 
-I want to emphasize here how important it is to include users with disabilities.  There are some sites who offer people with disabilities who can navigate a site with assistive devices, but I want to emphasize that they aren't users.  I'd like to give an example where you wouldn't walk up to a random person who uses and iPhone and ask them to test your site.
+What WCAG is, the four principles (POUR), conformance levels (A/AA/AAA), how to read a success criterion, W3C/WAI context, ARIA intro ("No ARIA is better than bad ARIA"). The "how to read the map" page — kept concise and structural.
 
-### Product Management & Design
+#### 4. WCAG in Practice
 
-Use Figma annotations
-Design for the rotor menu
+The WebAIM top-6 failures as the organizing frame. For each: what the issue is, which WCAG criteria it maps to, who it affects, what the fix looks like. Covers: low contrast, missing alt text, missing form labels, empty links, empty buttons, missing document language. The "what actually matters" page.
 
-Use AI assitance to review designs for accessibility, grounding in trusted resources
+#### 5. The Legal Landscape
 
-Use AI assistance to add accessible requirements
+ADA (2024 web rule), Section 508, European Accessibility Act (EAA), WCAG as ISO standard, making the business case. Brief — one page, not a legal treatise.
 
-Request and give demos using assistive technologies - keyboard, screen reader
+### Workflow (6 pages)
 
-Accessibility - usability + device compatability + standards (WCAG)
+#### 6. User Research
 
-Think about someone going through using a keyboard
+Including users with disabilities in research. The difference between usability testing with disabled users vs. "can you test my site?" — you wouldn't grab a random iPhone user off the street and ask them to test your app. Recruiting practices.
 
-Colors  - contrast finder - Source: https://app.contrast-finder.org/?lang=en
+#### 7. Product & Design
 
+Figma annotations, designing for the rotor menu, contrast tools (contrast-finder.org), AI-assisted a11y review, keyboard-first thinking, requesting demos with assistive tech. Formula: accessibility = usability + device compatibility + standards (WCAG).
 
-### Development
+#### 8. Development
 
-Use semantic HTML
-“No ARIA is better than bad ARIA.” — W3C WAI-ARIA Authoring Practices
+Semantic HTML, ARIA usage, keyboard navigation, accessible component patterns, repo-level a11y docs, AI assistant guidance. Focus on patterns and principles — tooling has its own page.
 
-Guidance for AI assistants - provide vercel skills
+#### 9. Developer Tooling
 
-Enable PR bot review tools
+The toolchain page. "Essential starter kit" (eslint-plugin-jsx-a11y, vitest-axe, Chrome DevTools accessibility tree) and "going deeper" (Playwright axe, Storybook a11y addon, Biome). Explains static analysis vs rendered-without-styles vs rendered-with-styles.
 
-Create an accessibility doc in the repo
+#### 10. Testing
 
-#### Tools
+Manual testing: screen readers (VoiceOver, NVDA), keyboard-only walkthroughs, browser extensions (axe DevTools, WAVE, ANDI), mobile testing (VoiceOver/TalkBack touch). Separates manual testing from automated tooling.
 
-jest-axe
-biome
-eslint-plugin-jsx-a11y
-playwright-axe
+#### 11. Monitoring & Feedback
 
-Biome vs eslint-plugin-jsx-a11y vs axe-core
+CI integration, Playwright tests on production, accessibility statements, user feedback channels, advocating for continued investment. Merges monitoring and user feedback — both are "what happens after launch."
 
-static analysis vs tests - render page (no styles) vs tests - render page (with styels)
-
-Storybook
-
-chrome dev tools - accessibility tree
-
-### Testing
-
-Screen readers
-axe-dev
-wave - web aim
-andi
-
-### Monitoring
-
-ci
-playwright tests on the production site
-
-
-### Getting User Feedback
-
-User feedback
-Accessibility statement
-
+---
 
 ## Resources
 
-Fundamentals
-W3C - Introduction to Web Accessibility - https://www.w3.org/WAI/fundamentals/accessibility-intro/
-W3C - User Stories - https://www.w3.org/WAI/people-use-web/user-stories/
-W3C - How to Meet WCAG (Quick Reference) - https://www.w3.org/WAI/WCAG22/quickref/
-Intopia - WCAG 2.2 Map - https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf
-W3C - Aria Authoring Practices Guide (APG) - https://www.w3.org/WAI/ARIA/apg/
-W3C - ARIA - https://www.w3.org/TR/wai-aria/
+### Fundamentals
+- W3C — Introduction to Web Accessibility: https://www.w3.org/WAI/fundamentals/accessibility-intro/
+- W3C — User Stories: https://www.w3.org/WAI/people-use-web/user-stories/
+- W3C — How to Meet WCAG (Quick Reference): https://www.w3.org/WAI/WCAG22/quickref/
+- Intopia — WCAG 2.2 Map: https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf
+- W3C — ARIA Authoring Practices Guide (APG): https://www.w3.org/WAI/ARIA/apg/
+- W3C — ARIA: https://www.w3.org/TR/wai-aria/
 
+### Keyboard Navigation and Screen Readers
+- WebAIM — Keyboard Accessibility: https://webaim.org/techniques/keyboard/
+- Deque — Screen Reader Keyboard Shortcuts and Gestures: https://dequeuniversity.com/screenreaders/
 
-Keyboard Navigation and Screen Reader
-Web Aim Keyboard Accessibility - https://webaim.org/techniques/keyboard/
-Deque Screen Reader keyboard Shortcuts and Gestures: https://dequeuniversity.com/screenreaders/
-
-Legal and ISO Standard
-ADA - https://www.ada.gov/resources/2024-03-08-web-rule/
-W3C ISO Standard Announcement - https://www.w3.org/WAI/news/2025-10-21/wcag22-iso/
-
-Fundamentals
-W3C - Introduction to Web Accessibility - https://www.w3.org/WAI/fundamentals/accessibility-intro/
-W3C - User Stories - https://www.w3.org/WAI/people-use-web/user-stories/
-W3C - How to Meet WCAG (Quick Reference) - https://www.w3.org/WAI/WCAG22/quickref/
-Intopia - WCAG 2.2 Map - https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf
-W3C - Aria Authoring Practices Guide (APG) - https://www.w3.org/WAI/ARIA/apg/
-W3C - ARIA - https://www.w3.org/TR/wai-aria/
-
-
-Keyboard Navigation and Screen Reader
-Web Aim Keyboard Accessibility - https://webaim.org/techniques/keyboard/
-Deque Screen Reader keyboard Shortcuts and Gestures: https://dequeuniversity.com/screenreaders/
-
-Legal and ISO Standard
-ADA - https://www.ada.gov/resources/2024-03-08-web-rule/
-W3C ISO Standard Announcement - https://www.w3.org/WAI/news/2025-10-21/wcag22-iso/
+### Legal and ISO Standard
+- ADA — 2024 Web Rule: https://www.ada.gov/resources/2024-03-08-web-rule/
+- W3C — ISO Standard Announcement: https://www.w3.org/WAI/news/2025-10-21/wcag22-iso/

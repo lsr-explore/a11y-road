@@ -6,7 +6,7 @@ export interface TutorialPage {
 
 export const tutorialPages: TutorialPage[] = [
   // Foundations
-  { slug: 'what-is-accessibility', title: 'What Is Accessibility?', section: 'foundations' },
+  { slug: 'what-is-accessibility', title: 'What Is Web Accessibility?', section: 'foundations' },
   { slug: 'people-and-devices', title: 'People & Assistive Devices', section: 'foundations' },
   { slug: 'wcag-overview', title: 'Understanding WCAG', section: 'foundations' },
   { slug: 'wcag-in-practice', title: 'WCAG in Practice', section: 'foundations' },
