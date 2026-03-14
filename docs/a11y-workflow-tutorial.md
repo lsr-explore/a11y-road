@@ -12,6 +12,7 @@ Each page follows a consistent structure:
 4. **Resources** — Links to authoritative sources for deeper reading.
 
 Future additions:
+
 - Short multiple-choice quiz at the end of each page
 - Code snippets embedded in workflow pages
 - "Let's Apply Our Knowledge" companion pages using the Maple Valley Health demo app
@@ -59,6 +60,7 @@ These are covered in depth on the "WCAG in Practice" page.
 Definition, key quotes (Berners-Lee, Shawn Lawton Henry), permanent/temporary/situational disabilities, mental models and misconceptions, the mobile-responsive analogy, who benefits. Introduces the Maple Valley Health team and the Meet the Team running example.
 
 Mental models to address:
+
 - "People with disabilities don't use our site"
 - "We can't measure the users, so why invest?"
 - "It takes too much time and costs too much"
@@ -113,6 +115,7 @@ CI integration, Playwright tests on production, accessibility statements, user f
 ## Resources
 
 ### Fundamentals
+
 - W3C — Introduction to Web Accessibility: https://www.w3.org/WAI/fundamentals/accessibility-intro/
 - W3C — User Stories: https://www.w3.org/WAI/people-use-web/user-stories/
 - W3C — How to Meet WCAG (Quick Reference): https://www.w3.org/WAI/WCAG22/quickref/
@@ -121,9 +124,11 @@ CI integration, Playwright tests on production, accessibility statements, user f
 - W3C — ARIA: https://www.w3.org/TR/wai-aria/
 
 ### Keyboard Navigation and Screen Readers
+
 - WebAIM — Keyboard Accessibility: https://webaim.org/techniques/keyboard/
 - Deque — Screen Reader Keyboard Shortcuts and Gestures: https://dequeuniversity.com/screenreaders/
 
 ### Legal and ISO Standard
+
 - ADA — 2024 Web Rule: https://www.ada.gov/resources/2024-03-08-web-rule/
 - W3C — ISO Standard Announcement: https://www.w3.org/WAI/news/2025-10-21/wcag22-iso/

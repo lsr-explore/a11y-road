@@ -83,6 +83,7 @@ The criterion itself says:
 > The visual presentation of text and images of text has a contrast ratio of at least 4.5:1, except for large text (which requires 3:1), incidental text, and logotypes.
 
 Each criterion has:
+
 - **A level** — this one is AA
 - **A testable requirement** — contrast ratio of 4.5:1
 - **Exceptions** — large text, incidental text, logotypes
@@ -102,6 +103,7 @@ For example, a `div` that functions as a button won't be announced as a button u
 If a native HTML element does what you need — `<button>`, `<nav>`, `<label>`, `<input>` — use it. Native elements come with built-in accessibility: keyboard behavior, screen reader announcements, and focus management. ARIA is a supplement for cases where native HTML isn't enough, not a replacement for writing semantic markup.
 
 Common ARIA patterns you'll encounter:
+
 - **`aria-label`** — provides an accessible name when visible text isn't available
 - **`aria-labelledby`** — points to another element that provides the name
 - **`aria-describedby`** — points to an element that provides additional description
