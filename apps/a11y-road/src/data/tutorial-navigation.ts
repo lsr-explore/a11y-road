@@ -39,7 +39,18 @@ export const tutorialPages: TutorialPage[] = [
   { slug: 'user-research', title: 'User Research', section: 'workflow' },
   { slug: 'product-and-design', title: 'Product & Design', section: 'workflow' },
   { slug: 'development', title: 'Development', section: 'workflow' },
-  { slug: 'dev-tools', title: 'Developer Tooling', section: 'workflow' },
+  {
+    slug: 'dev-tools',
+    title: 'Developer Tooling',
+    section: 'workflow',
+    children: [
+      { slug: 'eslint-jsx-a11y', title: 'eslint-plugin-jsx-a11y' },
+      { slug: 'vitest-axe', title: 'vitest-axe' },
+      { slug: 'browser-devtools', title: 'Browser DevTools' },
+      { slug: 'playwright-axe', title: 'Playwright + axe' },
+      { slug: 'storybook-a11y', title: 'Storybook a11y Addon' },
+    ],
+  },
   { slug: 'testing', title: 'Testing', section: 'workflow' },
   { slug: 'monitoring-and-feedback', title: 'Monitoring & Feedback', section: 'workflow' },
 ];

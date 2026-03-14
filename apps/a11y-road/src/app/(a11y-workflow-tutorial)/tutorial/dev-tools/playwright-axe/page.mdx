@@ -1,0 +1,48 @@
+# Playwright + axe
+
+End-to-end accessibility testing using axe-core in a real browser. Unlike component-level testing, this runs against fully rendered pages — after routing, data fetching, and client-side hydration.
+
+## What It Catches
+
+- All the issues axe-core detects, but in the context of the complete application
+- Integration issues that only appear when components are assembled into pages
+- Issues caused by real data, real routing, and real browser rendering
+
+## What It Misses
+
+- Keyboard workflow testing (though Playwright can script keyboard interactions separately)
+- Visual regressions
+- Screen reader behavior
+- Subjective quality of the experience
+
+## How It Works
+
+Use `@axe-core/playwright` to inject axe into Playwright tests:
+
+```ts
+import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+test('home page has no accessibility violations', async ({ page }) => {
+  await page.goto('/');
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
+
+// Test specific sections of a page
+test('navigation has no violations', async ({ page }) => {
+  await page.goto('/');
+  const results = await new AxeBuilder({ page })
+    .include('nav')
+    .analyze();
+  expect(results.violations).toEqual([]);
+});
+```
+
+## When to Use
+
+- Run in CI on every PR or nightly
+- Test critical user flows (landing page, forms, key workflows)
+- Use as a regression safety net alongside component tests
+
+[&larr; Back to Developer Tooling](/tutorial/dev-tools)

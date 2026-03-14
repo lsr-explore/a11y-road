@@ -1,3 +1,149 @@
 # Developer Tooling
 
-Content coming soon. This page will cover the accessibility toolchain: eslint-plugin-jsx-a11y, vitest-axe, Chrome DevTools accessibility tree, Playwright axe, Storybook a11y addon, and Biome.
+---
+
+*Jordan had been testing the Meet the Team page manually — tabbing through elements, checking contrast, reading alt text. It was thorough but slow.*
+
+*"There has to be a faster way," she said. "I can't manually test every page on every commit."*
+
+*"There is," Priya said. "We can catch a lot of these issues automatically — in the editor, in unit tests, and in CI. It won't catch everything, but it'll catch the easy stuff before it ever reaches manual testing."*
+
+*"What's the coverage like?" Jordan asked.*
+
+*"Automated tools catch roughly 30–50% of accessibility issues," Priya said. "That sounds low, but it's the 30–50% that's easiest to fix — missing labels, low contrast, broken ARIA. The rest requires human judgment. The goal isn't to replace manual testing. It's to make sure you're not wasting manual testing time on things a computer could have caught."*
+
+---
+
+## The Accessibility Toolchain
+
+Accessibility tools operate at different layers of the development process, and each layer catches different types of issues. Understanding what each tool can and can't do helps you build an effective pipeline without false confidence.
+
+Select any tool below to learn how to set it up and what it catches.
+
+### [Static Analysis: eslint-plugin-jsx-a11y](/tutorial/dev-tools/eslint-jsx-a11y)
+
+Catches accessibility issues in your JSX at write time — in the editor, before the code even runs. Flags missing alt text, invalid ARIA attributes, non-interactive elements with click handlers, and more.
+
+**What it catches:** Issues visible in the source code — missing attributes, incorrect ARIA usage, non-semantic element choices.
+
+**What it misses:** Anything that depends on rendered output, browser behavior, or visual appearance.
+
+[Learn more about eslint-plugin-jsx-a11y &rarr;](/tutorial/dev-tools/eslint-jsx-a11y)
+
+### [Component Testing: vitest-axe](/tutorial/dev-tools/vitest-axe)
+
+Runs axe-core against your rendered React components during unit tests. Catches issues that only appear after rendering — dynamic content, computed ARIA attributes, generated HTML.
+
+**What it catches:** Issues in the rendered DOM — invalid HTML, missing names, color contrast violations in computed styles.
+
+**What it misses:** Keyboard behavior, focus management, visual layout issues, screen reader compatibility.
+
+[Learn more about vitest-axe &rarr;](/tutorial/dev-tools/vitest-axe)
+
+### [Browser DevTools: Accessibility Tree](/tutorial/dev-tools/browser-devtools)
+
+Chrome, Firefox, and Safari all expose an accessibility tree — the structure that assistive technologies actually see. Inspecting it shows you what a screen reader will announce for any element on the page.
+
+**What it catches:** The gap between what you see and what a screen reader sees — missing names, incorrect roles, hidden content that shouldn't be, visible content that's been accidentally hidden.
+
+**What it misses:** Nothing inherently, but it requires manual inspection. It's a diagnostic tool, not an automated check.
+
+[Learn more about browser DevTools &rarr;](/tutorial/dev-tools/browser-devtools)
+
+### [End-to-End Testing: Playwright + axe](/tutorial/dev-tools/playwright-axe)
+
+Runs axe-core against fully rendered pages in a real browser during end-to-end tests. Catches issues that only appear in the complete application context — after routing, data fetching, and client-side rendering.
+
+**What it catches:** Issues in the fully assembled page — the same things vitest-axe catches, but in the real application context with real data and navigation.
+
+**What it misses:** Keyboard workflows, visual regressions, screen reader behavior. It tests the DOM, not the user experience.
+
+[Learn more about Playwright + axe &rarr;](/tutorial/dev-tools/playwright-axe)
+
+### [Component Libraries: Storybook a11y Addon](/tutorial/dev-tools/storybook-a11y)
+
+If your team uses Storybook for component development, the a11y addon runs axe-core against every story automatically. It surfaces issues during component development — before components are integrated into pages.
+
+**What it catches:** Component-level accessibility issues in isolation — the same things axe-core catches, but surfaced during development rather than in CI.
+
+**What it misses:** Integration issues — how components interact, focus flow between components, page-level structure.
+
+[Learn more about Storybook a11y addon &rarr;](/tutorial/dev-tools/storybook-a11y)
+
+## Understanding the Layers
+
+No single tool catches everything. The power is in combining them:
+
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Tool</th>
+      <th>When it runs</th>
+      <th>What it tests</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Static analysis</td>
+      <td>eslint-plugin-jsx-a11y</td>
+      <td>Editor / pre-commit</td>
+      <td>Source code patterns</td>
+    </tr>
+    <tr>
+      <td>Component tests</td>
+      <td>vitest-axe</td>
+      <td>Unit test suite</td>
+      <td>Rendered component DOM</td>
+    </tr>
+    <tr>
+      <td>Visual development</td>
+      <td>Storybook a11y addon</td>
+      <td>During component dev</td>
+      <td>Isolated component DOM</td>
+    </tr>
+    <tr>
+      <td>E2E tests</td>
+      <td>Playwright + axe</td>
+      <td>CI pipeline</td>
+      <td>Full page in real browser</td>
+    </tr>
+    <tr>
+      <td>Manual inspection</td>
+      <td>Browser DevTools</td>
+      <td>Development / QA</td>
+      <td>Accessibility tree, live page</td>
+    </tr>
+  </tbody>
+</table>
+
+**The essential starter kit:** eslint-plugin-jsx-a11y + vitest-axe + browser DevTools. These three cover static analysis, rendered component testing, and manual inspection with minimal setup.
+
+**Going deeper:** Add Playwright + axe for CI-level coverage, and Storybook a11y addon if your team uses Storybook for component development.
+
+## What Automated Tools Can't Do
+
+Automated accessibility testing catches roughly 30–50% of WCAG issues. The remaining 50–70% requires human judgment:
+
+- **Is the alt text meaningful?** — A tool can tell you an image has alt text. It can't tell you whether "IMG_4382" is useful.
+- **Does the keyboard flow make sense?** — A tool can verify elements are focusable. It can't tell you whether the focus order is logical.
+- **Is the content understandable?** — A tool can check reading level. It can't tell you whether error messages actually help users recover.
+- **Does the screen reader experience make sense?** — A tool can verify ARIA attributes. It can't tell you whether the overall experience is coherent.
+
+This is why automated tooling and [manual testing](/tutorial/testing) are both essential. The tools catch what they can, freeing human testers to focus on what requires judgment.
+
+## Key Takeaways
+
+- Accessibility tools operate at different layers — static analysis, rendered components, full pages, and manual inspection. Each catches different issues.
+- No single tool catches everything. Automated tools cover roughly 30–50% of issues.
+- Start with eslint-plugin-jsx-a11y, vitest-axe, and browser DevTools. Add Playwright + axe and Storybook a11y for deeper coverage.
+- Automated tools catch structural issues (missing labels, broken ARIA, low contrast). Human testing catches experiential issues (is the flow logical, is the content clear).
+- The goal of automation is to free human testers from catching issues a computer could have found.
+
+## Resources
+
+- Deque — axe-core: https://github.com/dequelabs/axe-core
+- eslint-plugin-jsx-a11y: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y
+- vitest-axe: https://github.com/chaance/vitest-axe
+- Playwright Accessibility Testing: https://playwright.dev/docs/accessibility-testing
+- Storybook a11y Addon: https://storybook.js.org/addons/@storybook/addon-a11y

@@ -1,0 +1,35 @@
+# Storybook a11y Addon
+
+If your team uses Storybook for component development, the a11y addon runs axe-core against every story automatically. It surfaces accessibility issues during component development — the earliest point in the process where rendered output is available.
+
+## What It Catches
+
+- The same issues axe-core detects: missing names, invalid ARIA, contrast violations, invalid HTML
+- Issues surfaced in the Storybook UI with clear violation descriptions and fix guidance
+
+## What It Misses
+
+- Integration issues (how components interact on a real page)
+- Focus flow between components
+- Page-level structure (heading hierarchy, landmarks across the full page)
+
+## How It Works
+
+Install the addon and it runs automatically for every story:
+
+```ts
+// .storybook/main.ts
+export default {
+  addons: ['@storybook/addon-a11y'],
+};
+```
+
+Each story in Storybook gets an "Accessibility" panel showing violations, passes, and incomplete checks. Violations include the WCAG criterion, the affected elements, and suggestions for fixing the issue.
+
+## When to Use
+
+- During component development — catch issues before components are integrated into pages
+- During design review — verify that component variants (states, sizes, themes) are all accessible
+- As documentation — the a11y panel serves as a living accessibility audit for your component library
+
+[&larr; Back to Developer Tooling](/tutorial/dev-tools)

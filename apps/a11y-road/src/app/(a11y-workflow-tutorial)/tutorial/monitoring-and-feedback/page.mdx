@@ -1,3 +1,122 @@
 # Monitoring & Feedback
 
-Content coming soon. This page will cover CI integration, production monitoring, accessibility statements, user feedback channels, and advocating for continued investment.
+---
+
+*The team had shipped the redesigned Meet the Team page. Automated checks were passing. Manual testing had gone well. Jordan was cautiously optimistic.*
+
+*"So... are we done?" she asked.*
+
+*Priya shook her head. "We're done with this feature. But accessibility isn't a project you finish — it's a practice you maintain. Code changes, content changes, dependencies update. Anything could introduce a regression."*
+
+*"We need monitoring," Marcus said. "The same way we monitor for performance regressions or broken builds. If a deploy breaks keyboard navigation, we should know before users tell us."*
+
+*"And when users do tell us," Sana added, "we need a way to hear them. An accessibility statement with a contact method. A feedback channel that's actually accessible."*
+
+---
+
+## Accessibility Is Ongoing
+
+Shipping an accessible feature is an achievement. Keeping it accessible is a practice. Without monitoring and feedback mechanisms, accessibility regressions are inevitable:
+
+- A new component is added without keyboard support
+- A design update introduces contrast issues
+- A third-party dependency changes its markup
+- Content is updated with images that lack alt text
+- A refactor breaks focus management in a modal
+
+These aren't hypothetical — they're the natural result of active development. Monitoring catches them early. Feedback channels catch what monitoring misses.
+
+## CI Integration
+
+The most effective way to prevent accessibility regressions is to catch them before they reach production.
+
+**What to include in CI:**
+
+- **Static analysis** — eslint-plugin-jsx-a11y runs on every PR. Catches missing labels, invalid ARIA, non-semantic elements.
+- **Component tests** — vitest-axe checks rendered components against axe-core rules. Catches issues that only appear after rendering.
+- **End-to-end checks** — Playwright + axe tests full pages in a real browser. Catches integration-level issues.
+
+**How to set it up:**
+
+These tools (covered in [Developer Tooling](/tutorial/dev-tools)) can fail a build when accessibility violations are found, just like type errors or test failures. Treat accessibility failures the same way you treat other quality gates — they block the merge.
+
+**What to watch for:**
+
+- **False positives** — automated tools occasionally flag issues that aren't actually problems. When this happens, suppress the specific rule for that specific instance with a clear comment explaining why, rather than disabling the rule globally.
+- **New rules** — when you update your tooling, new rules may flag existing issues. Address these in a dedicated cleanup PR rather than disabling them.
+
+## Production Monitoring
+
+CI catches issues before deployment. Production monitoring catches issues that only appear with real data, real content, and real user behavior.
+
+**Approaches:**
+
+- **Scheduled axe scans** — run axe-core against production pages on a schedule (nightly or weekly). Compare results over time to catch regressions.
+- **Lighthouse CI** — track accessibility scores across deploys. Set thresholds that trigger alerts when scores drop.
+- **Error tracking** — if your error tracking system captures JavaScript errors, watch for patterns that suggest broken interactions (failed focus management, missing event handlers on custom widgets).
+
+Production monitoring complements CI — it catches issues that automated tests didn't cover and regressions introduced by content changes or third-party updates.
+
+## Accessibility Statements
+
+An accessibility statement is a public commitment to accessibility. It tells users what standards you're targeting, what limitations you're aware of, and how to report issues.
+
+**What to include:**
+
+- **Standards targeted** — typically WCAG 2.2 Level AA
+- **Known limitations** — be honest about areas that aren't yet fully accessible. Users appreciate transparency.
+- **Contact information** — a way for users to report accessibility issues and request accommodations
+- **Date** — when the statement was last reviewed or updated
+
+**Why it matters:**
+
+- It signals to users that you take accessibility seriously
+- It provides a clear channel for reporting issues
+- It sets expectations about what level of accessibility users can expect
+- In some jurisdictions, it may be required by law
+
+An accessibility statement isn't a liability risk — it's a trust signal. Being transparent about your current state and your commitment to improvement is better than saying nothing.
+
+## User Feedback Channels
+
+Users with disabilities are the most important source of accessibility feedback. They encounter real barriers in real workflows that no amount of automated testing can replicate.
+
+**Make feedback easy:**
+
+- Provide a clear, easy-to-find way to report accessibility issues (a link in the footer, a dedicated email address, a form)
+- Ensure the feedback mechanism itself is accessible — if someone can't use your site because of an accessibility barrier, they need to be able to report it without encountering additional barriers
+- Acknowledge reports promptly and follow up with the reporter when issues are resolved
+
+**Treat accessibility feedback seriously:**
+
+- Triage accessibility reports with the same priority as functional bugs
+- Track accessibility issues in your regular issue tracker, not a separate backlog that gets deprioritized
+- Close the loop — when an issue is fixed, let the reporter know
+
+## Advocating for Continued Investment
+
+Accessibility is easy to deprioritize once the initial effort is complete. New features, deadlines, and competing priorities create pressure to skip accessibility work. Sustained investment requires ongoing advocacy.
+
+**Practical approaches:**
+
+- **Track metrics** — number of accessibility issues found and fixed, automated test coverage, user feedback trends. Numbers make the case concrete.
+- **Share user feedback** — real reports from real users are more persuasive than abstract arguments about compliance.
+- **Celebrate progress** — highlight accessibility improvements in sprint reviews, release notes, and team retrospectives.
+- **Connect to business goals** — reference the [business case](/tutorial/business-case) when prioritization discussions happen. Accessibility isn't separate from the product — it's part of product quality.
+- **Make it normal** — the more accessibility becomes a routine part of development (through automated checks, testing checklists, and design annotations), the less it feels like extra work.
+
+## Key Takeaways
+
+- Accessibility isn't a project you finish — it's a practice you maintain. Without monitoring, regressions are inevitable.
+- Include accessibility checks in CI — treat violations as build failures, not warnings.
+- Monitor production with scheduled scans and score tracking to catch regressions from content changes, dependency updates, and real-world conditions.
+- Publish an accessibility statement with your standards, known limitations, and contact information.
+- Make feedback channels accessible and treat accessibility reports with the same priority as functional bugs.
+- Advocate for continued investment with metrics, user feedback, and connection to business goals.
+
+## Resources
+
+- W3C — Developing an Accessibility Statement: https://www.w3.org/WAI/planning/statements/
+- W3C — Planning and Managing Web Accessibility: https://www.w3.org/WAI/planning-and-managing/
+- Lighthouse CI: https://github.com/GoogleChrome/lighthouse-ci
+- axe-core: https://github.com/dequelabs/axe-core
