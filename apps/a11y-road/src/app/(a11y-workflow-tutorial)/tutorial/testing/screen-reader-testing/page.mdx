@@ -1,0 +1,98 @@
+# Screen Reader Testing
+
+Screen reader testing reveals whether your content makes sense when you can't see it. It's the most direct way to understand the experience of a large portion of your users.
+
+## Before You Start: Know How to Turn It Off
+
+This might sound obvious, but learn how to turn off the screen reader *before* you turn it on. Screen readers change how your device responds to input — on mobile, a single tap selects an element instead of activating it, and you need to double-tap to activate. If you don't know the exit gesture, you can get stuck. It happens more often than people admit.
+
+**How to turn off each screen reader:**
+
+- **VoiceOver (macOS):** Cmd + F5
+- **VoiceOver (iOS):** Triple-press the Home button or Side button (if enabled in Settings > Accessibility > Accessibility Shortcut), or ask Siri: "Turn off VoiceOver"
+- **NVDA (Windows):** NVDA + Q (NVDA key is usually Insert)
+- **TalkBack (Android):** Press and hold both volume keys for 3 seconds
+
+Practice turning it on and off a few times before attempting to test with it. Seriously.
+
+## Getting Started
+
+You don't need to be an expert screen reader user. Start with the basics:
+
+**VoiceOver (macOS):**
+
+- Turn on: Cmd + F5
+- Navigate by element: VO + Right/Left arrow (VO = Ctrl + Option)
+- Navigate by heading: VO + Cmd + H
+- Read link list: VO + U, then arrow keys
+- Turn off: Cmd + F5
+
+**VoiceOver (iOS):**
+
+- Turn on: Settings > Accessibility > VoiceOver (or triple-press Side button if configured)
+- Navigate: swipe right/left to move between elements
+- Activate: double-tap (not single tap — this is the part that trips people up)
+- Navigate by heading: use the rotor (two-finger twist), then swipe up/down
+- Turn off: triple-press Side button, or ask Siri: "Turn off VoiceOver"
+
+**NVDA (Windows — free):**
+
+- Download from nvaccess.org
+- Navigate by element: Tab and arrow keys
+- Navigate by heading: H
+- Read link list: NVDA + F7
+- Turn off: NVDA + Q
+
+**TalkBack (Android):**
+
+- Turn on: Settings > Accessibility > TalkBack
+- Navigate: swipe right/left to move between elements
+- Activate: double-tap
+- Turn off: press and hold both volume keys for 3 seconds
+
+## What to Listen For
+
+- **Page title** — does the screen reader announce a meaningful title when the page loads?
+- **Headings** — can you navigate the page by heading and understand its structure?
+- **Links and buttons** — does each one have a clear, unique name that describes its purpose?
+- **Forms** — are fields announced with their labels? Are errors announced when they appear?
+- **Images** — are informative images described? Are decorative images silent?
+- **Dynamic content** — when content changes (a toast appears, a list updates), is the change announced?
+
+## Testing the Meet the Team Page
+
+To make this concrete, here's what a screen reader test of the Meet the Team page should cover:
+
+1. **Land on the page.** Does the screen reader announce a meaningful page title?
+2. **Navigate by heading** (VO + Cmd + H on macOS, H on NVDA). Can you scan the list of doctors by name? Are the names announced as headings?
+3. **Navigate to a doctor card.** Is the specialty, contact information, and any other content announced in a logical order?
+4. **Find the edit and delete buttons.** Are they announced with clear labels like "Edit Dr. Reyes" and "Delete Dr. Reyes" — or just "Edit" and "Delete" with no context?
+5. **Delete a doctor.** What does the screen reader announce after the deletion? Is focus moved to a logical place, or does it go silent?
+6. **Use the specialty filter** (if present). Is the filter announced? When results update, is the change communicated?
+7. **Open the add/edit form.** Are all fields labeled? Are required fields indicated? If you submit with errors, are the error messages announced?
+
+## Which Screen Readers to Test With
+
+Ideally, test with the screen readers your users actually use. WebAIM's annual survey consistently shows:
+
+- **JAWS** and **NVDA** dominate on Windows
+- **VoiceOver** is the primary screen reader on macOS and iOS
+- **TalkBack** is the primary screen reader on Android
+
+At minimum, test with one screen reader regularly. VoiceOver is the easiest starting point for macOS users since it's built in.
+
+## Common Gotchas
+
+- **Screen readers cache the page structure.** If you make a dynamic change (add a doctor, show an error), the screen reader may not notice unless you use `aria-live` regions or manage focus.
+- **Different screen readers behave differently.** Something that works in VoiceOver may not work the same way in JAWS or NVDA. This is normal — test with more than one when possible.
+- **Browse mode vs. focus mode.** NVDA and JAWS switch between "browse mode" (reading content) and "focus mode" (interacting with forms). This affects which keys do what.
+- **Screen readers announce more than you expect.** They read roles, states, and properties that sighted users never see. A `role="button"` on a `<div>` will be announced as "button" even if it doesn't behave like one — which is confusing, not helpful.
+
+## Resources
+
+- WebAIM — Screen Reader User Survey: https://webaim.org/projects/screenreadersurvey10/
+- Deque — Screen Reader Keyboard Shortcuts and Gestures: https://dequeuniversity.com/screenreaders/
+- NV Access — NVDA Screen Reader: https://www.nvaccess.org/
+- Apple — VoiceOver User Guide: https://support.apple.com/guide/voiceover/welcome/mac
+
+[&larr; Back to Testing](/tutorial/testing)

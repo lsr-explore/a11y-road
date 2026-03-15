@@ -1,0 +1,135 @@
+# Meet the Team: Development
+
+This page applies the concepts from [Development](/tutorial/development) to building the Maple Valley Health Meet the Team page, using the design annotations from [Product & Design: Meet the Team](/tutorial/product-and-design/meet-the-team).
+
+## Building the Doctor List
+
+The design specifies a stacked list with semantic headings. Here's what the markup looks like:
+
+```html
+<main>
+  <h1>Our Team</h1>
+
+  <label for="specialty-filter">Filter by specialty</label>
+  <select id="specialty-filter">
+    <option value="">All specialties</option>
+    <option value="family-medicine">Family Medicine</option>
+    <option value="pediatrics">Pediatrics</option>
+    <!-- ... -->
+  </select>
+
+  <div aria-live="polite" aria-atomic="true">
+    Showing 4 of 12 doctors
+  </div>
+
+  <ul aria-label="Doctors">
+    <li>
+      <h3>
+        <a href="/team/dr-reyes">Dr. Maria Reyes</a>
+      </h3>
+      <img src="/photos/dr-reyes.jpg" alt="Dr. Maria Reyes, Family Medicine" />
+      <p>Family Medicine</p>
+      <p>Phone: (555) 234-5678</p>
+      <button aria-label="Edit Dr. Maria Reyes">Edit</button>
+      <button aria-label="Delete Dr. Maria Reyes">Delete</button>
+    </li>
+    <!-- ... -->
+  </ul>
+</main>
+```
+
+**Key decisions in this markup:**
+
+- **`<h3>` for each doctor** — screen reader users can scan by heading (addresses the JAWS participant's feedback)
+- **Doctor name is a link** — leads to a detail page (addresses the VoiceOver on iPhone participant's feedback)
+- **`aria-label` on edit/delete buttons** — "Edit" and "Delete" alone are ambiguous when there are twelve of them. Including the doctor's name gives context.
+- **`aria-live="polite"` on the result count** — when the filter changes, the updated count is announced without requiring the user to navigate to it
+- **Alt text includes name and specialty** — the design annotation specified this format
+
+## Focus Management After Delete
+
+The design specifies where focus goes after deleting a doctor. Here's the implementation:
+
+```tsx
+const handleDelete = async (doctorId: string, index: number) => {
+  await deleteDoctorById(doctorId);
+
+  // Announce the deletion
+  setStatusMessage(`${doctor.name} has been removed`);
+
+  // Move focus to the next logical element
+  if (remainingDoctors.length === 0) {
+    addDoctorButtonRef.current?.focus();
+  } else if (index < remainingDoctors.length) {
+    doctorRefs.current[index]?.focus();
+  } else {
+    doctorRefs.current[remainingDoctors.length - 1]?.focus();
+  }
+};
+```
+
+This addresses the issue Jordan found in testing — without explicit focus management, screen readers go silent after a deletion because the focused element was removed from the DOM.
+
+## The Add/Edit Form
+
+```html
+<form aria-label="Add new doctor">
+  <div>
+    <label for="doctor-name">Full name</label>
+    <input
+      type="text"
+      id="doctor-name"
+      autocomplete="name"
+      aria-required="true"
+      aria-invalid="true"
+      aria-describedby="name-error"
+    />
+    <p id="name-error" role="alert">Please enter the doctor's full name.</p>
+  </div>
+
+  <fieldset>
+    <legend>Specialty</legend>
+    <label><input type="radio" name="specialty" value="family-medicine" /> Family Medicine</label>
+    <label><input type="radio" name="specialty" value="pediatrics" /> Pediatrics</label>
+    <!-- ... -->
+  </fieldset>
+
+  <button type="submit">Save</button>
+</form>
+```
+
+**Key patterns:**
+
+- **Every field has a `<label>`** — no placeholder-only fields
+- **`aria-required`** — communicates which fields are required
+- **`aria-invalid` + `aria-describedby`** — connects error messages to their fields
+- **`role="alert"` on error messages** — announces errors to screen readers when they appear
+- **`autocomplete` attributes** — helps users with cognitive differences and reduces input burden
+- **`<fieldset>` and `<legend>`** — groups related radio buttons with a label that screen readers announce
+
+## Using AI During Development
+
+AI assistants can be valuable coding partners for accessibility:
+
+- **Reviewing markup for accessibility** — paste your component HTML and ask: "Are there any accessibility issues with this markup?" AI can spot missing labels, incorrect ARIA usage, and non-semantic elements.
+- **Generating ARIA patterns** — describe the interaction you're building (e.g., "a sortable table with inline editing") and ask for the recommended ARIA roles, states, and keyboard behavior.
+- **Writing accessible component code** — ask the AI to scaffold a component with accessibility built in. Specify: "Use semantic HTML, include keyboard handling, and add appropriate ARIA attributes."
+- **Focus management logic** — describe what happens in your UI (delete an item, open a modal, submit a form with errors) and ask where focus should go. The AI can reference ARIA Authoring Practices patterns.
+- **Writing alt text** — provide images or describe them and ask for alt text suggestions. Review for context — the AI doesn't know how the image is used on your specific page.
+
+**Important:** AI assistants can miss subtle accessibility issues and sometimes suggest incorrect ARIA. Always test the generated code with actual assistive technologies. AI is a first draft, not a final review.
+
+## Checklist: Before PR
+
+Before submitting the Meet the Team implementation for review:
+
+- [ ] Every doctor name is an `<h3>` that screen readers can scan
+- [ ] Doctor photos have alt text in the format "Name, Specialty"
+- [ ] Edit and delete buttons include the doctor's name in their accessible label
+- [ ] The specialty filter is labeled and announces result count changes
+- [ ] Focus moves to the next doctor after deletion (or the add button if the list is empty)
+- [ ] The add/edit form has labeled fields, error messages linked with `aria-describedby`, and `autocomplete` attributes
+- [ ] All interactive elements are reachable and operable by keyboard
+- [ ] The layout reflows to a single column at 200% and 400% zoom
+
+[&larr; Back to Development](/tutorial/development)

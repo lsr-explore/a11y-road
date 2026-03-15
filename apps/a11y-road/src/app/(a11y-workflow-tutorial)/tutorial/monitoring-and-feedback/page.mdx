@@ -2,15 +2,17 @@
 
 ---
 
-*The team had shipped the redesigned Meet the Team page. Automated checks were passing. Manual testing had gone well. Jordan was cautiously optimistic.*
+*The redesigned Meet the Team page had been live for two weeks. The research-driven design, the semantic markup, the automated checks, and Jordan's manual testing had all paid off. Then Sana got an email.*
 
-*"So... are we done?" she asked.*
+*"A patient wrote in," she told the team. "She uses Dragon NaturallySpeaking — voice control. She said the filter dropdown works, but the 'Add new doctor' button doesn't respond to her voice commands because it doesn't have a visible label that matches its accessible name."*
 
-*Priya shook her head. "We're done with this feature. But accessibility isn't a project you finish — it's a practice you maintain. Code changes, content changes, dependencies update. Anything could introduce a regression."*
+*"We didn't test with voice control," Jordan said. "None of our research participants used it."*
 
-*"We need monitoring," Marcus said. "The same way we monitor for performance regressions or broken builds. If a deploy breaks keyboard navigation, we should know before users tell us."*
+*"And that's why monitoring and feedback matter," Priya said. "We can't test with every assistive technology. We can't anticipate every combination of device, browser, and disability. But we can make it easy for people to tell us when something doesn't work."*
 
-*"And when users do tell us," Sana added, "we need a way to hear them. An accessibility statement with a contact method. A feedback channel that's actually accessible."*
+*"We also need to catch regressions," Marcus added. "Last week someone updated the doctor card component and accidentally removed the heading markup. If our CI hadn't caught it, we'd have shipped exactly the problem our JAWS research participant described."*
+
+*Sana nodded. "Research got us started. Testing validated our work. But the feedback loop — that's what keeps it going."*
 
 ---
 

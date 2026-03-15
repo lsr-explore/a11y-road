@@ -4,7 +4,9 @@ import { TutorialSidebar } from '@/components/tutorial/tutorial-sidebar';
 const TutorialLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <TutorialHeader />
+      <div className="sticky top-0 z-30">
+        <TutorialHeader />
+      </div>
       <div className="flex-1 flex max-w-7xl mx-auto w-full px-4 py-8 gap-8">
         <TutorialSidebar />
         <main className="flex-1 min-w-0">

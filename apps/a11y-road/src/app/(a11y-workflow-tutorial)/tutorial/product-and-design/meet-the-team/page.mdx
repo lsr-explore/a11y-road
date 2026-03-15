@@ -1,0 +1,78 @@
+# Meet the Team: Product & Design
+
+This page applies the concepts from [Product & Design](/tutorial/product-and-design) to the Maple Valley Health Meet the Team redesign, using the research findings from [User Research: Meet the Team](/tutorial/user-research/meet-the-team).
+
+## From Research to Design
+
+Ava took the five research insights and translated them into design decisions:
+
+**Grid → stacked list:** The research participant at 300% zoom couldn't see a full card in the grid layout. Ava switched to a stacked list — doctor name, specialty, and contact info in a single row that reflows cleanly at high zoom.
+
+**Add a specialty filter:** The participant with ADHD couldn't scan twelve unfiltered cards. Ava added a dropdown filter by specialty at the top of the page, with a "Show all" default.
+
+**Increase target sizes:** The switch device user struggled with small, tightly packed buttons. Ava increased all interactive targets to at least 44x44px and added visible spacing between edit and delete actions.
+
+**Summary + detail pattern:** The VoiceOver on iPhone user expected to tap a name and see a profile. Ava designed a list view linking to individual doctor profile pages, rather than putting everything on one dense page.
+
+## Design Annotations
+
+Ava annotated her mockups with accessibility information the developers would need:
+
+**Heading structure:**
+
+- Page title: h1 — "Our Team"
+- Each doctor name: h3 — e.g., "Dr. Maria Reyes"
+- Specialty filter label: associated `<label>` element
+
+**Focus order:**
+
+1. Skip link → main content
+2. Specialty filter
+3. Doctor list (each doctor: name link → edit button → delete button)
+4. Pagination (if applicable)
+
+**Focus management for delete:**
+
+- When a doctor is deleted, focus moves to the next doctor in the list
+- If the last doctor is deleted, focus moves to the previous doctor
+- If the list is empty, focus moves to the "Add new doctor" button
+- A status message announces "[Doctor name] has been removed"
+
+**Alt text for doctor photos:**
+
+- Format: "[Name], [specialty]" — e.g., "Dr. Maria Reyes, Family Medicine"
+- If no photo is available, use a consistent placeholder with alt="" (decorative)
+
+**Error states for the add/edit form:**
+
+- Each error includes an icon + color + descriptive text
+- Errors are linked to their fields with `aria-describedby`
+- On submission with errors, focus moves to the first field with an error
+
+## Using AI in the Design Process
+
+AI assistants can support accessible design work:
+
+- **Generating alt text drafts** — describe an image to the AI or provide the image directly and ask for alt text options. Review and refine — alt text depends on context that only the designer understands.
+- **Checking annotation completeness** — share your design annotations and ask: "What accessibility annotations am I missing for this component?"
+- **Exploring keyboard interaction patterns** — describe your component and ask how the W3C ARIA Authoring Practices Guide recommends handling keyboard interaction for that pattern.
+- **Contrast checking** — while tools like Stark and WebAIM Contrast Checker are more reliable for exact ratios, you can ask an AI to suggest accessible color alternatives when you're stuck.
+- **Writing design system documentation** — ask the AI to draft accessibility requirements for a component specification, then review against the APG.
+
+AI accelerates design work but doesn't replace design judgment. A well-annotated mockup that a human reviewed is worth more than a perfectly generated specification that nobody verified.
+
+## Checklist: Before Handoff
+
+Before passing the Meet the Team designs to development, Ava verified:
+
+- [ ] Heading hierarchy is annotated (h1, h3 for each doctor)
+- [ ] Focus order is documented for the page and the filter interaction
+- [ ] Focus management after delete is specified (where does focus go?)
+- [ ] Error states use icon + color + text (not color alone)
+- [ ] Alt text is provided for all doctor photos
+- [ ] Target sizes are at least 44x44px for all interactive elements
+- [ ] Layout reflows to a single column at 200% and 400% zoom
+- [ ] Keyboard behavior is documented for the filter, edit, and delete interactions
+- [ ] The form specifies `autocomplete` attributes for relevant fields
+
+[&larr; Back to Product & Design](/tutorial/product-and-design)

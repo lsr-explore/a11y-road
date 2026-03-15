@@ -1,0 +1,70 @@
+# Meet the Team: Monitoring & Feedback
+
+This page applies the monitoring and feedback strategies from [Monitoring & Feedback](/tutorial/monitoring-and-feedback) to the Maple Valley Health Meet the Team page after launch.
+
+## CI Checks for the Meet the Team Page
+
+The team added accessibility gates to their CI pipeline for the Meet the Team page:
+
+**eslint-plugin-jsx-a11y** — runs on every PR. If someone removes a label from the form or adds a `<div onClick>` where a button should be, the build fails.
+
+**vitest-axe tests** — the doctor list component, doctor card, and add/edit form each have axe tests. Any accessibility regression in the rendered output fails the test suite.
+
+**Playwright + axe** — an end-to-end test loads the full Meet the Team page, applies the filter, and opens the add form. Each state is checked for axe violations.
+
+These checks run automatically. The team doesn't have to remember to test — the pipeline enforces the baseline.
+
+## What Monitoring Caught
+
+Two weeks after launch, the CI pipeline caught a regression:
+
+A developer updated the doctor card component to add a "Last updated" timestamp. The new markup accidentally placed the timestamp inside the `<h3>`, so screen readers announced each doctor as "Dr. Maria Reyes Last updated March 10, 2026, heading level 3."
+
+The vitest-axe test didn't catch this — the heading still existed and had text. But a teammate reviewing the Playwright test output noticed the heading text looked wrong and flagged it. The fix was a one-line change to move the timestamp outside the heading.
+
+**Lesson:** Automated tools catch structural issues, but CI also creates opportunities for humans to spot problems during code review.
+
+## What Users Reported
+
+After launch, three pieces of feedback came through the accessibility contact form:
+
+**1. Voice control user (Dragon NaturallySpeaking):**
+
+*"The 'Add new doctor' button doesn't respond when I say 'click Add new doctor.' It seems like the visible label doesn't match the accessible name."*
+
+**Fix:** The button's `aria-label` was "Add doctor" but the visible text was "Add new doctor." Dragon NaturallySpeaking matches on visible text. The team removed the `aria-label` so the visible text became the accessible name.
+
+**2. Screen magnifier user (ZoomText):**
+
+*"When I hover over a doctor's photo to see it larger, the tooltip with their name disappears when I move my cursor toward it."*
+
+**Fix:** The tooltip was using CSS `:hover` on the image, and it disappeared as soon as the cursor moved away from the image toward the tooltip. The team updated the tooltip to remain visible when the cursor moves to it (WCAG 1.4.13 — Content on Hover or Focus).
+
+**3. Keyboard user:**
+
+*"I can Tab to the specialty filter, but pressing Enter doesn't open it. I have to use the spacebar or arrow keys, which I didn't know."*
+
+**Response:** This is actually native `<select>` behavior — Enter submits the form, arrow keys change the selection. The team added a brief instruction text: "Use arrow keys to filter by specialty." Not every report leads to a code change — sometimes it leads to better content.
+
+## Using AI to Triage and Respond to Feedback
+
+AI assistants can help process accessibility feedback:
+
+- **Understanding the issue** — paste a user report and ask: "What WCAG criterion does this relate to? What's the likely cause?" This helps you triage faster.
+- **Drafting responses** — ask the AI to draft a reply acknowledging the issue and explaining next steps. Review before sending — tone matters in accessibility communication.
+- **Researching fixes** — describe the issue and ask for implementation options. For example: "A tooltip disappears when the user moves their magnifier toward it. How do I make it persistent per WCAG 1.4.13?"
+- **Writing regression tests** — after fixing a reported issue, ask the AI to write a test that prevents the same issue from recurring.
+
+## Closing the Loop
+
+For each report, the team:
+
+1. Acknowledged the report within 24 hours
+2. Created a ticket in their issue tracker
+3. Fixed the issue (or documented why the behavior was correct)
+4. Notified the reporter when the fix was deployed
+5. Added a regression test to prevent recurrence
+
+This feedback loop is what keeps accessibility sustainable. Research starts the process. Testing validates the work. But user feedback keeps it honest.
+
+[&larr; Back to Monitoring & Feedback](/tutorial/monitoring-and-feedback)

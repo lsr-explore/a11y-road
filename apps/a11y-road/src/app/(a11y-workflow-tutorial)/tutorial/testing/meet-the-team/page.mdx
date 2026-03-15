@@ -1,0 +1,100 @@
+# Meet the Team: Testing
+
+This page applies the testing strategies from [Testing](/tutorial/testing) and [Screen Reader Testing](/tutorial/testing/screen-reader-testing) to the Maple Valley Health Meet the Team page.
+
+## Keyboard Testing Walkthrough
+
+Put your mouse aside and work through these tasks:
+
+**1. Navigate to the filter:**
+
+- Tab to the specialty filter dropdown
+- Is the filter labeled? Can you select a specialty with arrow keys?
+- After selecting, does the result count update? Can you hear or see the change?
+
+**2. Browse the doctor list:**
+
+- Tab through the doctor entries. Is the order logical (name → edit → delete → next doctor)?
+- Can you reach every edit and delete button?
+- Is the focus indicator visible on every element?
+
+**3. Delete a doctor:**
+
+- Tab to a delete button and press Enter
+- Where does focus go? Is it on the next doctor, or did it disappear?
+- If you deleted the last doctor, does focus land on a reasonable element?
+
+**4. Open the add/edit form:**
+
+- Tab to the "Add new doctor" button and press Enter
+- Can you Tab through every form field?
+- Submit the form empty — are errors announced? Does focus move to the first error?
+- Can you dismiss the form with Escape?
+
+**5. Use the filter at 200% zoom:**
+
+- Zoom to 200% and repeat the filter interaction
+- Does the layout reflow? Can you still read the doctor names and specialties?
+
+## Screen Reader Testing Walkthrough
+
+Turn on your screen reader (review how to [turn it off first](/tutorial/testing/screen-reader-testing#before-you-start-know-how-to-turn-it-off)) and test:
+
+**1. Page structure:**
+
+- Navigate by heading. Do you hear each doctor's name as an h3?
+- Is the page title announced as h1?
+- Can you get a quick overview of the page by scanning headings alone?
+
+**2. Doctor information:**
+
+- Navigate to a doctor entry. Is the name, specialty, and contact info announced in a logical order?
+- Is the photo described with the doctor's name and specialty, or is it silent/unhelpful?
+
+**3. Interactive elements:**
+
+- Navigate to the edit and delete buttons. Are they announced as "Edit Dr. Maria Reyes" and "Delete Dr. Maria Reyes" — or just "Edit" and "Delete"?
+- Activate delete. What does the screen reader announce? Is the deletion confirmed?
+
+**4. Filter:**
+
+- Navigate to the specialty filter. Is it announced with its label?
+- Change the filter. Is the updated result count announced automatically (via `aria-live`)?
+
+**5. Form:**
+
+- Open the add doctor form. Are all fields announced with their labels?
+- Which fields are announced as required?
+- Submit with errors. Are the error messages announced? Can you navigate to the field with the error?
+
+## What Jordan Found
+
+When Jordan tested the rebuilt Meet the Team page, she documented:
+
+**Passed:**
+
+- All doctor names are scannable as h3 headings
+- Filter is labeled and result count updates are announced
+- Edit/delete buttons include the doctor's name
+- Form fields are labeled and errors are linked with `aria-describedby`
+- Layout reflows cleanly at 200% and 400% zoom
+
+**Issues found:**
+
+- After deleting a doctor, focus moved correctly to the next doctor — but there was no announcement confirming the deletion. Added `role="status"` to the confirmation message.
+- The specialty filter dropdown didn't announce the number of options available. Added `aria-describedby` pointing to a count.
+- At 400% zoom, the delete confirmation dialog's "Cancel" button was partially off-screen. Adjusted the dialog's max-width.
+
+None of these issues were caught by automated tools. All of them would have affected the users from the research study.
+
+## Using AI to Plan Test Scenarios
+
+AI assistants can help you think through what to test:
+
+- **"What keyboard testing scenarios should I cover for a filterable list with add, edit, and delete?"** — generates a testing checklist
+- **"A screen reader user reported that deleting an item leaves focus in a confusing state. What should I test?"** — helps you systematically reproduce and verify the fix
+- **"What are the WCAG success criteria relevant to a form with required fields and inline validation?"** — maps your feature to specific criteria to test against
+
+AI is particularly useful for generating the testing plan. The actual testing must be done by a human with real assistive technology.
+
+[&larr; Back to Testing](/tutorial/testing)

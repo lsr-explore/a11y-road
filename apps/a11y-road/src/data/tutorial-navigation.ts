@@ -36,9 +36,24 @@ export const tutorialPages: TutorialPage[] = [
   { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'business' },
 
   // Workflow
-  { slug: 'user-research', title: 'User Research', section: 'workflow' },
-  { slug: 'product-and-design', title: 'Product & Design', section: 'workflow' },
-  { slug: 'development', title: 'Development', section: 'workflow' },
+  {
+    slug: 'user-research',
+    title: 'User Research',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
+  {
+    slug: 'product-and-design',
+    title: 'Product & Design',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
+  {
+    slug: 'development',
+    title: 'Development',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
   {
     slug: 'dev-tools',
     title: 'Developer Tooling',
@@ -49,10 +64,24 @@ export const tutorialPages: TutorialPage[] = [
       { slug: 'browser-devtools', title: 'Browser DevTools' },
       { slug: 'playwright-axe', title: 'Playwright + axe' },
       { slug: 'storybook-a11y', title: 'Storybook a11y Addon' },
+      { slug: 'meet-the-team', title: 'Meet the Team' },
     ],
   },
-  { slug: 'testing', title: 'Testing', section: 'workflow' },
-  { slug: 'monitoring-and-feedback', title: 'Monitoring & Feedback', section: 'workflow' },
+  {
+    slug: 'testing',
+    title: 'Testing',
+    section: 'workflow',
+    children: [
+      { slug: 'screen-reader-testing', title: 'Screen Reader Testing' },
+      { slug: 'meet-the-team', title: 'Meet the Team' },
+    ],
+  },
+  {
+    slug: 'monitoring-and-feedback',
+    title: 'Monitoring & Feedback',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
 ];
 
 export const tutorialSections = [

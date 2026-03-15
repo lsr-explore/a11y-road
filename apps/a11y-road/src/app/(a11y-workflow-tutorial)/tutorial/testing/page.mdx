@@ -2,15 +2,17 @@
 
 ---
 
-*Jordan had been running automated accessibility checks for two weeks. The results were encouraging — the team had fixed dozens of missing labels, low-contrast elements, and broken ARIA attributes. But she had a nagging feeling.*
+*The automated checks were passing on the rebuilt Meet the Team page. Jordan should have been relieved, but she wasn't.*
 
-*"The automated tools say we're passing," she told the team. "But I tried using the site with VoiceOver last night, and the experience was... rough. I couldn't figure out where I was on the page. The headings were technically correct but the flow didn't make sense."*
+*"I turned on VoiceOver and tried to find a family medicine doctor," she told the team. "The headings are correct — I can scan by doctor name. But when I delete a doctor, VoiceOver goes silent. Focus just... disappears. I had to swipe around to figure out where I was."*
 
-*"That's the 50% that tools can't catch," Priya said. "Automated testing tells you the structure is valid. Manual testing tells you the experience makes sense."*
+*"The automated tools can't catch that," Priya said. "They see that the button exists and has a label. They can't tell you that the experience after pressing it is disorienting."*
 
-*"So how do we make manual testing part of our process without it taking forever?" Jordan asked.*
+*"Remember what the research participant using JAWS said?" Sana added. "They navigate by structure. If focus vanishes after an action, they lose their place entirely. That's not something we should wait for a user to report — it's something we should test for."*
 
-*"We don't test everything manually every time," Marcus said. "We test key flows, and we test them with the assistive technologies that our users actually use."*
+*"So I need to test the flows our research participants described," Jordan said. "Not just check that elements exist."*
+
+*"Exactly," Priya said. "The research told us what matters. Testing verifies we got it right."*
 
 ---
 
@@ -47,54 +49,13 @@ The simplest and most impactful manual test: put your mouse aside and try to com
 
 You practiced this in [Try It Yourself](/tutorial/try-it-yourself). The same approach applies to every feature your team builds.
 
-## Screen Reader Testing
+## [Screen Reader Testing](/tutorial/testing/screen-reader-testing)
 
-Screen reader testing reveals whether your content makes sense when you can't see it. It's the most direct way to understand the experience of a large portion of your users.
+Screen reader testing reveals whether your content makes sense when you can't see it. It's the most direct way to understand the experience of a large portion of your users — and the most common type of manual testing that teams skip because it feels unfamiliar.
 
-### Getting Started
+The [Screen Reader Testing](/tutorial/testing/screen-reader-testing) page covers how to get started with VoiceOver, NVDA, and TalkBack — including how to turn them off (learn this first), what to listen for, and a concrete walkthrough of testing the Meet the Team page.
 
-You don't need to be an expert screen reader user. Start with the basics:
-
-**VoiceOver (macOS/iOS):**
-
-- Turn on: Cmd + F5 (macOS) or Settings > Accessibility > VoiceOver (iOS)
-- Navigate by element: VO + Right/Left arrow (VO = Ctrl + Option)
-- Navigate by heading: VO + Cmd + H
-- Read link list: VO + U, then arrow keys
-- Turn off: Cmd + F5
-
-**NVDA (Windows — free):**
-
-- Download from nvaccess.org
-- Navigate by element: Tab and arrow keys
-- Navigate by heading: H
-- Read link list: NVDA + F7
-- Toggle off: NVDA + Q
-
-**TalkBack (Android):**
-
-- Turn on: Settings > Accessibility > TalkBack
-- Navigate: swipe right/left to move between elements
-- Activate: double-tap
-
-### What to Listen For
-
-- **Page title** — does the screen reader announce a meaningful title when the page loads?
-- **Headings** — can you navigate the page by heading and understand its structure?
-- **Links and buttons** — does each one have a clear, unique name that describes its purpose?
-- **Forms** — are fields announced with their labels? Are errors announced when they appear?
-- **Images** — are informative images described? Are decorative images silent?
-- **Dynamic content** — when content changes (a toast appears, a list updates), is the change announced?
-
-### Which Screen Readers to Test With
-
-Ideally, test with the screen readers your users actually use. WebAIM's annual survey consistently shows:
-
-- **JAWS** and **NVDA** dominate on Windows
-- **VoiceOver** is the primary screen reader on macOS and iOS
-- **TalkBack** is the primary screen reader on Android
-
-At minimum, test with one screen reader regularly. VoiceOver is the easiest starting point for macOS users since it's built in.
+[Learn more about screen reader testing &rarr;](/tutorial/testing/screen-reader-testing)
 
 ## Browser Extensions
 

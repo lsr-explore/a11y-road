@@ -2,15 +2,13 @@
 
 ---
 
-*Priya was reviewing a pull request from a new team member. The code worked — the component rendered correctly, passed its unit tests, and matched the design. But something was off.*
+*Priya was reviewing the first pull request for the Meet the Team rebuild. The doctor cards rendered correctly and matched Ava's designs. But the markup told a different story.*
 
-*"This is a div with an onClick handler," Priya said. "It looks like a button and acts like a button, but it's not a `<button>`."*
+*"The doctor names are styled as headings but they're `<div>` tags with a large font size," Priya said. "And the delete buttons are `<span>` elements with onClick handlers."*
 
-*"Does it matter?" the new developer asked. "It works."*
+*"The research participant using JAWS said they couldn't scan by heading," Marcus reminded the team. "If we use real `<h3>` elements, that's fixed. And the participant using a switch device struggled with the delete buttons — `<span>` elements aren't focusable, so the switch can't even reach them."*
 
-*Marcus spoke up. "It works with a mouse. Try pressing Enter on it." He paused. "Now try pressing Tab to get to it." Another pause. "A real `<button>` gives you both for free. The div gives you neither."*
-
-*"This is what we mean by semantic HTML," Priya said. "Using the right element for the job isn't about being pedantic. It's about getting built-in accessibility without extra work."*
+*"Every time we use a `<div>` where we should use a `<button>`, we're creating the same barriers our users described," Priya said. "Semantic HTML isn't pedantic — it's the difference between a page that works for everyone and one that only works with a mouse."*
 
 ---
 

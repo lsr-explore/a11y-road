@@ -2,17 +2,19 @@
 
 ---
 
-*Ava had been working on the redesign of the appointment booking flow. She shared her mockups in the team channel.*
+*Ava had Sana's research findings pinned to her second monitor. She was redesigning the Meet the Team page.*
 
-*"Looks great," Priya said. "But how does this work for someone using a keyboard? The date picker — can you Tab through it?"*
+*"The grid layout breaks at high zoom," she said, thinking out loud. "The research participant at 300% couldn't see a full card. So I'm switching to a stacked list — name, specialty, and contact info in a single row that reflows cleanly."*
 
-*Ava paused. "I... don't know. I designed it visually. I didn't think about the interaction model for keyboards."*
+*"What about the screen reader feedback?" Priya asked. "The participant using JAWS said there were no headings to scan by."*
 
-*"That's the gap," Marcus said. "If I can't reach the date picker with Tab, I can't book an appointment. It's not a bug you'll catch in a code review — it needs to be in the design."*
+*"Each doctor's name will be an h3 inside the list," Ava said. "And I'm adding a filter by specialty — the participant with ADHD said scanning twelve unfiltered cards was overwhelming."*
 
-*"So what should I be annotating?" Ava asked. "I know about color contrast. What else?"*
+*Sana looked pleased. "This is exactly why we did the research first. We're not guessing what accessible means — we're solving specific problems that real users told us about."*
 
-*"Let's make a list," Sana said. "Everything we want designers to think about before a single line of code is written."*
+*"One more thing," Ava said. "The edit and delete buttons — the switch user said they were too small and too close together. I'm increasing the target size and adding more spacing. But I need to annotate the keyboard behavior too. What happens when someone deletes a doctor from the list? Where does focus go?"*
+
+*"Now you're thinking like the whole team," Marcus said.*
 
 ---
 
@@ -112,7 +114,7 @@ Product managers set priorities. When PMs include accessibility in requirements 
 - Allocate time for accessibility work in sprint planning — it's not extra, it's part of the feature
 - Request screen reader or keyboard demonstrations as part of feature reviews
 - Treat accessibility bugs with the same priority as functional bugs
-- Include disabled users in research planning (see [User Research](/tutorial/user-research))
+- Include users with disabilities in research planning (see [User Research](/tutorial/user-research))
 
 ## Key Takeaways
 
