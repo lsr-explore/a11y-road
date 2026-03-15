@@ -61,3 +61,6 @@ coverage/
 
 # Next.js generated type declarations
 next-env.d.ts
+
+# pandoc output
+pandoc/output/

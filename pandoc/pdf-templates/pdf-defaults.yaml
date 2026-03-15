@@ -1,0 +1,80 @@
+# Pandoc defaults file for generating the a11y-road tutorial PDF.
+# Usage: pandoc --defaults docs/pdf-templates/pdf-defaults.yaml
+
+# --- Input ---
+# Paths are relative to the project root.
+# Tutorial pages listed in reading order (matches tutorial-navigation.ts).
+
+input-files:
+  # --- Foundations ---
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/what-is-accessibility/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/screen-readers/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/keyboard-only/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/low-vision/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/color-vision/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/cognitive-and-neurological/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/people-and-devices/deaf-and-hard-of-hearing/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/try-it-yourself/page.mdx
+
+  # --- Standards ---
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/wcag-overview/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/wcag-in-practice/page.mdx
+
+  # --- Business ---
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/business-case/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/legal-landscape/page.mdx
+
+  # --- Workflow ---
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/user-research/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/user-research/meet-the-team/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/product-and-design/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/product-and-design/meet-the-team/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/development/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/development/meet-the-team/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/eslint-jsx-a11y/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/vitest-axe/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/browser-devtools/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/playwright-axe/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/storybook-a11y/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/dev-tools/meet-the-team/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/testing/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/testing/screen-reader-testing/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/testing/meet-the-team/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/monitoring-and-feedback/page.mdx
+  - apps/a11y-road/src/app/(a11y-workflow-tutorial)/tutorial/monitoring-and-feedback/meet-the-team/page.mdx
+
+from: markdown
+
+# --- Output ---
+output-file: pandoc/output/a11y-road-tutorial.pdf
+to: pdf
+
+# --- PDF engine ---
+pdf-engine: xelatex
+
+# --- Template / header ---
+include-in-header:
+  - pandoc/pdf-templates/pdf-header.tex
+
+# --- Metadata ---
+metadata:
+  title: "A11y Road — Accessibility Workflow Tutorial"
+  author: "Laurie"
+  date: "2026"
+
+# --- Layout ---
+variables:
+  geometry: margin=1in
+  fontsize: 11pt
+  colorlinks: true
+  linkcolor: RoyalBlue
+  urlcolor: RoyalBlue
+  toccolor: RoyalBlue
+
+# --- Features ---
+table-of-contents: true
+toc-depth: 3
+number-sections: false
+standalone: true

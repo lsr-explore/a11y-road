@@ -21,7 +21,8 @@
     "knip": "knip",
     "clean": "rm -rf dist out-tsc coverage test-output .next apps/*/.next apps/*/out-tsc apps/*/dist libs/*/dist .nx/cache",
     "clean:all": "pnpm clean && pnpm nx:reset && rm -rf node_modules ",
-    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm markdownlint && pnpm typecheck && pnpm knip && pnpm test:all:coverage"
+    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm markdownlint && pnpm typecheck && pnpm knip && pnpm test:all:coverage",
+    "pandoc": "pandoc --defaults pandoc/pdf-templates/pdf-defaults.yaml"
   },
   "private": true,
   "dependencies": {
