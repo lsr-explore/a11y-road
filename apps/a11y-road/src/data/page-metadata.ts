@@ -6,6 +6,7 @@ export interface PageMeta {
 
 export const pages: PageMeta[] = [
   { id: 'landing', name: 'Landing Page', route: '/maple-valley-health' },
+  { id: 'team', name: 'Team Page', route: '/maple-valley-health/team' },
   { id: 'contact', name: 'Contact Page', route: '/maple-valley-health/contact' },
 ];
 
