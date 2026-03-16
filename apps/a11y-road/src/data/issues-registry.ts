@@ -65,6 +65,42 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     tags: ['forms', 'errors'],
     testingMethod: 'semi-automated',
   },
+  {
+    id: 'non-semantic-dialog',
+    title: 'Non-semantic dialog',
+    description:
+      'Dialogs must use the native <dialog> element or have role="dialog" with proper ARIA attributes. A plain <div> overlay has no semantic meaning, traps no focus, and cannot be dismissed with the Escape key.',
+    wcagCriteria: [
+      { id: '4.1.2', title: 'Name, Role, Value', level: 'A' },
+      { id: '2.4.3', title: 'Focus Order', level: 'A' },
+    ],
+    impactedUsers: ['Screen reader users', 'Keyboard users'],
+    tags: ['dialog', 'focus'],
+    testingMethod: 'manual',
+  },
+  {
+    id: 'inaccessible-notification',
+    title: 'Inaccessible status notification',
+    description:
+      'Status messages must be announced to screen readers without moving focus. Use role="alert" or role="status" for live region announcements. Using window.alert() blocks interaction, while missing notifications leave users unaware of state changes.',
+    wcagCriteria: [{ id: '4.1.3', title: 'Status Messages', level: 'AA' }],
+    impactedUsers: ['Screen reader users'],
+    tags: ['notifications', 'aria'],
+    testingMethod: 'manual',
+  },
+  {
+    id: 'non-interactive-delete',
+    title: 'Non-interactive delete control',
+    description:
+      'Interactive controls must use semantic elements like <button>. A <div> with an onClick handler has no role, no keyboard access, and no accessible name. Screen reader users and keyboard users cannot activate it.',
+    wcagCriteria: [
+      { id: '4.1.2', title: 'Name, Role, Value', level: 'A' },
+      { id: '2.1.1', title: 'Keyboard', level: 'A' },
+    ],
+    impactedUsers: ['Screen reader users', 'Keyboard users', 'Users with motor disabilities'],
+    tags: ['buttons', 'keyboard'],
+    testingMethod: 'automated',
+  },
 ];
 
 const issueInstances: A11yIssueInstance[] = [
@@ -113,6 +149,30 @@ const issueInstances: A11yIssueInstance[] = [
     description:
       'Contact form error messages appear visually but lack role="alert" and aria-describedby, so screen readers do not announce them.',
     elementSelector: '[data-a11y-id="contact-error-announcement"]',
+  },
+  {
+    id: 'team-delete-dialog',
+    issueId: 'non-semantic-dialog',
+    pageId: 'team',
+    description:
+      'The delete confirmation dialog is a plain <div> overlay with no semantic role, no focus management, and no keyboard support.',
+    elementSelector: '[data-a11y-id="team-delete-dialog"]',
+  },
+  {
+    id: 'team-notification',
+    issueId: 'inaccessible-notification',
+    pageId: 'team',
+    description:
+      'Success notifications use window.alert() for additions, an auto-dismiss toast without ARIA for edits, and no notification at all for deletions.',
+    elementSelector: '[data-a11y-id="team-notification"]',
+  },
+  {
+    id: 'team-delete-button',
+    issueId: 'non-interactive-delete',
+    pageId: 'team',
+    description:
+      'The delete button on team cards is a <div> with onClick — it has no role, no accessible name, no focus indicator, and cannot be activated via keyboard.',
+    elementSelector: '[data-a11y-id="team-delete-button"]',
   },
 ];
 

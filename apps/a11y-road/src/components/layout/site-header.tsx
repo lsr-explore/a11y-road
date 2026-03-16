@@ -10,6 +10,7 @@ const showDemoTools = process.env.NEXT_PUBLIC_SHOW_A11Y_TOOLS !== 'false';
 
 const navLinks = [
   { href: '/maple-valley-health', label: 'Home' },
+  { href: '/maple-valley-health/team', label: 'Team' },
   { href: '/maple-valley-health/contact', label: 'Contact' },
   ...(showDemoTools ? [{ href: '/maple-valley-health/a11y-summary', label: 'A11y Summary' }] : []),
 ];
@@ -44,6 +45,11 @@ const SidePanelToggle = () => {
   );
 };
 
+const isNavLinkActive = (pathname: string, href: string): boolean => {
+  if (href === '/maple-valley-health') return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
+
 export const SiteHeader = () => {
   const pathname = usePathname();
 
@@ -67,21 +73,22 @@ export const SiteHeader = () => {
         <div className="flex items-center gap-6">
           <nav aria-label="Main navigation">
             <ul className="flex gap-6">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={`text-sm font-medium transition-colors hover:text-teal-600 ${
-                      pathname === link.href
-                        ? 'text-teal-700 underline underline-offset-4'
-                        : 'text-gray-600'
-                    }`}
-                    aria-current={pathname === link.href ? 'page' : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = isNavLinkActive(pathname, link.href);
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={`text-sm font-medium transition-colors hover:text-teal-600 ${
+                        isActive ? 'text-teal-700 underline underline-offset-4' : 'text-gray-600'
+                      }`}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
           {showDemoTools && <SidePanelToggle />}
