@@ -1,82 +1,106 @@
-# a11y-road
+# A11y Road
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+An accessibility workflow tutorial built with Next.js, Nx, and MDX. The tutorial walks through building accessibility into every stage of a product team's workflow — from user research through monitoring and feedback.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Prerequisites
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- **Node.js** >= 20
+- **pnpm** (package manager)
 
-## Finish your CI setup
+### Optional global tools
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/a9Xiiz7AKO)
+These are not required for development but are used by specific scripts.
 
+#### Pandoc (PDF export)
 
-## Run tasks
+[Pandoc](https://pandoc.org/) converts the tutorial MDX pages into a single PDF. It requires a LaTeX engine (`xelatex`), which is included with BasicTeX.
 
-To run the dev server for your app, use:
-
-```sh
-npx nx dev a11y-road
-```
-
-To create a production bundle:
+**macOS (Homebrew):**
 
 ```sh
-npx nx build a11y-road
+brew install pandoc
+brew install --cask basictex
 ```
 
-To see all available targets to run for a project, run:
+After installing BasicTeX, open a new terminal and run:
 
 ```sh
-npx nx show project a11y-road
+sudo tlmgr update --self
+sudo tlmgr install fancyhdr
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+The `fancyhdr` package is used by the PDF header template.
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
+**Verify installation:**
 
 ```sh
-npx nx g @nx/next:app demo
+pandoc --version
+xelatex --version
 ```
 
-To generate a new library, use:
+## Getting Started
 
 ```sh
-npx nx g @nx/react:lib mylib
+pnpm install
+pnpm dev
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+The dev server runs at `http://localhost:3000` (or the next available port).
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Scripts
 
+| Script | Description |
+|---|---|
+| `pnpm dev` | Start the Next.js dev server |
+| `pnpm build` | Production build (also generates the search index) |
+| `pnpm test` | Run Vitest unit/component tests |
+| `pnpm test:all` | Run tests for all projects |
+| `pnpm test:all:coverage` | Run all tests with coverage |
+| `pnpm lint` | ESLint (includes jsx-a11y) |
+| `pnpm format:check` | Biome formatting check |
+| `pnpm stylelint` | CSS linting |
+| `pnpm markdownlint` | MDX linting |
+| `pnpm typecheck` | TypeScript type checking |
+| `pnpm knip` | Unused code detection |
+| `pnpm check:all` | Run all quality checks and tests |
+| `pnpm e2e` | Playwright end-to-end tests |
+| `pnpm search:index` | Rebuild the Pagefind search index (requires a prior build) |
+| `pnpm pandoc` | Generate the tutorial PDF via Pandoc |
+| `pnpm clean` | Remove build artifacts and caches |
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Search
 
-## Install Nx Console
+Site search is powered by [Pagefind](https://pagefind.app/). The search index is generated automatically during `pnpm build` via the `postbuild` script. Only tutorial pages marked with `data-pagefind-body` are indexed.
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- The generated index lives in `apps/a11y-road/public/pagefind/` and is gitignored.
+- In development, search uses the index from the most recent build. Run `pnpm build` at least once to populate it.
+- To re-index without a full build, run `pnpm search:index` (requires a prior build).
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## PDF Export
 
-## Useful links
+The `pnpm pandoc` script uses Pandoc with `xelatex` to compile all tutorial MDX pages into a single PDF. Configuration lives in `pandoc/pdf-templates/`:
 
-Learn more:
+- `pdf-defaults.yaml` — Pandoc defaults file listing input pages, output path, and layout options
+- `pdf-header.tex` — LaTeX header (page numbering, footer)
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Output is written to `pandoc/output/a11y-road-tutorial.pdf`.
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Project Structure
+
+This is an Nx monorepo with the following projects:
+
+- **apps/a11y-road** — The main Next.js tutorial application
+- **apps/maple-valley-health-e2e** — Playwright e2e tests
+- **libs/a11y-kit** — Shared accessibility component library
+
+## Tooling
+
+- **Nx** — Task orchestration
+- **Biome** — Formatting and JS/TS linting
+- **ESLint** — Accessibility linting (jsx-a11y) and semantic checks
+- **Stylelint** — CSS linting
+- **Vitest** — Unit and component tests
+- **Playwright** — End-to-end tests
+- **knip** — Unused code detection
+- **Pagefind** — Static search indexing
+- **Pandoc** — PDF generation

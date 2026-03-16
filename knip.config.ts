@@ -36,6 +36,10 @@ const config: KnipConfig = {
       ignoreDependencies: ['jsdom'],
     },
   },
+  ignoreBinaries: [
+    // globally installed binaries used in scripts
+    'pandoc',
+  ],
   ignoreDependencies: [
     // Nx plugins used implicitly via nx.json
     '@nx/*',
