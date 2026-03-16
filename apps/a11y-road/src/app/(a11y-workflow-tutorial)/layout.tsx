@@ -10,7 +10,9 @@ const TutorialLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex-1 flex max-w-7xl mx-auto w-full px-4 py-8 gap-8">
         <TutorialSidebar />
         <main className="flex-1 min-w-0">
-          <article className="prose prose-gray max-w-none">{children}</article>
+          <article className="prose prose-gray max-w-none" data-pagefind-body>
+            {children}
+          </article>
         </main>
       </div>
     </>

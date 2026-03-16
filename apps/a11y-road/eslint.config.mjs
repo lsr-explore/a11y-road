@@ -9,6 +9,6 @@ export default [
   ...nx.configs['flat/react-typescript'],
   jsxA11y.flatConfigs.recommended,
   {
-    ignores: ['.next/**/*', '**/out-tsc'],
+    ignores: ['.next/**/*', '**/out-tsc', 'public/pagefind/**/*'],
   },
 ];

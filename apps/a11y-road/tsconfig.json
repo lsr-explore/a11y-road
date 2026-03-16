@@ -43,6 +43,8 @@
     "src/**/*.spec.tsx",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
+    "src/**/*.mock.ts",
+    "src/**/*.mock.tsx",
     ".next",
     "eslint.config.js",
     "eslint.config.cjs",

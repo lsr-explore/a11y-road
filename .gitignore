@@ -62,5 +62,8 @@ coverage/
 # Next.js generated type declarations
 next-env.d.ts
 
+# Pagefind generated index
+apps/a11y-road/public/pagefind/
+
 # pandoc output
 pandoc/output/
