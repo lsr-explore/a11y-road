@@ -1,5 +1,6 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
+  "ignoreFiles": ["**/pagefind/**"],
   "rules": {
     "at-rule-no-unknown": [
       true,
