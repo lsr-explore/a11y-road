@@ -54,6 +54,9 @@ export const TeamGrid = () => {
             role={member.role}
             specialty={member.specialty}
             location={member.location}
+            education={member.education}
+            clinicalInterests={member.clinicalInterests}
+            personalInterests={member.personalInterests}
             photoUrl={member.photoUrl}
             onDelete={() => handleDeleteClick(member.id, member.name)}
           />

@@ -21,7 +21,7 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'MD, University of Washington School of Medicine',
     personalInterests: 'Trail running, community gardening, reading historical fiction',
     photoUrl:
-      'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=faces',
   },
   {
     id: 'dr-okafor',
@@ -33,7 +33,7 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'MD, Johns Hopkins University School of Medicine',
     personalInterests: 'Jazz piano, woodworking, mentoring pre-med students',
     photoUrl:
-      'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=faces',
   },
   {
     id: 'np-larson',
@@ -45,7 +45,7 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'MSN, Oregon Health & Science University',
     personalInterests: 'Watercolor painting, hiking with her dogs, youth soccer coaching',
     photoUrl:
-      'https://images.unsplash.com/photo-1594824476967-48c8b964f137?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=400&fit=crop&crop=faces',
   },
   {
     id: 'dr-patel',
@@ -57,7 +57,7 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'MD, Stanford University School of Medicine',
     personalInterests: 'Yoga instruction, vegetarian cooking, travel photography',
     photoUrl:
-      'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop&crop=faces',
   },
   {
     id: 'rn-thompson',
@@ -69,7 +69,7 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'BSN, University of Michigan School of Nursing',
     personalInterests: 'Marathon running, photography, volunteering at food banks',
     photoUrl:
-      'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=faces',
   },
   {
     id: 'dr-nakamura',
@@ -81,7 +81,7 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'DO, Pacific Northwest University of Health Sciences',
     personalInterests: 'Rock climbing, snowboarding, coaching youth basketball',
     photoUrl:
-      'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&h=400&fit=crop&crop=faces',
   },
   {
     id: 'np-garcia',
@@ -93,6 +93,6 @@ export const initialTeamMembers: TeamMember[] = [
     education: 'DNP, University of California San Francisco',
     personalInterests: 'Salsa dancing, baking, genealogy research',
     photoUrl:
-      'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=400&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=400&fit=crop&crop=faces',
   },
 ];

@@ -11,6 +11,9 @@ interface TeamCardProps {
   role: string;
   specialty: string;
   location: string;
+  education: string;
+  clinicalInterests: string;
+  personalInterests: string;
   photoUrl: string;
   onDelete: () => void;
 }
@@ -37,6 +40,9 @@ export const TeamCard = ({
   role,
   specialty,
   location,
+  education,
+  clinicalInterests,
+  personalInterests,
   photoUrl,
   onDelete,
 }: TeamCardProps) => {
@@ -44,22 +50,50 @@ export const TeamCard = ({
   const roleLabel = role === 'physician' ? 'Physician' : 'Nurse';
 
   return (
-    <div className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden flex flex-col">
       <div className="relative h-48 w-full bg-gray-200">
         <Image
           src={photoUrl}
           alt={`Photo of ${name}`}
           fill
-          className="object-cover"
+          className="object-cover object-top"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-2">
+      <div className="p-4 flex flex-col flex-1">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
+          <p className="text-sm text-teal-700 font-medium">{roleLabel}</p>
+        </div>
+        <p className="mt-1 text-sm text-gray-600">{specialty}</p>
+        <p className="mt-1 text-xs text-gray-500">{location}</p>
+
+        <div className="mt-3 space-y-2 text-sm text-gray-600">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
-            <p className="text-sm text-teal-700 font-medium">{roleLabel}</p>
+            <p className="font-medium text-gray-700">Education</p>
+            <p>{education}</p>
           </div>
+          {clinicalInterests && (
+            <div>
+              <p className="font-medium text-gray-700">Clinical Interests</p>
+              <p>{clinicalInterests}</p>
+            </div>
+          )}
+          {personalInterests && (
+            <div>
+              <p className="font-medium text-gray-700">Personal Interests</p>
+              <p>{personalInterests}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-auto pt-4 flex items-center justify-between">
+          <Link
+            href={`/maple-valley-health/team/${id}/edit`}
+            className="text-sm font-medium text-teal-700 hover:text-teal-800 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-teal-600 rounded"
+          >
+            Edit profile
+          </Link>
           <A11yDemo instanceId="team-delete-button">
             {isAccessible ? (
               <button
@@ -82,14 +116,6 @@ export const TeamCard = ({
             )}
           </A11yDemo>
         </div>
-        <p className="mt-1 text-sm text-gray-600">{specialty}</p>
-        <p className="mt-1 text-xs text-gray-500">{location}</p>
-        <Link
-          href={`/maple-valley-health/team/${id}/edit`}
-          className="mt-3 inline-block text-sm font-medium text-teal-700 hover:text-teal-800 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-teal-600 rounded"
-        >
-          Edit profile
-        </Link>
       </div>
     </div>
   );
