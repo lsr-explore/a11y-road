@@ -1,3 +1,192 @@
 # Development
 
-Content coming soon. This page will cover semantic HTML, ARIA, keyboard navigation, and accessible component patterns.
+---
+
+*Priya was reviewing the first pull request for the Meet the Team rebuild. The doctor cards rendered correctly and matched Ava's designs. But the markup told a different story.*
+
+*"The doctor names are styled as headings but they're `<div>` tags with a large font size," Priya said. "And the delete buttons are `<span>` elements with onClick handlers."*
+
+*"The research participant using JAWS said they couldn't scan by heading," Marcus reminded the team. "If we use real `<h3>` elements, that's fixed. And the participant using a switch device struggled with the delete buttons — `<span>` elements aren't focusable, so the switch can't even reach them."*
+
+*"Every time we use a `<div>` where we should use a `<button>`, we're creating the same barriers our users described," Priya said. "Semantic HTML isn't pedantic — it's the difference between a page that works for everyone and one that only works with a mouse."*
+
+---
+
+## Semantic HTML First
+
+The most effective accessibility technique is also the simplest: use the right HTML element for the job.
+
+Native HTML elements come with built-in behavior that you would otherwise have to recreate manually:
+
+- `<button>` — focusable, activatable with Enter and Space, announced as "button" by screen readers
+- `<a href>` — focusable, activatable with Enter, announced as "link," communicates its destination
+- `<input>` with `<label>` — focusable, announced with its label, associated programmatically
+- `<nav>` — announced as a navigation landmark, allows screen reader users to jump to navigation
+- `<main>` — announced as the main content area, allows users to skip directly to content
+- `<h1>` through `<h6>` — create a navigable document outline, allow users to scan by heading
+
+When you use a `<div>` or `<span>` instead, you have to manually add: `role`, `tabindex`, keyboard event handlers, focus styling, and screen reader announcements. It's more code, more bugs, and more maintenance — for an inferior result.
+
+**The rule:** If a native HTML element does what you need, use it. Reach for ARIA only when native elements aren't enough.
+
+## ARIA: When and How
+
+ARIA (Accessible Rich Internet Applications) fills the gaps where native HTML falls short — custom widgets, dynamic content, and complex interactions that don't have native equivalents.
+
+**The first rule of ARIA: No ARIA is better than bad ARIA.**
+
+Incorrect ARIA is worse than no ARIA at all. A `<div role="button">` that doesn't handle keyboard events tells screen readers "this is a button" but then doesn't behave like one — creating a confusing, broken experience.
+
+### Common ARIA Patterns
+
+**Accessible names:**
+
+```html
+<!-- aria-label: provide a name when there's no visible text -->
+<button aria-label="Close dialog">
+  <svg aria-hidden="true">...</svg>
+</button>
+
+<!-- aria-labelledby: point to visible text elsewhere -->
+<h2 id="section-title">Appointments</h2>
+<nav aria-labelledby="section-title">...</nav>
+```
+
+**Live regions for dynamic content:**
+
+```html
+<!-- Announce changes to screen readers -->
+<div aria-live="polite" aria-atomic="true">
+  3 results found
+</div>
+
+<!-- For urgent updates (use sparingly) -->
+<div role="alert">
+  Your session will expire in 2 minutes.
+</div>
+```
+
+**Hiding decorative content:**
+
+```html
+<!-- Hide from screen readers (decorative icon next to text) -->
+<button>
+  <svg aria-hidden="true">...</svg>
+  Save changes
+</button>
+```
+
+### ARIA Roles to Know
+
+- `role="dialog"` — for modal dialogs (requires focus management)
+- `role="alert"` — for important, time-sensitive messages
+- `role="tab"`, `role="tabpanel"`, `role="tablist"` — for tab interfaces
+- `role="status"` — for status updates that don't require immediate attention
+- `role="navigation"` — equivalent to `<nav>` (prefer the native element)
+
+The W3C ARIA Authoring Practices Guide (APG) provides complete patterns with working examples for every common widget type.
+
+## Keyboard Navigation
+
+Every interactive element must be reachable and operable by keyboard. This is non-negotiable.
+
+**The basics:**
+
+- All interactive elements should be focusable (native elements are by default)
+- Tab order should follow the visual layout (avoid `tabindex` values greater than 0)
+- Custom widgets need keyboard handlers (Enter, Space, arrow keys, Escape as appropriate)
+- Focus must never become trapped — if you can Tab into something, you must be able to Tab out
+
+**Focus management:**
+
+Focus management matters most during dynamic interactions:
+
+- **Opening a modal** — move focus to the modal (typically the first focusable element or the close button). Trap focus inside the modal while it's open.
+- **Closing a modal** — return focus to the element that triggered it.
+- **Deleting an item from a list** — move focus to the next item, the previous item, or the list container. Don't leave focus on a removed element.
+- **Expanding an accordion** — focus can stay on the trigger. The expanded content should be the next thing in the Tab order.
+- **Dynamic content insertion** — if new content appears (a toast, a search result, an error), decide whether focus should move to it or whether an `aria-live` region should announce it.
+
+## Accessible Component Patterns
+
+### Forms
+
+```html
+<!-- Every field needs a label -->
+<label for="email">Email address</label>
+<input type="email" id="email" autocomplete="email" />
+
+<!-- Group related fields -->
+<fieldset>
+  <legend>Contact preference</legend>
+  <label><input type="radio" name="contact" value="email" /> Email</label>
+  <label><input type="radio" name="contact" value="phone" /> Phone</label>
+</fieldset>
+
+<!-- Describe errors clearly -->
+<label for="phone">Phone number</label>
+<input type="tel" id="phone" aria-describedby="phone-error" aria-invalid="true" />
+<p id="phone-error" role="alert">Please enter a valid phone number.</p>
+```
+
+### Images
+
+```html
+<!-- Informative image: describe the content -->
+<img src="/team/dr-reyes.jpg" alt="Dr. Reyes, family medicine physician" />
+
+<!-- Decorative image: hide from screen readers -->
+<img src="/decorative-wave.svg" alt="" />
+
+<!-- Complex image: provide extended description -->
+<figure>
+  <img src="/chart.png" alt="Patient satisfaction scores by department" />
+  <figcaption>Family Medicine scored highest at 94%, followed by Pediatrics at 91%.</figcaption>
+</figure>
+```
+
+### Navigation
+
+```html
+<!-- Use nav with a label -->
+<nav aria-label="Main navigation">
+  <ul>
+    <li><a href="/" aria-current="page">Home</a></li>
+    <li><a href="/services">Services</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Skip link for keyboard users -->
+<a href="#main-content" className="sr-only focus:not-sr-only">
+  Skip to main content
+</a>
+```
+
+## Document Structure
+
+Good document structure helps everyone, but it's essential for screen reader users:
+
+- **One `<h1>` per page** — the page title
+- **Heading levels don't skip** — don't jump from h2 to h4
+- **Landmark regions** — use `<header>`, `<nav>`, `<main>`, `<footer>`, and `<aside>` to create a navigable page map
+- **Language attribute** — always set `<html lang="en">` (or the appropriate language code)
+- **Page titles** — unique, descriptive `<title>` elements help users identify which tab or window they're in
+
+## Key Takeaways
+
+- Use semantic HTML elements before reaching for ARIA. Native elements provide built-in accessibility that custom implementations must recreate manually.
+- No ARIA is better than bad ARIA. Incorrect ARIA creates a worse experience than no ARIA at all.
+- Every interactive element must be keyboard-accessible. Manage focus deliberately during dynamic interactions.
+- Label every form field. Use `aria-describedby` for additional instructions and error messages.
+- Provide alt text based on context — what information does the image convey on this specific page?
+- Structure your documents with proper heading hierarchy and landmark regions.
+
+## Resources
+
+- W3C — ARIA Authoring Practices Guide (APG): https://www.w3.org/WAI/ARIA/apg/
+- MDN — ARIA: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA
+- WebAIM — Semantic Structure: https://webaim.org/techniques/semanticstructure/
+- WebAIM — Keyboard Accessibility: https://webaim.org/techniques/keyboard/
+- Deque — ARIA Examples: https://dequeuniversity.com/library/
+- Scott O'Hara — Accessible Component Patterns: https://www.scottohara.me/

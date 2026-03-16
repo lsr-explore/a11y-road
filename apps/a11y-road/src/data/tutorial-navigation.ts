@@ -36,12 +36,52 @@ export const tutorialPages: TutorialPage[] = [
   { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'business' },
 
   // Workflow
-  { slug: 'user-research', title: 'User Research', section: 'workflow' },
-  { slug: 'product-and-design', title: 'Product & Design', section: 'workflow' },
-  { slug: 'development', title: 'Development', section: 'workflow' },
-  { slug: 'dev-tools', title: 'Developer Tooling', section: 'workflow' },
-  { slug: 'testing', title: 'Testing', section: 'workflow' },
-  { slug: 'monitoring-and-feedback', title: 'Monitoring & Feedback', section: 'workflow' },
+  {
+    slug: 'user-research',
+    title: 'User Research',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
+  {
+    slug: 'product-and-design',
+    title: 'Product & Design',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
+  {
+    slug: 'development',
+    title: 'Development',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
+  {
+    slug: 'dev-tools',
+    title: 'Developer Tooling',
+    section: 'workflow',
+    children: [
+      { slug: 'eslint-jsx-a11y', title: 'eslint-plugin-jsx-a11y' },
+      { slug: 'vitest-axe', title: 'vitest-axe' },
+      { slug: 'browser-devtools', title: 'Browser DevTools' },
+      { slug: 'playwright-axe', title: 'Playwright + axe' },
+      { slug: 'storybook-a11y', title: 'Storybook a11y Addon' },
+      { slug: 'meet-the-team', title: 'Meet the Team' },
+    ],
+  },
+  {
+    slug: 'testing',
+    title: 'Testing',
+    section: 'workflow',
+    children: [
+      { slug: 'screen-reader-testing', title: 'Screen Reader Testing' },
+      { slug: 'meet-the-team', title: 'Meet the Team' },
+    ],
+  },
+  {
+    slug: 'monitoring-and-feedback',
+    title: 'Monitoring & Feedback',
+    section: 'workflow',
+    children: [{ slug: 'meet-the-team', title: 'Meet the Team' }],
+  },
 ];
 
 export const tutorialSections = [

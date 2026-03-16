@@ -21,7 +21,8 @@
       "!**/coverage",
       "!**/test-output",
       "!**/.nx",
-      "!**/next-env.d.ts"
+      "!**/next-env.d.ts",
+      "!**/public/pagefind"
     ],
     "ignoreUnknown": true
   },

@@ -1,0 +1,40 @@
+# vitest-axe
+
+Component-level accessibility testing with axe-core, integrated into your Vitest test suite. Tests run against the rendered DOM, catching issues that static analysis misses.
+
+## What It Catches
+
+- Issues in rendered HTML — invalid nesting, missing names, broken ARIA
+- Color contrast violations in computed styles
+- Missing document structure (headings, landmarks)
+- Dynamic content issues visible after rendering
+
+## What It Misses
+
+- Keyboard behavior and focus management
+- Visual layout issues (overlapping elements, reflow)
+- Screen reader compatibility
+- Full-page integration issues
+
+## How It Works
+
+vitest-axe provides a `toHaveNoViolations` matcher. Render your component with Testing Library, then assert there are no axe violations:
+
+```tsx
+import { render } from '@testing-library/react';
+import { axe } from 'vitest-axe';
+import { ContactForm } from './contact-form';
+
+test('contact form has no accessibility violations', async () => {
+  const { container } = render(<ContactForm />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+## When to Use
+
+- Add an axe check to every component test file
+- Run as part of `pnpm test` — violations fail the test suite
+
+[&larr; Back to Developer Tooling](/tutorial/dev-tools)

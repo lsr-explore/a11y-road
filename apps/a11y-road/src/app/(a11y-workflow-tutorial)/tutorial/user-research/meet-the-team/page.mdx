@@ -1,0 +1,81 @@
+# Meet the Team: User Research
+
+This page applies the concepts from [User Research](/tutorial/user-research) to the Maple Valley Health Meet the Team page — a directory of doctors and staff with options to view, add, edit, and delete entries.
+
+## The Research Plan
+
+Sana recruited five participants with different assistive technology needs. The goal wasn't to test the existing site — it was to understand how people with disabilities find and evaluate doctors online, and what barriers they encounter.
+
+**Participants:**
+
+- A patient who uses JAWS (screen reader) on Windows
+- A patient who browses at 300% zoom due to low vision
+- A patient with ADHD who described difficulty with information-dense pages
+- A patient who uses a switch device due to a motor impairment
+- A patient who uses VoiceOver on iPhone
+
+**Key tasks observed:**
+
+1. Find a family medicine doctor on the team page
+2. Read the doctor's bio and contact information
+3. (Admin flow) Add a new doctor to the directory
+4. (Admin flow) Edit an existing doctor's information
+5. (Admin flow) Delete a doctor from the directory
+
+## What the Team Learned
+
+### Participant using JAWS (screen reader)
+
+*"When I landed on the page, I heard 'image, image, image.' No names, no specialties. I had to Tab past every photo to find any text. On other health sites, I pull up the heading list and scan by doctor name — I couldn't do that here because nothing was marked up as a heading."*
+
+**Insight:** The page needed semantic headings for each doctor so screen reader users could scan by name. Images needed meaningful alt text.
+
+### Participant using browser zoom at 300%
+
+*"The doctor cards are in a grid, and at high zoom I can only see part of one card at a time. The name is at the top but the specialty and phone number are below the fold. I have to scroll down, then back up, then sideways to the next card. A simple list would be so much easier."*
+
+**Insight:** The grid layout broke at high zoom. A stacked list that reflows cleanly would serve this user much better.
+
+### Participant with ADHD
+
+*"There are twelve doctors on this page with no way to filter or search. I was looking for a family medicine doctor and I had to read every single card. By the fifth one I'd forgotten what the first few specialized in. I kept going back to re-read them."*
+
+**Insight:** A filter by specialty would reduce cognitive load. The page needed structure that supports scanning, not just reading.
+
+### Participant using switch device
+
+*"The edit and delete buttons are tiny. It took me four switch presses to land on the right button, and twice I accidentally hit delete instead of edit because they're so close together."*
+
+**Insight:** Target sizes needed to increase, and spacing between destructive actions (delete) and non-destructive actions (edit) needed to be larger.
+
+### Participant using VoiceOver on iPhone
+
+*"The page works differently than what I expected. On my doctor's other website, I can tap a doctor's name and get their full profile. Here, everything is on one long page and I have to swipe through every detail of every doctor to find the one I want."*
+
+**Insight:** A summary list linking to individual profile pages would be more navigable than a single dense page — especially on mobile with a screen reader.
+
+## Using AI to Support Research Planning
+
+AI assistants can help during the research planning phase:
+
+- **Drafting discussion guides** — describe your feature and user groups, and ask the AI to suggest research questions. Review and refine them — AI-generated questions are a starting point, not a finished guide.
+- **Identifying gaps** — share your research plan and ask: "What assistive technology users or scenarios am I missing?"
+- **Summarizing findings** — after sessions, use AI to help organize and theme raw notes. Always verify against the original recordings or notes.
+- **Writing accessible research materials** — ask the AI to check your screener surveys or consent forms for plain language and readability.
+
+AI is a useful research assistant, but it doesn't replace talking to real people. No AI can tell you what a patient using a switch device experiences when trying to delete a doctor from your directory — only that patient can.
+
+## Design Requirements from Research
+
+Based on these sessions, the team defined requirements for the redesign:
+
+1. **Each doctor's name must be a heading** — so screen reader users can scan by name
+2. **Layout must reflow to a single column** — so it works at 300%+ zoom
+3. **Add a filter by specialty** — to reduce cognitive load
+4. **Increase target sizes and spacing** — especially between edit and delete actions
+5. **Provide alt text for all doctor photos** — including name and role
+6. **Consider a summary + detail pattern** — list of doctors linking to individual profiles
+
+These requirements came directly from users — not from a WCAG checklist. The checklist confirms they're right, but the users defined what matters.
+
+[&larr; Back to User Research](/tutorial/user-research)

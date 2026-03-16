@@ -1,0 +1,43 @@
+# Browser DevTools: Accessibility Tree
+
+Every browser maintains an accessibility tree — a parallel representation of the page that assistive technologies use. Inspecting it shows you exactly what a screen reader sees.
+
+## How to Access It
+
+**Chrome:**
+
+1. Open DevTools (F12 or Cmd+Option+I)
+2. Select an element in the Elements panel
+3. Open the Accessibility panel in the sidebar
+4. View the element's accessible name, role, and properties
+5. Enable "Full-page accessibility tree" in DevTools settings for a tree view
+
+**Firefox:**
+
+1. Open DevTools
+2. Go to the Accessibility tab
+3. Browse the full accessibility tree
+4. Run built-in accessibility checks
+
+**Safari:**
+
+1. Open Web Inspector
+2. Select an element
+3. View the Node panel for accessibility properties
+
+## What to Look For
+
+- **Accessible name** — does every interactive element have a meaningful name?
+- **Role** — is the element announced correctly (button, link, heading, etc.)?
+- **State** — are states like `expanded`, `checked`, and `selected` communicated?
+- **Hidden elements** — is decorative content hidden from the tree? Is meaningful content accidentally hidden?
+
+## When to Use
+
+- During development — verify that your component is announced correctly
+- During code review — spot-check accessibility before approving
+- During debugging — understand why a screen reader announces something unexpectedly
+
+This is a diagnostic tool, not an automated check. It's the closest you can get to "seeing" what a screen reader sees without using one.
+
+[&larr; Back to Developer Tooling](/tutorial/dev-tools)

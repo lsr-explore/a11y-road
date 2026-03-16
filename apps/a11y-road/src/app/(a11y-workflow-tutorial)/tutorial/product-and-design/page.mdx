@@ -1,3 +1,135 @@
 # Product & Design
 
-Content coming soon. This page will cover accessible design practices, annotation, and design system considerations.
+---
+
+*Ava had Sana's research findings pinned to her second monitor. She was redesigning the Meet the Team page.*
+
+*"The grid layout breaks at high zoom," she said, thinking out loud. "The research participant at 300% couldn't see a full card. So I'm switching to a stacked list — name, specialty, and contact info in a single row that reflows cleanly."*
+
+*"What about the screen reader feedback?" Priya asked. "The participant using JAWS said there were no headings to scan by."*
+
+*"Each doctor's name will be an h3 inside the list," Ava said. "And I'm adding a filter by specialty — the participant with ADHD said scanning twelve unfiltered cards was overwhelming."*
+
+*Sana looked pleased. "This is exactly why we did the research first. We're not guessing what accessible means — we're solving specific problems that real users told us about."*
+
+*"One more thing," Ava said. "The edit and delete buttons — the switch user said they were too small and too close together. I'm increasing the target size and adding more spacing. But I need to annotate the keyboard behavior too. What happens when someone deletes a doctor from the list? Where does focus go?"*
+
+*"Now you're thinking like the whole team," Marcus said.*
+
+---
+
+## Accessibility Starts in Design
+
+By the time code is written, most of the important accessibility decisions have already been made — or missed. The choice of component type, the visual hierarchy, the interaction pattern, the color palette — these all happen during design. If accessibility isn't part of the design conversation, developers are left guessing, and retrofitting is inevitable.
+
+This page covers what product managers and designers can do to build accessibility into their work from the start.
+
+## Keyboard-First Thinking
+
+Every interactive element in your design will need to be usable without a mouse. This isn't just about adding Tab stops — it's about designing interaction patterns that make sense for keyboard users.
+
+**Questions to ask during design:**
+
+- How does a user navigate through this component with Tab and arrow keys?
+- Where does focus go when a modal opens? Where does it go when it closes?
+- If there's a drag-and-drop interaction, what's the keyboard alternative?
+- Can someone reach every interactive element in the intended order?
+- Is there a visible focus indicator, and does it have sufficient contrast?
+
+**Common patterns that need keyboard consideration:**
+
+- **Date pickers** — arrow keys to move between days, Enter to select, Escape to close
+- **Dropdown menus** — arrow keys to move between options, Enter to select, Escape to dismiss
+- **Tabs** — arrow keys to move between tabs, Tab to move into the panel content
+- **Modals** — focus trapped inside while open, Escape to close, focus returns to trigger on close
+- **Carousels** — previous/next buttons reachable by keyboard, auto-play should be pausable
+
+Designing these patterns explicitly — not leaving them for developers to figure out — prevents a class of accessibility issues at the source.
+
+## Design Annotations
+
+Visual mockups don't capture everything a developer needs to build accessible components. Design annotations bridge that gap. When handing off a design, include:
+
+- **Heading levels** — mark which text is an h1, h2, h3. Visual size doesn't always match semantic level.
+- **Reading order** — if the visual layout doesn't match the logical reading order (e.g., multi-column layouts), annotate the intended sequence.
+- **Interactive element types** — is it a link or a button? A link navigates. A button performs an action. This affects keyboard behavior and screen reader announcements.
+- **Focus order** — annotate the expected Tab sequence, especially for complex layouts.
+- **Focus management** — note where focus should move when modals open/close, when content is dynamically inserted, or when steps change in a wizard.
+- **Alt text** — provide alt text for images, icons, and illustrations at design time. The designer often understands the intent of an image better than the developer implementing it.
+- **Error states** — design error messages that include icon + color + text, not just a color change.
+- **Touch target sizes** — ensure interactive elements are at least 24x24 CSS pixels (WCAG 2.2 AA).
+
+## Contrast and Color
+
+Contrast is the single most common accessibility failure on the web. Addressing it in design prevents the most widespread category of barriers.
+
+**Minimum contrast ratios (WCAG AA):**
+
+- Normal text: **4.5:1**
+- Large text (18pt / 24px, or 14pt / 18.5px bold): **3:1**
+- Non-text elements (icons, borders, form controls): **3:1**
+
+**Tools for checking contrast:**
+
+- WebAIM Contrast Checker — quick, reliable, free
+- Figma plugins — Stark, Contrast, and others check contrast directly in your design tool
+- Chrome DevTools — inspect any element and see its contrast ratio in the color picker
+- OS color filters — both macOS and Windows can simulate color vision differences
+
+**Design for color independence:**
+
+- Don't use color as the only way to convey information (error = red + icon + message)
+- Ensure interactive states (hover, focus, active, disabled) are distinguishable without relying solely on color
+- Test your designs with a color blindness simulator
+
+## Designing for the Screen Reader Experience
+
+Sighted users scan a page visually. Screen reader users navigate by structure — headings, landmarks, links, and form fields. Design decisions directly affect this experience:
+
+- **Heading hierarchy** — a clear heading structure (h1 → h2 → h3) creates a navigable outline. Screen reader users often pull up a list of headings to scan a page.
+- **Landmark regions** — header, nav, main, and footer create a high-level map of the page. Design your layouts with these regions in mind.
+- **Link and button text** — "Learn more" repeated five times is useless to someone navigating a list of links. Use descriptive text: "Learn more about family medicine services."
+- **Form labels** — every field needs a visible label. Placeholder text is not a label.
+- **Status messages** — when something changes dynamically (a toast notification, a form submission result, a loading state), the design should specify how that information reaches screen reader users.
+
+## Accessible Design Systems
+
+If your organization uses a design system or component library, accessibility should be built into the components themselves:
+
+- **Document keyboard behavior** for every interactive component
+- **Include accessibility requirements** in component specifications
+- **Provide accessible examples** alongside visual examples
+- **Test components with assistive technologies** before adding them to the library
+- **Make accessibility the default** — components should be accessible out of the box, not require additional configuration
+
+A well-built accessible component used ten times across a product is far more effective than ten individual accessibility fixes.
+
+## The Role of Product Managers
+
+Product managers set priorities. When PMs include accessibility in requirements and acceptance criteria, teams build it in. When they don't, it gets deferred.
+
+**What PMs can do:**
+
+- Include accessibility requirements in user stories and acceptance criteria
+- Allocate time for accessibility work in sprint planning — it's not extra, it's part of the feature
+- Request screen reader or keyboard demonstrations as part of feature reviews
+- Treat accessibility bugs with the same priority as functional bugs
+- Include users with disabilities in research planning (see [User Research](/tutorial/user-research))
+
+## Key Takeaways
+
+- Most accessibility decisions are made — or missed — during design, before code is written.
+- Design keyboard interactions explicitly. Don't leave them for developers to figure out.
+- Annotate designs with heading levels, focus order, alt text, error states, and interactive element types.
+- Check contrast ratios during design, not after development. Use tools built into your design software.
+- Design for structure, not just visual appearance. Screen reader users navigate by headings, landmarks, and labels.
+- Build accessibility into design systems so every component is accessible by default.
+- Product managers play a key role — when accessibility is in the requirements, teams build it in.
+
+## Resources
+
+- W3C — ARIA Authoring Practices Guide (APG): https://www.w3.org/WAI/ARIA/apg/
+- WebAIM — Contrast Checker: https://webaim.org/resources/contrastchecker/
+- Stark — Figma Accessibility Plugin: https://www.getstark.co/
+- Inclusive Design Principles: https://inclusivedesignprinciples.info/
+- A11y Project — Design Checklist: https://www.a11yproject.com/checklist/

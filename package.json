@@ -17,11 +17,16 @@
     "e2e": "nx e2e apps/maple-valley-health-e2e --no-tui",
     "typecheck": "nx run-many -t typecheck --no-tui",
     "stylelint": "stylelint \"apps/**/*.css\" \"libs/**/*.css\"",
+    "stylelint:fix": "stylelint \"apps/**/*.css\" \"libs/**/*.css\" --fix",
     "markdownlint": "markdownlint 'apps/**/*.mdx' 'libs/**/*.mdx'",
     "knip": "knip",
-    "clean": "rm -rf dist out-tsc coverage test-output .next apps/*/.next apps/*/out-tsc apps/*/dist libs/*/dist .nx/cache",
-    "clean:all": "pnpm clean && pnpm nx:reset && rm -rf node_modules ",
-    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm markdownlint && pnpm typecheck && pnpm knip && pnpm test:all:coverage"
+    "clean": "rm -rf dist out-tsc coverage test-output .next apps/*/.next apps/*/out-tsc apps/*/dist libs/*/dist .nx/cache apps/a11y-road/public/pagefind",
+    "clean:pandoc": "rm -rf apps/a11y-road/pandoc/output",
+    "clean:all": "pnpm clean && pnpm nx:reset && rm -rf node_modules && pnpm clean:pandoc",
+    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm markdownlint && pnpm typecheck && pnpm knip && pnpm test:all:coverage",
+    "postbuild": "pagefind --site apps/a11y-road/.next/server/app --output-path apps/a11y-road/public/pagefind",
+    "search:index": "pagefind --site apps/a11y-road/.next/server/app --output-path apps/a11y-road/public/pagefind",
+    "pandoc": "pandoc --defaults pandoc/pdf-templates/pdf-defaults.yaml"
   },
   "private": true,
   "dependencies": {
@@ -70,6 +75,7 @@
     "knip": "^5.86.0",
     "markdownlint-cli": "^0.48.0",
     "nx": "22.5.4",
+    "pagefind": "^1.4.0",
     "postcss": "8.4.38",
     "stylelint": "^17.4.0",
     "stylelint-config-standard": "^40.0.0",

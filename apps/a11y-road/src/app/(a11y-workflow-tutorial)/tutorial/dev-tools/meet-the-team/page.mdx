@@ -1,0 +1,127 @@
+# Meet the Team: Developer Tooling
+
+This page applies the tools from [Developer Tooling](/tutorial/dev-tools) to the Maple Valley Health Meet the Team page — showing what each tool catches (and misses) for this specific feature.
+
+## eslint-plugin-jsx-a11y
+
+**What it catches on this page:**
+
+- Missing `alt` attribute on doctor photos
+- Missing `aria-label` on edit/delete buttons (if using icon-only buttons)
+- Non-semantic elements with click handlers (e.g., `<div onClick={handleDelete}>`)
+- Missing `htmlFor` on the specialty filter label
+
+**What it misses:**
+
+- Whether the alt text is *meaningful* (it sees `alt="photo"` as valid)
+- Whether edit/delete button labels include the doctor's name for context
+- Focus management after deletion
+
+## vitest-axe
+
+A component test for the doctor list:
+
+```tsx
+import { render } from '@testing-library/react';
+import { axe } from 'vitest-axe';
+import { DoctorList } from './doctor-list';
+import { mockDoctors } from './mock-data';
+
+test('doctor list has no accessibility violations', async () => {
+  const { container } = render(<DoctorList doctors={mockDoctors} />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+
+test('empty doctor list has no accessibility violations', async () => {
+  const { container } = render(<DoctorList doctors={[]} />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+
+test('doctor edit form has no accessibility violations', async () => {
+  const { container } = render(<DoctorForm doctor={mockDoctors[0]} />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+**What it catches:**
+
+- Missing form labels in the add/edit form
+- Contrast violations in doctor card styling
+- Invalid ARIA attributes on the filter or list
+
+**What it misses:**
+
+- Whether focus moves correctly after deletion (not a DOM structure issue)
+- Whether the `aria-live` region actually announces filter changes in a real screen reader
+
+## Browser DevTools: Accessibility Tree
+
+Open the accessibility tree on the Meet the Team page and check:
+
+1. **Doctor names** — are they announced as headings? Do they have the correct level (h3)?
+2. **Edit/delete buttons** — do they have names like "Edit Dr. Maria Reyes" or just "Edit"?
+3. **Doctor photos** — are they announced with meaningful alt text or skipped?
+4. **Filter dropdown** — does it have a label? Is its role correct?
+5. **Result count** — is the `aria-live` region visible in the tree?
+
+This is the fastest way to verify your markup matches the design annotations.
+
+## Playwright + axe
+
+An end-to-end test for the full page:
+
+```ts
+import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+test('meet the team page has no accessibility violations', async ({ page }) => {
+  await page.goto('/team');
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
+
+test('filtering doctors maintains accessibility', async ({ page }) => {
+  await page.goto('/team');
+  await page.selectOption('#specialty-filter', 'family-medicine');
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
+
+test('add doctor form has no accessibility violations', async ({ page }) => {
+  await page.goto('/team');
+  await page.click('button:has-text("Add new doctor")');
+  const results = await new AxeBuilder({ page })
+    .include('form')
+    .analyze();
+  expect(results.violations).toEqual([]);
+});
+```
+
+**What it catches:** Issues in the fully rendered page with real data — things that component tests in isolation might miss.
+
+## Using AI to Write Accessibility Tests
+
+AI assistants can help scaffold accessibility tests:
+
+- **"Write a vitest-axe test for a doctor card component that accepts name, specialty, and photo props"** — generates a test you can refine
+- **"What accessibility scenarios should I test for a filterable list with delete functionality?"** — suggests test cases you might not have considered
+- **"Generate Playwright tests that verify keyboard navigation through a doctor list"** — scaffolds keyboard interaction tests
+
+Review AI-generated tests carefully. They tend to test that things render without violations but may miss important interaction scenarios (focus after deletion, filter announcements, error state transitions).
+
+## What the Tools Don't Catch
+
+After running all automated tools on the Meet the Team page, the issues our research participants described that tools can't detect:
+
+- Whether the heading structure creates a *useful* scanning experience (JAWS user's feedback)
+- Whether the layout is *comfortable* at 300% zoom, not just technically reflows (low vision user's feedback)
+- Whether the filter actually reduces cognitive load or adds confusion (ADHD user's feedback)
+- Whether the button spacing prevents accidental activations with a switch device
+- Whether the overall mobile screen reader flow feels natural or disorienting
+
+These require the [manual testing](/tutorial/testing) and [screen reader testing](/tutorial/testing/screen-reader-testing) covered in the next section.
+
+[&larr; Back to Developer Tooling](/tutorial/dev-tools)

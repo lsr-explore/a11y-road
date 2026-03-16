@@ -1,3 +1,114 @@
 # User Research
 
-Content coming soon. This page will explore how to include people with disabilities in user research.
+---
+
+*The team had decided to rebuild the Meet the Team page — a directory of doctors and staff at Maple Valley Health. Sana was scoping the project.*
+
+*"Before we start designing," she said, "I want to talk to actual patients who use assistive technology. Not Marcus, not Dr. Reyes — actual users of this site."*
+
+*Marcus nodded. "I appreciate that. I can tell you what bugs me as a keyboard user, but I'm a developer who built workarounds for every issue on our site. I'm not representative of someone trying to find a cardiologist for their father."*
+
+*"Exactly," Sana said. "We need to hear from people who use screen readers to find a doctor, people who zoom to 300% to read a bio, people who get confused by our current layout. Their perspective should shape what we build — not just validate it after the fact."*
+
+*"So research first," Priya said. "Before a single wireframe."*
+
+*"Research first," Sana confirmed.*
+
+---
+
+## Why Include Users with Disabilities in Research?
+
+Most product teams do some form of user research. Fewer include people with disabilities as participants. When accessibility enters the process only during development or testing, the team is solving problems they defined without input from the people most affected.
+
+Including users with disabilities in research means:
+
+- Learning about workflows and needs you didn't anticipate
+- Discovering that your assumptions about "how people use the web" are narrower than reality
+- Building features that work for more people from the start, rather than retrofitting later
+
+This isn't about adding a checkbox to your research plan. It's about recognizing that people with disabilities are part of your user base — whether you've designed for them or not.
+
+## Research vs. Testing
+
+It's tempting to conflate "user research with participants with disabilities" and "accessibility testing." They're related but different:
+
+**User research** happens early. It informs what you build, how you prioritize, and what problems you solve. Including users with disabilities here means their needs influence the product direction.
+
+**Accessibility testing** happens later. It validates that what you built is usable. It catches implementation issues — missing labels, broken keyboard navigation, insufficient contrast.
+
+Both are essential. But if you only do testing, you're evaluating decisions that were made without the input of a significant portion of your users. You wouldn't build a mobile app without ever talking to mobile users. The same logic applies here.
+
+## Who to Include
+
+"People with disabilities" is not a single group. As we covered in [People & Assistive Devices](/tutorial/people-and-devices), there are many different types of disabilities, each with distinct needs and tools. Your research should reflect this:
+
+- **Screen reader users** — for understanding navigation patterns, information architecture, and content structure
+- **Keyboard-only users** — for understanding interaction flows, especially complex widgets and multi-step processes
+- **Low vision users** — for understanding how layouts, text, and visual design hold up under magnification
+- **People with cognitive differences** — for understanding clarity, predictability, and error recovery
+- **Deaf and hard of hearing users** — for understanding multimedia experiences and notification systems
+
+You don't need to include every group in every study. Choose participants based on the features you're researching and the questions you're trying to answer.
+
+## Recruiting Participants
+
+Finding participants with disabilities for research requires intentional effort. Some approaches:
+
+- **Disability organizations** — many organizations that serve people with disabilities can help connect you with potential participants. Reach out respectfully and be prepared to compensate participants fairly.
+- **Accessibility communities** — online communities focused on accessibility often include people willing to participate in research. Be transparent about what you're studying and why.
+- **Your existing user base** — if you have a way for users to self-identify or opt in to research, include accessibility-related questions.
+- **Specialized recruiting services** — some user research firms specialize in recruiting participants with disabilities. They handle screening, accommodations, and logistics.
+
+**Important considerations:**
+
+- **Compensate fairly** — people with disabilities are experts in their own experience. Pay them for their time, just as you would any research participant.
+- **Provide accommodations** — ask participants what they need to participate comfortably. This might include providing materials in advance, allowing extra time, using specific communication tools, or ensuring your research platform is accessible.
+- **Don't make assumptions** — ask participants about their preferences and needs rather than guessing. Not every blind person uses the same screen reader. Not every person with a motor impairment uses the same input device.
+- **Respect expertise** — participants with disabilities often have deep knowledge of accessibility issues. Listen to them as experts, not just as test subjects.
+
+## What to Ask
+
+The questions you ask users with disabilities aren't fundamentally different from the questions you ask any user. Focus on tasks, goals, and pain points:
+
+- "Walk me through how you would accomplish [task] on a site like this."
+- "What do you find most frustrating about [type of experience] online?"
+- "When you encounter a barrier on a website, what do you typically do?"
+- "What does a really good experience look like for you on the web?"
+
+Avoid questions that reduce participants to their disability:
+
+- Don't ask "What's it like to be blind and use the internet?" — ask about specific tasks and experiences.
+- Don't ask participants to evaluate your entire site in one session — scope the research to specific flows.
+- Don't ask participants to represent all people with their disability — they represent themselves.
+
+## See It in Practice: Meet the Team
+
+To see these research principles applied to a real feature, read [Meet the Team: User Research](/tutorial/user-research/meet-the-team) — where Sana recruits five participants with different assistive technology needs and discovers concrete barriers on the Maple Valley Health team page that no automated tool would have found.
+
+[See the Meet the Team research example &rarr;](/tutorial/user-research/meet-the-team)
+
+## Integrating Findings
+
+Research insights from users with disabilities should be integrated the same way you integrate any user research — into personas, journey maps, design requirements, and acceptance criteria.
+
+Some practical ways to do this:
+
+- **Include accessibility needs in personas** — if your persona set doesn't include anyone who uses assistive technology, it's incomplete.
+- **Add accessibility scenarios to journey maps** — what happens when someone navigates your checkout flow with a keyboard? What happens when someone uses your search at 300% zoom?
+- **Write acceptance criteria that include accessibility** — "user can complete the form" should include "user can complete the form using only a keyboard" and "form fields are labeled so screen readers can announce them."
+- **Share findings broadly** — make sure accessibility insights reach designers, developers, and product managers, not just the researcher who conducted the study.
+
+## Key Takeaways
+
+- Including users with disabilities in research shapes what you build, not just whether it works. Research and testing serve different purposes.
+- Recruit intentionally — disability organizations, accessibility communities, and specialized services can help.
+- Compensate participants fairly and provide accommodations. Ask what they need rather than assuming.
+- Ask about tasks, goals, and experiences — not about disability in the abstract.
+- Integrate accessibility findings into the same artifacts (personas, journey maps, acceptance criteria) you use for all research insights.
+
+## Resources
+
+- W3C — Involving Users in Web Projects for Better, Easier Accessibility: https://www.w3.org/WAI/planning/involving-users/
+- W3C — Accessibility, Usability, and Inclusion: https://www.w3.org/WAI/fundamentals/accessibility-usability-inclusion/
+- Inclusive Design Research Centre: https://idrc.ocadu.ca/
+- Microsoft — Inclusive Design Toolkit: https://inclusive.microsoft.design/

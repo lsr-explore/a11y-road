@@ -1,9 +1,11 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
+import { TutorialSearch } from './tutorial-search';
 
 export const TutorialHeader = () => {
   return (
     <header className="border-b border-gray-200 bg-white">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -18,6 +20,9 @@ export const TutorialHeader = () => {
             Tutorial
           </Link>
         </div>
+        <Suspense>
+          <TutorialSearch />
+        </Suspense>
         <nav aria-label="Section navigation">
           <ul className="flex gap-6">
             <li>

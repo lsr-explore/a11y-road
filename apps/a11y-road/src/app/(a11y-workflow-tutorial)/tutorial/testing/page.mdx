@@ -1,3 +1,128 @@
 # Testing
 
-Content coming soon. This page will cover automated, semi-automated, and manual accessibility testing strategies.
+---
+
+*The automated checks were passing on the rebuilt Meet the Team page. Jordan should have been relieved, but she wasn't.*
+
+*"I turned on VoiceOver and tried to find a family medicine doctor," she told the team. "The headings are correct — I can scan by doctor name. But when I delete a doctor, VoiceOver goes silent. Focus just... disappears. I had to swipe around to figure out where I was."*
+
+*"The automated tools can't catch that," Priya said. "They see that the button exists and has a label. They can't tell you that the experience after pressing it is disorienting."*
+
+*"Remember what the research participant using JAWS said?" Sana added. "They navigate by structure. If focus vanishes after an action, they lose their place entirely. That's not something we should wait for a user to report — it's something we should test for."*
+
+*"So I need to test the flows our research participants described," Jordan said. "Not just check that elements exist."*
+
+*"Exactly," Priya said. "The research told us what matters. Testing verifies we got it right."*
+
+---
+
+## Why Manual Testing Matters
+
+Automated tools catch structural issues — missing labels, invalid ARIA, insufficient contrast. But they can't evaluate the user experience. Manual testing answers questions that tools can't:
+
+- Does the keyboard navigation flow make sense?
+- Do screen reader announcements provide enough context?
+- Is the reading order logical?
+- Can someone actually complete this task, not just reach all the elements?
+
+Manual accessibility testing isn't a separate discipline from usability testing. It's usability testing performed with assistive technologies.
+
+## Keyboard Testing
+
+The simplest and most impactful manual test: put your mouse aside and try to complete a task using only the keyboard.
+
+**What to test:**
+
+- Can you reach every interactive element with Tab?
+- Is the focus indicator visible at all times?
+- Does the Tab order follow the visual layout?
+- Can you activate buttons with Enter or Space?
+- Can you navigate within components (tabs, menus, date pickers) with arrow keys?
+- Can you dismiss modals and dropdowns with Escape?
+- Is focus returned to a logical place after closing a modal or deleting an item?
+
+**When to test:**
+
+- Every new interactive component
+- Any change to page layout or navigation
+- Complex workflows (forms, wizards, checkout flows)
+
+You practiced this in [Try It Yourself](/tutorial/try-it-yourself). The same approach applies to every feature your team builds.
+
+## [Screen Reader Testing](/tutorial/testing/screen-reader-testing)
+
+Screen reader testing reveals whether your content makes sense when you can't see it. It's the most direct way to understand the experience of a large portion of your users — and the most common type of manual testing that teams skip because it feels unfamiliar.
+
+The [Screen Reader Testing](/tutorial/testing/screen-reader-testing) page covers how to get started with VoiceOver, NVDA, and TalkBack — including how to turn them off (learn this first), what to listen for, and a concrete walkthrough of testing the Meet the Team page.
+
+[Learn more about screen reader testing &rarr;](/tutorial/testing/screen-reader-testing)
+
+## Browser Extensions
+
+Browser extensions provide quick, visual accessibility audits without leaving the browser:
+
+- **axe DevTools** (Deque) — runs axe-core against the current page, highlights issues with clear explanations and fix suggestions
+- **WAVE** (WebAIM) — overlays icons on the page showing errors, alerts, and structural elements. Good for visual learners.
+- **ANDI** (Section 508) — focuses on what the accessibility tree sees. Shows the accessible name and role of each element.
+- **Lighthouse** (built into Chrome) — includes an accessibility audit as part of its broader site analysis
+
+These tools are excellent for spot-checking during development and code review. They complement but don't replace keyboard and screen reader testing.
+
+## Zoom and Reflow Testing
+
+Test at 200% and 400% browser zoom:
+
+- Does content reflow into a single column without horizontal scrolling?
+- Is all text still readable?
+- Do interactive elements remain usable?
+- Does any content overlap or get hidden?
+
+This takes less than a minute per page and catches issues that affect a large population of users.
+
+## Mobile Testing
+
+Mobile accessibility testing adds touch interaction and smaller screens to the picture:
+
+- **VoiceOver on iOS** — swipe to navigate, double-tap to activate. Test key flows.
+- **TalkBack on Android** — similar gesture model to iOS VoiceOver.
+- **Touch target sizes** — are buttons and links large enough to tap accurately?
+- **Orientation** — does the site work in both portrait and landscape?
+
+## Building a Testing Routine
+
+You don't need to test everything every time. Build a routine that's sustainable:
+
+**Every pull request:**
+
+- Keyboard-test any new or modified interactive element
+- Run automated checks (covered in [Developer Tooling](/tutorial/dev-tools))
+
+**Every feature:**
+
+- Screen reader test the primary user flow
+- Zoom test at 200%
+- Check contrast on any new visual elements
+
+**Every release:**
+
+- Full keyboard walkthrough of critical paths
+- Screen reader test of key pages
+- Browser extension audit of new or changed pages
+- Mobile spot-check of primary flows
+
+## Key Takeaways
+
+- Automated tools catch ~30–50% of issues. Manual testing catches the rest — especially experiential problems that require human judgment.
+- Keyboard testing is the highest-impact manual test. It takes minutes and reveals focus, navigation, and interaction issues.
+- You don't need to be a screen reader expert to test with one. Start with VoiceOver (macOS) or NVDA (Windows) and learn the basic navigation commands.
+- Browser extensions (axe DevTools, WAVE, ANDI) provide quick visual audits during development.
+- Build a sustainable testing routine: automated checks on every PR, keyboard and screen reader testing on every feature, comprehensive audits on every release.
+
+## Resources
+
+- WebAIM — Screen Reader User Survey: https://webaim.org/projects/screenreadersurvey10/
+- Deque — axe DevTools Extension: https://www.deque.com/axe/devtools/
+- WebAIM — WAVE: https://wave.webaim.org/
+- NV Access — NVDA Screen Reader: https://www.nvaccess.org/
+- Apple — VoiceOver User Guide: https://support.apple.com/guide/voiceover/welcome/mac
+- Section 508 — ANDI: https://www.ssa.gov/accessibility/andi/help/install.html

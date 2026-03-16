@@ -1,0 +1,30 @@
+# eslint-plugin-jsx-a11y
+
+Static analysis for accessibility in JSX. This ESLint plugin checks your source code for common accessibility issues at write time — before the code even runs.
+
+## What It Catches
+
+- Missing `alt` attributes on images
+- Invalid ARIA attributes and roles
+- Non-interactive elements with click handlers (e.g., `<div onClick>`)
+- Missing `<label>` associations for form fields
+- Redundant ARIA roles on semantic elements (e.g., `role="button"` on a `<button>`)
+- Invalid `tabIndex` values
+
+## What It Misses
+
+- Anything that depends on rendered output (computed styles, dynamic content)
+- Visual issues like color contrast
+- Keyboard behavior and focus management
+- Screen reader compatibility
+
+## Setup
+
+eslint-plugin-jsx-a11y is configured in your ESLint config. Most of the recommended rules are enabled by default. The plugin works in the editor for real-time feedback and in CI as a pre-merge check.
+
+## When to Use
+
+- **Always on** in your editor for immediate feedback
+- **Part of CI** — violations fail the build like any other lint error
+
+[&larr; Back to Developer Tooling](/tutorial/dev-tools)
