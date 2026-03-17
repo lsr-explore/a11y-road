@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "apps/a11y-road/.next",
+  "framework": "nextjs"
+}

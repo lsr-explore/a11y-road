@@ -67,3 +67,4 @@ apps/a11y-road/public/pagefind/
 
 # pandoc output
 pandoc/output/
+.vercel
