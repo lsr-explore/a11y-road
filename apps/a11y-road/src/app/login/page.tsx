@@ -26,11 +26,7 @@ const loginAction = async (formData: FormData) => {
   redirect('/login?error=invalid');
 };
 
-const LoginPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) => {
+const LoginPage = async ({ searchParams }: { searchParams: Promise<{ error?: string }> }) => {
   const params = await searchParams;
   const hasError = params.error === 'invalid';
 

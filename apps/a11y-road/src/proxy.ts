@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const AUTH_COOKIE = 'site-auth';
 
-export const middleware = (request: NextRequest) => {
+export const proxy = (request: NextRequest) => {
   const authEnabled = process.env.SITE_AUTH_ENABLED === 'true';
 
   if (!authEnabled) {

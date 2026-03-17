@@ -22,7 +22,8 @@
       "!**/test-output",
       "!**/.nx",
       "!**/next-env.d.ts",
-      "!**/public/pagefind"
+      "!**/public/pagefind",
+      "!.vercel"
     ],
     "ignoreUnknown": true
   },
