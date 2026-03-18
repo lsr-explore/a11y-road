@@ -72,3 +72,6 @@ pandoc/output/
 # Environment variables
 .env.local
 .env
+
+# Fumadocs
+.source
