@@ -18,7 +18,9 @@
     "target": "es2022",
     "customConditions": ["@a11y-road/source"],
     "paths": {
-      "@a11y-road/a11y-kit": ["./libs/a11y-kit/src/index.ts"]
+      "@a11y-road/a11y-kit": ["./libs/a11y-kit/src/index.ts"],
+      "@a11y-road/a11y-ui": ["./libs/a11y-ui/src/index.ts"],
+      "@a11y-road/a11y-ui/*": ["./libs/a11y-ui/src/*"]
     }
   }
 }

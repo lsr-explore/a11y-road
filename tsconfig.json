@@ -11,6 +11,9 @@
     },
     {
       "path": "./apps/a11y-road"
+    },
+    {
+      "path": "./libs/a11y-ui"
     }
   ]
 }
