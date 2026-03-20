@@ -94,7 +94,7 @@ export const TeamCard = ({
           >
             Edit profile
           </Link>
-          <A11yDemo instanceId="team-delete-button">
+          <A11yDemo instanceId="team-delete-button" label="Delete member button">
             {isAccessible ? (
               <button
                 type="button"

@@ -95,6 +95,7 @@ import { A11yDemo } from '../a11y-demo';
 
 <A11yDemo
   instanceId="landing-hero-img-alt"
+  label="Hero image"
   broken={<img src="photo.jpg" />}
   fixed={<img src="photo.jpg" alt="A doctor consulting with a patient" />}
 />
@@ -110,7 +111,7 @@ import { useA11yMode } from '../providers/a11y-mode-provider';
 
 const { isAccessible } = useA11yMode();
 
-<A11yDemo instanceId="contact-form-labels">
+<A11yDemo instanceId="contact-form-labels" label="Name field group">
   {isAccessible ? (
     <label htmlFor="name">Full Name</label>
   ) : null}

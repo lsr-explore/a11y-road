@@ -1,7 +1,7 @@
 'use client';
 
 import type { ResolvedInstance } from '@a11y-road/a11y-kit';
-import { highlightElement } from '@a11y-road/a11y-kit';
+import { highlightElementByRef, useElementRegistry } from '@a11y-road/a11y-kit';
 import { useState } from 'react';
 
 const levelColors: Record<string, string> = {
@@ -19,6 +19,14 @@ const methodLabels: Record<string, string> = {
 export const IssueCard = ({ resolved }: { resolved: ResolvedInstance }) => {
   const [expanded, setExpanded] = useState(false);
   const { instance, definition } = resolved;
+  const { getElement } = useElementRegistry();
+
+  const handleHighlight = () => {
+    const registered = getElement(instance.id);
+    if (registered) {
+      highlightElementByRef(registered.ref);
+    }
+  };
 
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
@@ -85,7 +93,7 @@ export const IssueCard = ({ resolved }: { resolved: ResolvedInstance }) => {
             </div>
 
             <button
-              onClick={() => highlightElement(instance.elementSelector)}
+              onClick={handleHighlight}
               type="button"
               className="text-xs font-medium text-teal-700 hover:text-teal-900 underline"
             >

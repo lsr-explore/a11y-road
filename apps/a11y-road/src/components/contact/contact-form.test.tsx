@@ -1,3 +1,4 @@
+import { ElementRegistryProvider } from '@a11y-road/a11y-kit';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
@@ -10,6 +11,9 @@ vi.mock('../providers/a11y-mode-provider', () => ({
   useA11yMode: () => mockUseA11yMode(),
 }));
 
+const renderWithRegistry = (ui: React.ReactElement) =>
+  render(<ElementRegistryProvider>{ui}</ElementRegistryProvider>);
+
 describe('ContactForm', () => {
   describe('when accessibility mode is enabled (fixed)', () => {
     beforeEach(() => {
@@ -17,7 +21,7 @@ describe('ContactForm', () => {
     });
 
     it('renders the accessible form with labels', () => {
-      render(<ContactForm />);
+      renderWithRegistry(<ContactForm />);
 
       expect(screen.getByLabelText('Full Name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email Address')).toBeInTheDocument();
@@ -26,13 +30,13 @@ describe('ContactForm', () => {
     });
 
     it('has no accessibility violations', async () => {
-      const { container } = render(<ContactForm />);
+      const { container } = renderWithRegistry(<ContactForm />);
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
 
     it('shows validation errors with proper ARIA attributes', async () => {
-      render(<ContactForm />);
+      renderWithRegistry(<ContactForm />);
 
       fireEvent.click(screen.getByRole('button', { name: 'Send Message' }));
 
@@ -45,7 +49,7 @@ describe('ContactForm', () => {
     });
 
     it('has no accessibility violations when showing errors', async () => {
-      const { container } = render(<ContactForm />);
+      const { container } = renderWithRegistry(<ContactForm />);
 
       fireEvent.click(screen.getByRole('button', { name: 'Send Message' }));
       await screen.findByText('Name is required');
@@ -61,14 +65,14 @@ describe('ContactForm', () => {
     });
 
     it('renders the inaccessible form without labels', () => {
-      render(<ContactForm />);
+      renderWithRegistry(<ContactForm />);
 
       expect(screen.queryByLabelText('Full Name')).not.toBeInTheDocument();
       expect(screen.getByPlaceholderText('Full Name')).toBeInTheDocument();
     });
 
     it('has accessibility violations (missing labels)', async () => {
-      render(<ContactForm />);
+      renderWithRegistry(<ContactForm />);
 
       // The broken form uses placeholders instead of labels.
       // Verify there are no proper label elements associated with inputs.
@@ -82,7 +86,7 @@ describe('ContactForm', () => {
 
       // Also verify axe flags the broken form — run with stricter rules
       // that require explicit labels (not just name attributes)
-      const { container } = render(<ContactForm />);
+      const { container } = renderWithRegistry(<ContactForm />);
       const results = await axe(container, {
         rules: {
           // Ensure label rule catches placeholder-only patterns
@@ -103,7 +107,7 @@ describe('ContactForm', () => {
     });
 
     it('shows success message on valid submission', () => {
-      render(<ContactForm />);
+      renderWithRegistry(<ContactForm />);
 
       fireEvent.change(screen.getByLabelText('Full Name'), { target: { value: 'Jane Doe' } });
       fireEvent.change(screen.getByLabelText('Email Address'), {

@@ -14,6 +14,7 @@ export const CtaSection = () => {
         <div className="mt-8">
           <A11yDemo
             instanceId="landing-cta-contrast"
+            label="Book appointment button"
             fixed={
               <Link
                 href="/contact"

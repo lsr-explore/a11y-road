@@ -1,19 +1,29 @@
+import type { RefObject } from 'react';
+
+export const highlightElementByRef = (ref: RefObject<HTMLElement | null>, durationMs = 3000) => {
+  const element = ref.current;
+  if (!element) return;
+  applyHighlight(element, durationMs);
+};
+
 export const highlightElement = (selector: string, durationMs = 3000) => {
-  const el = document.querySelector(selector);
-  if (!el) return;
+  const element = document.querySelector(selector);
+  if (!element) return;
+  applyHighlight(element as HTMLElement, durationMs);
+};
 
-  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+const applyHighlight = (element: HTMLElement, durationMs: number) => {
+  element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-  const htmlEl = el as HTMLElement;
-  htmlEl.style.outline = '3px solid #ef4444';
-  htmlEl.style.outlineOffset = '2px';
-  htmlEl.style.transition = 'outline 0.2s ease';
-  htmlEl.classList.add('a11y-highlight-pulse');
+  element.style.outline = '3px solid #ef4444';
+  element.style.outlineOffset = '2px';
+  element.style.transition = 'outline 0.2s ease';
+  element.classList.add('a11y-highlight-pulse');
 
   setTimeout(() => {
-    htmlEl.style.outline = '';
-    htmlEl.style.outlineOffset = '';
-    htmlEl.classList.remove('a11y-highlight-pulse');
+    element.style.outline = '';
+    element.style.outlineOffset = '';
+    element.classList.remove('a11y-highlight-pulse');
   }, durationMs);
 };
 
