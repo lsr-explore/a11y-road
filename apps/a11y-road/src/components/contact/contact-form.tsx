@@ -48,11 +48,11 @@ export const ContactForm = () => {
   if (isAccessible) {
     return (
       <form onSubmit={handleSubmit} noValidate className="space-y-6">
-        <A11yDemo instanceId="contact-form-labels">
+        <A11yDemo instanceId="contact-form-labels" label="Name field group">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             Full Name
           </label>
-          <A11yDemo instanceId="contact-focus-indicator">
+          <A11yDemo instanceId="contact-focus-indicator" label="Name input">
             <input
               type="text"
               id="name"
@@ -63,7 +63,7 @@ export const ContactForm = () => {
             />
           </A11yDemo>
           {errors.name && (
-            <A11yDemo instanceId="contact-error-announcement">
+            <A11yDemo instanceId="contact-error-announcement" label="Name error message">
               <p id="name-error" role="alert" className="mt-1 text-sm text-red-600">
                 {errors.name}
               </p>
@@ -121,8 +121,8 @@ export const ContactForm = () => {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
-      <A11yDemo instanceId="contact-form-labels">
-        <A11yDemo instanceId="contact-focus-indicator">
+      <A11yDemo instanceId="contact-form-labels" label="Name field group">
+        <A11yDemo instanceId="contact-focus-indicator" label="Name input">
           <input
             type="text"
             name="name"
@@ -132,7 +132,7 @@ export const ContactForm = () => {
           />
         </A11yDemo>
         {errors.name && (
-          <A11yDemo instanceId="contact-error-announcement">
+          <A11yDemo instanceId="contact-error-announcement" label="Name error message">
             <p className="mt-1 text-sm text-red-600">{errors.name}</p>
           </A11yDemo>
         )}

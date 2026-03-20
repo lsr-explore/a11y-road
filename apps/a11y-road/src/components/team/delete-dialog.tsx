@@ -34,7 +34,7 @@ export const DeleteDialog = ({ memberName, isOpen, onConfirm, onCancel }: Delete
 
   if (isAccessible) {
     return (
-      <A11yDemo instanceId="team-delete-dialog">
+      <A11yDemo instanceId="team-delete-dialog" label="Delete confirmation dialog">
         <dialog
           ref={dialogRef}
           onClose={handleDialogClose}
@@ -71,7 +71,7 @@ export const DeleteDialog = ({ memberName, isOpen, onConfirm, onCancel }: Delete
   }
 
   return (
-    <A11yDemo instanceId="team-delete-dialog">
+    <A11yDemo instanceId="team-delete-dialog" label="Delete confirmation dialog">
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div className="rounded-lg bg-white p-6 shadow-xl max-w-md">
           <div className="text-lg font-semibold text-gray-900">Remove team member</div>

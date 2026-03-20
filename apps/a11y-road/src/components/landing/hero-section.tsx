@@ -19,6 +19,7 @@ export const HeroSection = () => {
         <div className="flex-1 flex justify-center">
           <A11yDemo
             instanceId="landing-hero-img-alt"
+            label="Hero image"
             fixed={
               <Image
                 src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&h=400&fit=crop"
