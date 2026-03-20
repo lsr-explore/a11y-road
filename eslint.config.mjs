@@ -8,7 +8,8 @@ export default [
       "ignores": [
         "**/dist",
         "**/out-tsc",
-        "**/test-output"
+        "**/test-output",
+        "**/vitest.config.*.timestamp*"
       ]
     },
     {
@@ -24,7 +25,9 @@ export default [
                 {
                     enforceBuildableLibDependency: true,
                     allow: [
-                        "^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$"
+                        "^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$",
+                        "@a11y-road/a11y-kit",
+                        "@a11y-road/a11y-ui"
                     ],
                     depConstraints: [
                         {

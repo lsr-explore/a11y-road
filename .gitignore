@@ -72,3 +72,5 @@ pandoc/output/
 # Environment variables
 .env.local
 .env
+
+vitest.config.*.timestamp*

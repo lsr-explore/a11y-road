@@ -20,8 +20,8 @@ const config: KnipConfig = {
       project: ['src/**/*.{ts,tsx}'],
       ignore: ['src/data/a11y-issues.ts'],
       ignoreDependencies: [
-        'jsdom',
         '@a11y-road/a11y-kit',
+        '@a11y-road/a11y-ui',
         // Virtual module provided by @mdx-js/react
         'mdx',
       ],
@@ -33,7 +33,7 @@ const config: KnipConfig = {
     'libs/a11y-kit': {
       entry: ['src/test-setup.ts'],
       project: ['src/**/*.{ts,tsx}'],
-      ignoreDependencies: ['jsdom'],
+      ignoreDependencies: [],
     },
   },
   ignoreBinaries: [

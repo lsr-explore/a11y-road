@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "tailwind": {
+    "config": "apps/a11y-road/tailwind.config.js",
+    "css": "apps/a11y-road/src/app/global.css",
+    "baseColor": "neutral"
+  },
+  "aliases": {
+    "components": "@a11y-road/a11y-ui/components",
+    "utils": "@a11y-road/a11y-ui/lib/utils"
+  },
+  "tsx": true
+}
