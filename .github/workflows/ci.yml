@@ -39,7 +39,7 @@ jobs:
         run: pnpm biome check .
 
       - name: ESLint (accessibility + module boundaries)
-        run: pnpm nx run-many -t lint
+        run: pnpm nx run-many -t lint --no-tui -- --verbose
 
       - name: Stylelint
         run: pnpm stylelint "apps/**/*.css" "libs/**/*.css"
