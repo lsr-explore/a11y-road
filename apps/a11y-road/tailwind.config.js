@@ -16,11 +16,13 @@ module.exports = {
     './{src,pages,components,app}/**/*.{ts,tsx,js,jsx,md,mdx,html}',
     '!./{src,pages,components,app}/**/*.{stories,spec}.{ts,tsx,js,jsx,html}',
     '../../libs/a11y-kit/src/**/*.{ts,tsx}',
+    '../../libs/a11y-ui/src/**/*.{ts,tsx}',
     //     ...createGlobPatternsForDependencies(__dirname)
   ],
   theme: {
     extend: {
       colors: {
+        background: 'hsl(var(--background))',
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
           foreground: 'hsl(var(--sidebar-foreground))',

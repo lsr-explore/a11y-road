@@ -1,21 +1,12 @@
 import { TutorialHeader } from '@/components/tutorial/tutorial-header';
+import { TutorialLayoutShell } from '@/components/tutorial/tutorial-layout-shell';
 import { TutorialSidebar } from '@/components/tutorial/tutorial-sidebar';
 
 const TutorialLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <div className="sticky top-0 z-30">
-        <TutorialHeader />
-      </div>
-      <div className="flex-1 flex max-w-7xl mx-auto w-full px-4 py-8 gap-8">
-        <TutorialSidebar />
-        <main className="flex-1 min-w-0">
-          <article className="prose prose-gray max-w-none" data-pagefind-body>
-            {children}
-          </article>
-        </main>
-      </div>
-    </>
+    <TutorialLayoutShell sidebar={<TutorialSidebar />} header={<TutorialHeader />}>
+      {children}
+    </TutorialLayoutShell>
   );
 };
 export default TutorialLayout;

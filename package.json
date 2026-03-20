@@ -24,7 +24,7 @@
     "clean:tests": "rm -rf playwright-report blob-report test-results test-output coverage *.lcov",
     "clean:pandoc": "rm -rf apps/a11y-road/pandoc/output",
     "clean:all": "pnpm clean && pnpm nx:reset && rm -rf node_modules && pnpm clean:pandoc && pnpm clean:tests",
-    "check:all": "pnpm format:check && pnpm lint && pnpm stylelint && pnpm markdownlint && pnpm typecheck && pnpm knip && pnpm test:all:coverage ",
+    "check:all": "pnpm format:check;  pnpm lint; pnpm stylelint; pnpm markdownlint; pnpm typecheck; pnpm knip; pnpm test:all:coverage ",
     "postbuild": "pagefind --site apps/a11y-road/.next/server/app --output-path apps/a11y-road/public/pagefind",
     "search:index": "pagefind --site apps/a11y-road/.next/server/app --output-path apps/a11y-road/public/pagefind",
     "pandoc": "pandoc --defaults pandoc/pdf-templates/pdf-defaults.yaml",
@@ -46,8 +46,6 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
-    "@babel/core": "^7.14.5",
-    "@babel/preset-react": "^7.14.5",
     "@biomejs/biome": "^2.4.6",
     "@eslint/js": "^9.8.0",
     "@mdx-js/loader": "^3.1.0",

@@ -45,12 +45,6 @@ importers:
       '@axe-core/playwright':
         specifier: ^4.11.1
         version: 4.11.1(playwright-core@1.58.2)
-      '@babel/core':
-        specifier: ^7.14.5
-        version: 7.29.0
-      '@babel/preset-react':
-        specifier: ^7.14.5
-        version: 7.28.5(@babel/core@7.29.0)
       '@biomejs/biome':
         specifier: ^2.4.6
         version: 2.4.6

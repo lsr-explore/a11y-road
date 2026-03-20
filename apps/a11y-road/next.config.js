@@ -15,7 +15,7 @@ const nextConfig = {
   // See: https://nx.dev/recipes/next/next-config-setup
   nx: {},
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  transpilePackages: ['@a11y-road/a11y-kit'],
+  transpilePackages: ['@a11y-road/a11y-kit', '@a11y-road/a11y-ui'],
   images: {
     remotePatterns: [
       {
