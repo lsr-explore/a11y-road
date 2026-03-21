@@ -2,13 +2,40 @@
 
 This document describes how accessibility issues are defined, applied to elements, and surfaced in the side panel and summary page.
 
+## Authentication & Roles
+
+The site uses role-based authentication. See [a11y-userflow.md](a11y-userflow.md) for full details on roles, user flows, and demo accounts.
+
+Route protection is handled by `src/proxy.ts`:
+
+- Public routes (`/`, `/login`, `/about`, `/tutorial/*`) require no authentication
+- Protected routes (`/maple-valley-health/*`) require any authenticated role
+- Admin routes (`/maple-valley-health/admin/*`) require the `content-editor` role
+
+Auth utilities live in `src/lib/auth.ts`. Demo credentials are in `src/data/users.json`.
+
+### Role-Based UI
+
+The maple-valley-health layout uses a server/client split:
+
+- **Server wrapper** (`src/app/(maple-valley-health)/layout.tsx`) — reads the session cookie and passes user data to the client layout
+- **Client layout** (`src/app/(maple-valley-health)/client-layout.tsx`) — wraps children with `UserRoleProvider`, conditionally renders the demo banner, side panel, or issue logger based on role
+
+| Role | Demo Banner | Side Panel | Issue Logger | Admin |
+|------|------------|------------|-------------|-------|
+| Learner | Yes | Yes | No | No |
+| Tester | No | No | Yes | No |
+| Content Editor | Yes | Yes | No | Yes |
+
+Testers are locked to broken mode via the `forceBroken` prop on `A11yModeProvider`.
+
 ## Data Model
 
 The system separates **what** an accessibility issue is from **where** it appears.
 
 ### Issue Definition (`A11yIssueDefinition`)
 
-Defined in `src/data/issues-registry.ts` within the `issueDefinitions` array. An accessibility SME creates these. Each definition is a reusable template that can apply to many elements across the site.
+Defined in `src/data/issues-registry.ts` within the `issueDefinitions` array. An accessibility SME or content editor creates these. Each definition is a reusable template that can apply to many elements across the site.
 
 Fields:
 
@@ -40,9 +67,36 @@ Fields:
 
 A joined pair of `{ instance, definition }`, created at runtime by the registry helpers. This is what the side panel and summary page consume.
 
+### Issue Set (`IssueSet`)
+
+Defined in `src/data/issue-sets.json` and editable via the admin UI. A curated subset of definitions and instances used for tester evaluations. Content editors create these to scope what testers are evaluated against.
+
+Fields:
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique slug (e.g. `"default-full"`) |
+| `name` | Display name |
+| `description` | What this set covers |
+| `definitionIds` | Array of definition IDs, or `["all"]` for all |
+| `instanceIds` | Array of instance IDs, or `["all"]` for all |
+
+### Evaluation & Finding
+
+Evaluations track a tester's session of findings against an issue set. Types are defined in `src/data/evaluation-types.ts`.
+
+| Type | Key Fields |
+|------|------------|
+| `Evaluation` | `id`, `issueSetId`, `userId`, `startedAt`, `findings[]` |
+| `Finding` | `id`, `elementId`, `issueTypeId`, `wcagCriteria`, `description`, `matchResult`, `matchedInstanceId` |
+
 ## Type Definitions
 
-All types live in `src/data/a11y-issues.ts`. The registry data and helper functions live in `src/data/issues-registry.ts`.
+Core types (`A11yIssueDefinition`, `A11yIssueInstance`, `ResolvedInstance`, `UserRole`, `UserProfile`) live in `libs/a11y-kit/src/types.ts` and are exported from `@a11y-road/a11y-kit`.
+
+Evaluation types (`IssueSet`, `Evaluation`, `Finding`) live in `src/data/evaluation-types.ts`.
+
+The registry data and helper functions live in `src/data/issues-registry.ts`.
 
 ## Steps to Add an Accessibility Issue
 
@@ -50,7 +104,7 @@ All types live in `src/data/a11y-issues.ts`. The registry data and helper functi
 
 Check `issueDefinitions` in `src/data/issues-registry.ts` for an existing definition that matches your issue. If one exists, skip to Step 2. Definitions are reusable — `"missing-alt-text"` can apply to any image on any page.
 
-If no matching definition exists, add one:
+If no matching definition exists, add one (via admin UI or directly in code):
 
 ```ts
 {
@@ -68,7 +122,7 @@ If no matching definition exists, add one:
 
 ### Step 2: Create an instance
 
-Add an entry to `issueInstances` in `src/data/issues-registry.ts`:
+Add an entry to `issueInstances` in `src/data/issues-registry.ts` (or via the admin UI):
 
 ```ts
 {
@@ -138,6 +192,8 @@ Each instance renders as an expandable `IssueCard` showing:
 - The definition's description (general explanation)
 - WCAG criteria badges, impacted users, tags, testing method
 
+The side panel is visible to learners and content editors. Testers see the issue logger panel instead.
+
 ### Highlighting
 
 Each `IssueCard` has a "Highlight" button. When clicked, it:
@@ -148,6 +204,53 @@ Each `IssueCard` has a "Highlight" button. When clicked, it:
 4. Removes the highlight after 3 seconds
 
 This works because `A11yDemo` always renders a `<div data-a11y-id="<instanceId>">` wrapper, and the instance's `elementSelector` targets that attribute.
+
+## How the Issue Logger Works
+
+The issue logger (`src/components/issue-logger/`) is visible only to testers. It appears as a right-side panel replacing the issues side panel.
+
+Components:
+
+| Component | Description |
+|-----------|-------------|
+| `IssueLoggerProvider` | Context holding current evaluation, findings, and issue sets. Persists to localStorage. |
+| `IssueLoggerPanel` | Form for submitting findings with element/issue type dropdowns, WCAG auto-fill, and inline feedback |
+| `FindingsList` | Scrollable list of submitted findings with color-coded match status |
+
+### Matching logic
+
+When a finding is submitted, it is compared against the active issue set:
+
+- **Correct** — Element ID and issue type both match a known instance
+- **Partial** — Element ID or issue type matches, but not both
+- **Not Found** — No match in the current issue set
+
+### Evaluation pages
+
+- `/maple-valley-health/evaluation` — Current evaluation summary or list of past evaluations
+- `/maple-valley-health/evaluation/[id]` — View a specific past evaluation
+
+## How the Admin View Works
+
+The admin view (`src/app/(maple-valley-health)/maple-valley-health/admin/`) is accessible only to the `content-editor` role. Route protection is enforced by `src/proxy.ts`.
+
+Components:
+
+| Component | Description |
+|-----------|-------------|
+| `AdminDataProvider` | Context holding editable copies of definitions, instances, and issue sets. Initializes from registry + localStorage, persists edits back to localStorage. |
+| `AdminDefinitionsTable` | Table with inline edit forms for issue definitions |
+| `AdminInstancesTable` | Table with dropdowns for issue type and page selection |
+| `AdminIssueSetsTable` | Table with multi-select checkboxes for definitions and instances |
+
+Admin pages:
+
+| Page | Path | Description |
+|------|------|-------------|
+| Dashboard | `/admin` | Counts and links to sub-pages, reset to defaults button |
+| Definitions | `/admin/definitions` | CRUD for issue definitions |
+| Instances | `/admin/instances` | CRUD for issue instances |
+| Issue Sets | `/admin/issue-sets` | Create/edit curated subsets for evaluations |
 
 ## How the Summary Page Works
 
@@ -185,8 +288,9 @@ A client component (`SummaryTable`) with:
 Pages are registered in `src/data/page-metadata.ts`. When adding a new page to the site, add an entry here so the side panel and summary table can map `pageId` values to display names and routes.
 
 ```ts
-{ id: 'landing', name: 'Landing Page', route: '/' },
-{ id: 'contact', name: 'Contact Page', route: '/contact' },
+{ id: 'landing', name: 'Landing Page', route: '/maple-valley-health' },
+{ id: 'team', name: 'Team Page', route: '/maple-valley-health/team' },
+{ id: 'contact', name: 'Contact Page', route: '/maple-valley-health/contact' },
 ```
 
 ## Environment Variables
@@ -210,6 +314,19 @@ See `.env.example` in the app directory for reference. To set locally, create a 
 NEXT_PUBLIC_SHOW_A11Y_TOOLS=false
 ```
 
+## Data Persistence
+
+Currently all user-generated data is stored in localStorage:
+
+| Key | Data | Used by |
+|-----|------|---------|
+| `a11y-road-evaluations` | Evaluation sessions and findings | Tester |
+| `a11y-road-admin-definitions` | Edited issue definitions | Content Editor |
+| `a11y-road-admin-instances` | Edited issue instances | Content Editor |
+| `a11y-road-issue-sets` | Issue sets (curated subsets) | Content Editor / Tester |
+
+Future: replace with database persistence.
+
 ## Library: `@a11y-road/a11y-kit`
 
 The reusable parts of the a11y system live in `libs/a11y-kit/`. Any Next.js or React app can use this library to implement the same pattern.
@@ -221,9 +338,11 @@ The reusable parts of the a11y system live in `libs/a11y-kit/`. Any Next.js or R
 | `A11yIssueDefinition` | Type for issue templates (created by SME) |
 | `A11yIssueInstance` | Type for instances (created by developer) |
 | `ResolvedInstance` | Type for joined instance + definition pair |
+| `UserRole` | Type for user roles (`'learner' \| 'tester' \| 'content-editor'`) |
+| `UserProfile` | Type for user data (username, password, role, displayName) |
 | `A11yRegistry` | Class that takes definitions and instances, provides query helpers |
 | `A11yDemo` | React component for annotating elements (toggle mode or children mode) |
-| `A11yModeProvider` / `useA11yMode` | Context for the accessible/broken toggle |
+| `A11yModeProvider` / `useA11yMode` | Context for the accessible/broken toggle (supports `forceBroken` prop) |
 | `SidePanelProvider` / `useSidePanel` | Context for side panel open/close state |
 | `highlightElement` | Function to scroll to and pulse-highlight a DOM element by selector |
 | `highlightCss` | CSS string for the pulse animation (include in your global styles) |
