@@ -38,6 +38,26 @@
 - [ ] Add DB support
   - [ ] A11y issues
   - [ ] Issues Registry
+- [ ] understand use of common cache in node_modules for libs/a11y-ui/vite.config.mts - specifies ../../node_modules/.vite/libs/a11y-ui
+
+```js
+ That cacheDir setting points Vite's cache to the workspace root's
+  node_modules/.vite/ directory instead of letting each sub-project create its own
+   .vite cache folder locally.
+
+  In an Nx monorepo this is common for a couple reasons:
+
+  1. Shared cache location — keeps all Vite caches in one predictable place
+  (node_modules/.vite/) rather than scattered across libs/a11y-ui/.vite,
+  libs/a11y-kit/.vite, etc.
+  2. Clean cleanup — node_modules is already gitignored and gets wiped on pnpm
+  install or clean, so the cache doesn't need separate cleanup.
+  3. Avoids conflicts — the libs/a11y-ui suffix namespaces it so multiple projects
+   don't stomp on each other's caches.
+
+  It's a standard pattern that Nx generators produce when scaffolding Vite-based
+  library projects.
+```
 
 ## Tutorial Features
 
