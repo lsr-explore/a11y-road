@@ -16,7 +16,7 @@ const loginAction = async (formData: FormData) => {
       role: user.role,
       displayName: user.displayName,
     });
-    redirect('/');
+    redirect('/maple-valley-health');
   }
 
   redirect('/login?error=invalid');
