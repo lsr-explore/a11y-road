@@ -20,3 +20,12 @@ export interface ResolvedInstance {
   instance: A11yIssueInstance;
   definition: A11yIssueDefinition;
 }
+
+export type UserRole = 'learner' | 'tester' | 'content-editor';
+
+export interface UserProfile {
+  username: string;
+  password: string;
+  role: UserRole;
+  displayName: string;
+}

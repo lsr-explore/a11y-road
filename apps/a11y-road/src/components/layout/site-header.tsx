@@ -5,15 +5,9 @@ import { usePathname } from 'next/navigation';
 import { registry } from '../../data/issues-registry';
 import { getPageByRoute } from '../../data/page-metadata';
 import { useSidePanel } from '../providers/side-panel-provider';
+import { useUserRole } from '../providers/user-role-provider';
 
 const showDemoTools = process.env.NEXT_PUBLIC_SHOW_A11Y_TOOLS !== 'false';
-
-const navLinks = [
-  { href: '/maple-valley-health', label: 'Home' },
-  { href: '/maple-valley-health/team', label: 'Team' },
-  { href: '/maple-valley-health/contact', label: 'Contact' },
-  ...(showDemoTools ? [{ href: '/maple-valley-health/a11y-summary', label: 'A11y Summary' }] : []),
-];
 
 const SidePanelToggle = () => {
   const { isOpen, toggle } = useSidePanel();
@@ -52,6 +46,20 @@ const isNavLinkActive = (pathname: string, href: string): boolean => {
 
 export const SiteHeader = () => {
   const pathname = usePathname();
+  const { role, displayName, isRole } = useUserRole();
+  const isTester = isRole('tester');
+  const isContentEditor = isRole('content-editor');
+
+  const navLinks = [
+    { href: '/maple-valley-health', label: 'Home' },
+    { href: '/maple-valley-health/team', label: 'Team' },
+    { href: '/maple-valley-health/contact', label: 'Contact' },
+    ...(showDemoTools && !isTester
+      ? [{ href: '/maple-valley-health/a11y-summary', label: 'A11y Summary' }]
+      : []),
+    ...(isTester ? [{ href: '/maple-valley-health/evaluation', label: 'Evaluation' }] : []),
+    ...(isContentEditor ? [{ href: '/maple-valley-health/admin', label: 'Admin' }] : []),
+  ];
 
   return (
     <header className="bg-white border-b border-gray-200">
@@ -91,7 +99,20 @@ export const SiteHeader = () => {
               })}
             </ul>
           </nav>
-          {showDemoTools && <SidePanelToggle />}
+          {showDemoTools && !isTester && <SidePanelToggle />}
+          {role && (
+            <div className="flex items-center gap-3 text-sm border-l border-gray-200 pl-4">
+              <span className="text-gray-600">{displayName}</span>
+              <form action="/api/auth/logout" method="POST">
+                <button
+                  type="submit"
+                  className="text-gray-500 hover:text-gray-700 underline text-xs"
+                >
+                  Sign out
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </header>

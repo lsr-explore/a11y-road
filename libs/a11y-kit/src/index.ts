@@ -11,4 +11,6 @@ export type {
   A11yIssueDefinition,
   A11yIssueInstance,
   ResolvedInstance,
+  UserProfile,
+  UserRole,
 } from './types';

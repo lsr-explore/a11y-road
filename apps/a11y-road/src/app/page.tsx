@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { getSessionUser } from '../lib/auth';
 
-const HubPage = () => {
+const HubPage = async () => {
+  const user = await getSessionUser();
+
   return (
     <main className="flex-1 flex items-center justify-center px-4 py-16">
       <div className="max-w-2xl w-full text-center">
@@ -35,6 +38,25 @@ const HubPage = () => {
               explore.
             </p>
           </Link>
+        </div>
+
+        <div className="mt-8">
+          {user ? (
+            <div className="flex items-center justify-center gap-3 text-sm text-gray-600">
+              <span>
+                Signed in as <span className="font-medium text-gray-900">{user.displayName}</span>
+              </span>
+              <form action="/api/auth/logout" method="POST">
+                <button type="submit" className="text-indigo-600 hover:text-indigo-800 underline">
+                  Sign out
+                </button>
+              </form>
+            </div>
+          ) : (
+            <Link href="/login" className="text-sm text-indigo-600 hover:text-indigo-800 underline">
+              Sign in to access the demo site
+            </Link>
+          )}
         </div>
       </div>
     </main>

@@ -1,7 +1,6 @@
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-const AUTH_COOKIE = 'site-auth';
+import { createSessionCookie, getUserByUsername, verifyPassword } from '../../lib/auth';
+import { DemoCredentials } from './demo-credentials';
 
 const loginAction = async (formData: FormData) => {
   'use server';
@@ -9,16 +8,13 @@ const loginAction = async (formData: FormData) => {
   const username = formData.get('username') as string;
   const password = formData.get('password') as string;
 
-  const validUsername = process.env.SITE_AUTH_USERNAME;
-  const validPassword = process.env.SITE_AUTH_PASSWORD;
+  const user = getUserByUsername(username);
 
-  if (username === validUsername && password === validPassword) {
-    const cookieStore = await cookies();
-    cookieStore.set(AUTH_COOKIE, 'authenticated', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+  if (user && verifyPassword(password, user.password)) {
+    await createSessionCookie({
+      username: user.username,
+      role: user.role,
+      displayName: user.displayName,
     });
     redirect('/');
   }
@@ -32,13 +28,13 @@ const LoginPage = async ({ searchParams }: { searchParams: Promise<{ error?: str
 
   return (
     <main className="flex-1 flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-lg">
         <h1 className="text-2xl font-bold text-gray-900 text-center">A11y Road</h1>
         <p className="mt-2 text-sm text-gray-600 text-center">
-          This site is currently in preview. Please sign in to continue.
+          Sign in to access the Maple Valley Health demo site.
         </p>
 
-        <form action={loginAction} className="mt-8 space-y-4">
+        <form action={loginAction} className="mt-8 space-y-4 max-w-sm mx-auto">
           {hasError && (
             <p className="text-sm text-red-600" role="alert">
               Invalid username or password.
@@ -80,6 +76,8 @@ const LoginPage = async ({ searchParams }: { searchParams: Promise<{ error?: str
             Sign in
           </button>
         </form>
+
+        <DemoCredentials />
       </div>
     </main>
   );
