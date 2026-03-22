@@ -48,13 +48,14 @@ Milestones
 
 ## Logging an Issue
 
-- [ ] If other is selected, should include a text field for someone to type in something
-- [ ] Issue type should be a free-text field rather than a dropdown selector — the dropdown gives away the answer
-- [ ] WCAG criteria should be a dialog selector (not auto-filled — tester must identify the correct SC as part of the evaluation)
-- [ ] Should have a field for proposed solution
+- [x] ~~If other is selected, should include a text field~~ — "Other (describe below)" option shows a free-text input for element description
+- [x] ~~Issue type should be a free-text field~~ — replaced dropdown with free-text input; no longer auto-fills WCAG criteria
+- [x] ~~WCAG criteria should be a dialog selector~~ — searchable multi-select picker from wcag-criteria.json; tester must identify the correct SC
+- [x] ~~Should have a field for proposed solution~~ — added `proposedSolution` field to Finding type and issue logger form
 - [ ] Need a way to manage duplicates (Milestone: Needs Design) — Rather than duplicate detection, allow testers to edit or delete their own findings from the evaluation page before submission. For scoring: if two findings match the same known issue instance, only the best-scoring one counts. This handles accidental duplicates without blocking legitimate multiple issues on the same element.
 - [ ] Need a different way to identify an element - the id reveals the accessibility error
 - [ ] Display only elements found on the current page - see docs/features/element-identification.md
+- [ ] Need a way to dismiss the banner that displays after an issue is submitted.  Dismiss if the page is changed or one of the fields is updated in the issue logger.  Also add an x to be able to dismiss it.
 
 ## Evaluation Scoring
 
@@ -74,13 +75,18 @@ Currently only WCAG can be reliably auto-matched. Issue type and solution requir
 
 ## Evaluation
 
-- [ ] Only show missed issues after evaluation has been submitted
+- [x] ~~Only show missed issues after evaluation has been submitted~~ — missed issues section only renders when `status === 'submitted'`
 - [x] ~~Rename End Evaluation to Submit Evaluation~~
-- [ ] Make the Evaluation Results page the default landing page when a tester clicks Evaluation. Show active evaluations (with Resume action) alongside past evaluations (with View Results action).
+- [x] ~~Make the Evaluation Results page the default landing page~~ — evaluation page always shows evaluations list with status badges (Active/Submitted) and Resume/View Results actions
 - [x] ~~Logging out and back in should not reset an evaluation status.~~ — Added `status` field (`active | submitted`) to `Evaluation` type. Resume logic now only resumes evaluations with `status: 'active'`. `endEvaluation` sets status to `submitted`.
-- [ ] An ended evaluation should display start and end date/time and stats as seen on the individual evaluations page.
-- [ ] Show the correct answer alongside the tester's answer for each finding (expected issue type, WCAG criteria, and solution description from the instance)
-- [ ] Identify issues that don't match known issues.  It may be a valid issue, so it should be flagged for manual review.
+- [x] ~~An ended evaluation should display start and end date/time and stats~~ — detail page shows start time, submitted time (when available), status badge, and full stats
+- [x] ~~Show the correct answer alongside the tester's answer~~ — submitted evaluations show an "Expected" column with the matched definition's title, WCAG criteria, and solution description
+- [x] ~~Identify issues that don't match known issues~~ — findings with `not-found` status show "Needs review" label, and a summary banner shows the count of flagged findings
+- [ ] Figure out how to present the tester's answer and the expected answer in the table. (Milestone: Needs Design)
+- [ ] Issue Logger side panel should be hidden when in the Evaluation view.
+- [ ] Description of scoring criteria
+- [x] Include page in the Findings displayed on the Evaluation
+- [ ] Saved results should include which fields matched and why something failed or was marked as partial
 
 ## Resolved Questions
 

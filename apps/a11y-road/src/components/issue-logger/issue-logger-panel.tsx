@@ -256,11 +256,13 @@ export const IssueLoggerPanel = () => {
                   className="block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 >
                   <option value="">Select element...</option>
-                  {allInstances.map((inst) => (
-                    <option key={inst.id} value={inst.id}>
-                      {inst.id} ({inst.pageId})
-                    </option>
-                  ))}
+                  {allInstances
+                    .filter((inst) => !currentPage || inst.pageId === currentPage.id)
+                    .map((inst) => (
+                      <option key={inst.id} value={inst.id}>
+                        {inst.id}
+                      </option>
+                    ))}
                   <option value="other">Other (describe below)</option>
                 </select>
               </div>
@@ -363,7 +365,11 @@ export const IssueLoggerPanel = () => {
               </div>
             )}
 
-            <FindingsList findings={currentEvaluation.findings} />
+            <FindingsList
+              findings={currentEvaluation.findings.filter(
+                (finding) => !currentPage || finding.pageId === currentPage.id,
+              )}
+            />
           </>
         )}
       </div>

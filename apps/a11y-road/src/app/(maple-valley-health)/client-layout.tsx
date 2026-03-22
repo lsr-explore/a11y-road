@@ -1,6 +1,7 @@
 'use client';
 
 import type { UserRole } from '@a11y-road/a11y-kit';
+import { usePathname } from 'next/navigation';
 import { IssueLoggerPanel } from '@/components/issue-logger/issue-logger-panel';
 import { IssueLoggerProvider } from '@/components/issue-logger/issue-logger-provider';
 import { DemoBanner } from '@/components/layout/demo-banner';
@@ -25,9 +26,12 @@ export const MapleValleyHealthClientLayout = ({
   displayName,
   children,
 }: ClientLayoutProps) => {
+  const pathname = usePathname();
   const isTester = userRole === 'tester';
+  const isEvaluationPage = pathname.startsWith('/maple-valley-health/evaluation');
   const showBanner = showDemoTools && !isTester;
   const showSidePanel = showDemoTools && !isTester;
+  const showIssueLogger = isTester && !isEvaluationPage;
 
   const content = (
     <UserRoleProvider role={userRole} displayName={displayName}>
@@ -41,7 +45,7 @@ export const MapleValleyHealthClientLayout = ({
             <div className="flex-1 flex">
               <main className="flex-1 min-w-0">{children}</main>
               {showSidePanel && <SidePanel />}
-              {isTester && <IssueLoggerPanel />}
+              {showIssueLogger && <IssueLoggerPanel />}
             </div>
             <SiteFooter />
           </SidePanelProvider>
