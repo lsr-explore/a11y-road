@@ -10,7 +10,6 @@ const emptyInstance: A11yIssueInstance = {
   issueId: '',
   pageId: '',
   description: '',
-  elementSelector: '',
 };
 
 interface InstanceFormProps {
@@ -99,18 +98,6 @@ const InstanceForm = ({
           value={form.description}
           onChange={(ev) => setForm((prev) => ({ ...prev, description: ev.target.value }))}
           rows={2}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
-        />
-      </div>
-      <div>
-        <label htmlFor="inst-selector" className="block text-xs font-medium text-gray-700">
-          Element Selector
-        </label>
-        <input
-          id="inst-selector"
-          type="text"
-          value={form.elementSelector}
-          onChange={(ev) => setForm((prev) => ({ ...prev, elementSelector: ev.target.value }))}
           className="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
         />
       </div>

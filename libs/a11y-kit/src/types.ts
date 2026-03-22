@@ -13,7 +13,6 @@ export interface A11yIssueInstance {
   issueId: string;
   pageId: string;
   description: string;
-  elementSelector: string;
 }
 
 export interface ResolvedInstance {

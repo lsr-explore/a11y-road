@@ -101,10 +101,10 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
   useEffect(() => {
     const loaded = loadEvaluations();
     setEvaluations(loaded);
-    // Resume any in-progress evaluation
-    const inProgress = loaded.find((ev) => !ev.findings.length || ev.findings.length >= 0);
-    if (inProgress) {
-      setCurrentEvaluation(loaded[loaded.length - 1] ?? null);
+    // Resume any active evaluation
+    const activeEvaluation = loaded.find((ev) => ev.status === 'active');
+    if (activeEvaluation) {
+      setCurrentEvaluation(activeEvaluation);
     }
     setMounted(true);
   }, []);
@@ -121,6 +121,7 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
       issueSetId,
       userId,
       startedAt: new Date().toISOString(),
+      status: 'active',
       findings: [],
     };
     setCurrentEvaluation(newEval);
@@ -168,8 +169,15 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
   }, [currentEvaluation]);
 
   const endEvaluation = useCallback(() => {
+    if (currentEvaluation) {
+      setEvaluations((prev) =>
+        prev.map((ev) =>
+          ev.id === currentEvaluation.id ? { ...ev, status: 'submitted' as const } : ev,
+        ),
+      );
+    }
     setCurrentEvaluation(null);
-  }, []);
+  }, [currentEvaluation]);
 
   const getEvaluationById = useCallback(
     (id: string): Evaluation | undefined => evaluations.find((ev) => ev.id === id),

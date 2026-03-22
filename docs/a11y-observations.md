@@ -6,11 +6,12 @@ Milestones
 
 - Certification - These are items that will be needed if we flesh out certification flow.  For now, these items can be deferred.
 - Advanced Features - These are items that are a bit larger in scope and can be tackled later.
+- Needs Design - Items that need fleshing out before working on.
 
 ## General
 
-- [ ] Rename Admin Dashboard to Accessibility Issues Dashboard
-- [ ] Rename route /admin to /editor - we will have a site admin role with an /admin landing page
+- [x] ~~Rename Admin Dashboard to Accessibility Issues Dashboard~~
+- [x] ~~Rename route /admin to /editor~~ — route is now `/editor`, nav label is "Editor", sub-page back links say "Back to Dashboard"
 
 ## Issue Definitions
 
@@ -22,7 +23,7 @@ Milestones
 
 ## Issue Instances
 
-- [ ] Remove element selector - no longer used. Also remove from `A11yIssueInstance` type in a11y-kit since ref-based registration replaced it.
+- [x] ~~Remove element selector~~ — removed `elementSelector` from `A11yIssueInstance` type, admin form, and all registry data
 - [ ] Show id that is generated when editing/adding
 - [ ] Show list of issue definition ids to select from when adding an issue
 - [ ] Export to json (Milestone: Certification)
@@ -33,7 +34,7 @@ Milestones
 
 ## Issue Sets (Milestone: Certification)
 
-- [ ] Sets should consist of only instances (remove definitionIds from the model). Instances can be filtered by definition type and page when building the set, but the set itself only stores instance IDs.
+- [x] ~~Remove `definitionIds` from the `IssueSet` model~~ — removed from type, default JSON, form UI, and table display
 - [ ] Instances should be a dialog with a way to filter by page or definition type
 - [ ] Instance should show definition id
 - [ ] Ability to add all by page or all by definition id 
@@ -51,9 +52,9 @@ Milestones
 - [ ] Issue type should be a free-text field rather than a dropdown selector — the dropdown gives away the answer
 - [ ] WCAG criteria should be a dialog selector (not auto-filled — tester must identify the correct SC as part of the evaluation)
 - [ ] Should have a field for proposed solution
-- [ ] Need a way to manage duplicates (Milestone: Advanced Features)
+- [ ] Need a way to manage duplicates (Milestone: Needs Design) — Rather than duplicate detection, allow testers to edit or delete their own findings from the evaluation page before submission. For scoring: if two findings match the same known issue instance, only the best-scoring one counts. This handles accidental duplicates without blocking legitimate multiple issues on the same element.
 - [ ] Need a different way to identify an element - the id reveals the accessibility error
-- [ ] Display only elements found on the current page
+- [ ] Display only elements found on the current page - see docs/features/element-identification.md
 
 ## Evaluation Scoring
 
@@ -74,9 +75,9 @@ Currently only WCAG can be reliably auto-matched. Issue type and solution requir
 ## Evaluation
 
 - [ ] Only show missed issues after evaluation has been submitted
-- [ ] Rename End Evaluation to Submit Evaluation
-- [ ] Landing page should be a list of evaluations where a user may have several assigned to them
-- [ ] Logging out and back in should not reset an evaluation status. When I logged out and back in an evaluation that was ended was reopened. **Bug**: Need to add a `status` field (`active | submitted`) to the Evaluation type so ended evaluations are not resumed on login.
+- [x] ~~Rename End Evaluation to Submit Evaluation~~
+- [ ] Make the Evaluation Results page the default landing page when a tester clicks Evaluation. Show active evaluations (with Resume action) alongside past evaluations (with View Results action).
+- [x] ~~Logging out and back in should not reset an evaluation status.~~ — Added `status` field (`active | submitted`) to `Evaluation` type. Resume logic now only resumes evaluations with `status: 'active'`. `endEvaluation` sets status to `submitted`.
 - [ ] An ended evaluation should display start and end date/time and stats as seen on the individual evaluations page.
 - [ ] Show the correct answer alongside the tester's answer for each finding (expected issue type, WCAG criteria, and solution description from the instance)
 - [ ] Identify issues that don't match known issues.  It may be a valid issue, so it should be flagged for manual review.

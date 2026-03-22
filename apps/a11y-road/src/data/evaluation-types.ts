@@ -2,15 +2,17 @@ export interface IssueSet {
   id: string;
   name: string;
   description: string;
-  definitionIds: string[];
   instanceIds: string[];
 }
+
+export type EvaluationStatus = 'active' | 'submitted';
 
 export interface Evaluation {
   id: string;
   issueSetId: string;
   userId: string;
   startedAt: string;
+  status: EvaluationStatus;
   findings: Finding[];
 }
 

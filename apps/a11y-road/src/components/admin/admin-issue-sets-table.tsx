@@ -8,7 +8,6 @@ const emptyIssueSet: IssueSet = {
   id: '',
   name: '',
   description: '',
-  definitionIds: [],
   instanceIds: [],
 };
 
@@ -20,30 +19,14 @@ interface IssueSetFormProps {
 }
 
 const IssueSetForm = ({ issueSet, onSave, onCancel, isNew = false }: IssueSetFormProps) => {
-  const { definitions, instances } = useAdminData();
+  const { instances } = useAdminData();
   const [form, setForm] = useState(issueSet);
 
-  const isAllDefinitions = form.definitionIds.includes('all');
   const isAllInstances = form.instanceIds.includes('all');
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSave(form);
-  };
-
-  const toggleDefinition = (defId: string) => {
-    setForm((prev) => {
-      if (defId === 'all') {
-        return { ...prev, definitionIds: prev.definitionIds.includes('all') ? [] : ['all'] };
-      }
-      const filtered = prev.definitionIds.filter((id) => id !== 'all');
-      return {
-        ...prev,
-        definitionIds: filtered.includes(defId)
-          ? filtered.filter((id) => id !== defId)
-          : [...filtered, defId],
-      };
-    });
   };
 
   const toggleInstance = (instId: string) => {
@@ -103,31 +86,6 @@ const IssueSetForm = ({ issueSet, onSave, onCancel, isNew = false }: IssueSetFor
           className="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
         />
       </div>
-
-      <fieldset>
-        <legend className="text-xs font-medium text-gray-700 mb-1">Definitions</legend>
-        <div className="max-h-40 overflow-y-auto space-y-1 border border-gray-200 rounded-md p-2 bg-white">
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={isAllDefinitions}
-              onChange={() => toggleDefinition('all')}
-            />
-            <span className="font-medium">All definitions</span>
-          </label>
-          {!isAllDefinitions &&
-            definitions.map((def) => (
-              <label key={def.id} className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={form.definitionIds.includes(def.id)}
-                  onChange={() => toggleDefinition(def.id)}
-                />
-                {def.title}
-              </label>
-            ))}
-        </div>
-      </fieldset>
 
       <fieldset>
         <legend className="text-xs font-medium text-gray-700 mb-1">Instances</legend>
@@ -218,7 +176,6 @@ export const AdminIssueSetsTable = () => {
             <tr className="border-b border-gray-200 text-left">
               <th className="py-2 pr-4 font-medium text-gray-700">Name</th>
               <th className="py-2 pr-4 font-medium text-gray-700">Description</th>
-              <th className="py-2 pr-4 font-medium text-gray-700">Definitions</th>
               <th className="py-2 pr-4 font-medium text-gray-700">Instances</th>
               <th className="py-2 font-medium text-gray-700">Actions</th>
             </tr>
@@ -227,7 +184,7 @@ export const AdminIssueSetsTable = () => {
             {issueSets.map((issueSet) => (
               <tr key={issueSet.id} className="border-b border-gray-100">
                 {editingId === issueSet.id ? (
-                  <td colSpan={5} className="py-2">
+                  <td colSpan={4} className="py-2">
                     <IssueSetForm
                       issueSet={issueSet}
                       onSave={handleSaveEdit}
@@ -239,11 +196,6 @@ export const AdminIssueSetsTable = () => {
                     <td className="py-2 pr-4 font-medium">{issueSet.name}</td>
                     <td className="py-2 pr-4 text-xs text-gray-600 max-w-xs truncate">
                       {issueSet.description}
-                    </td>
-                    <td className="py-2 pr-4 text-xs">
-                      {issueSet.definitionIds.includes('all')
-                        ? 'All'
-                        : issueSet.definitionIds.length}
                     </td>
                     <td className="py-2 pr-4 text-xs">
                       {issueSet.instanceIds.includes('all') ? 'All' : issueSet.instanceIds.length}

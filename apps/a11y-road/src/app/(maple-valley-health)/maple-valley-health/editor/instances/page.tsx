@@ -2,25 +2,25 @@
 
 import Link from 'next/link';
 import { AdminDataProvider } from '@/components/admin/admin-data-provider';
-import { AdminIssueSetsTable } from '@/components/admin/admin-issue-sets-table';
+import { AdminInstancesTable } from '@/components/admin/admin-instances-table';
 
-const IssueSetsPage = () => {
+const InstancesPage = () => {
   return (
     <AdminDataProvider>
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="mb-6">
           <Link
-            href="/maple-valley-health/admin"
+            href="/maple-valley-health/editor"
             className="text-sm text-indigo-600 hover:text-indigo-800 underline"
           >
-            Back to Admin
+            Back to Dashboard
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2">Issue Sets</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mt-2">Issue Instances</h1>
         </div>
-        <AdminIssueSetsTable />
+        <AdminInstancesTable />
       </div>
     </AdminDataProvider>
   );
 };
 
-export default IssueSetsPage;
+export default InstancesPage;

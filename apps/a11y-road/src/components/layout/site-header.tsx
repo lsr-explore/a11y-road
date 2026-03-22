@@ -58,7 +58,7 @@ export const SiteHeader = () => {
       ? [{ href: '/maple-valley-health/a11y-summary', label: 'A11y Summary' }]
       : []),
     ...(isTester ? [{ href: '/maple-valley-health/evaluation', label: 'Evaluation' }] : []),
-    ...(isContentEditor ? [{ href: '/maple-valley-health/admin', label: 'Admin' }] : []),
+    ...(isContentEditor ? [{ href: '/maple-valley-health/editor', label: 'Editor' }] : []),
   ];
 
   return (

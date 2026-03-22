@@ -51,7 +51,7 @@ export const proxy = (request: NextRequest) => {
   }
 
   // Role-based route protection
-  if (pathname.startsWith('/maple-valley-health/admin')) {
+  if (pathname.startsWith('/maple-valley-health/editor')) {
     if (session.role !== 'content-editor') {
       return NextResponse.redirect(new URL('/maple-valley-health', request.url));
     }

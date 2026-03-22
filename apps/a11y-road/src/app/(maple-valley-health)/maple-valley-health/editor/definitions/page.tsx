@@ -10,10 +10,10 @@ const DefinitionsPage = () => {
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="mb-6">
           <Link
-            href="/maple-valley-health/admin"
+            href="/maple-valley-health/editor"
             className="text-sm text-indigo-600 hover:text-indigo-800 underline"
           >
-            Back to Admin
+            Back to Dashboard
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-2">Issue Definitions</h1>
         </div>

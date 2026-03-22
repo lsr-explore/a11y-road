@@ -109,7 +109,6 @@ const issueInstances: A11yIssueInstance[] = [
     issueId: 'missing-alt-text',
     pageId: 'landing',
     description: 'The hero image has no alt attribute, making it invisible to screen reader users.',
-    elementSelector: '[data-a11y-id="landing-hero-img-alt"]',
   },
   {
     id: 'landing-cta-contrast',
@@ -117,14 +116,12 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'landing',
     description:
       'The CTA button uses light gray text (#d1d5db) on a near-white background (#f3f4f6), with a contrast ratio of ~1.3:1.',
-    elementSelector: '[data-a11y-id="landing-cta-contrast"]',
   },
   {
     id: 'landing-page-language',
     issueId: 'missing-page-language',
     pageId: 'landing',
     description: 'The <html> element is missing a lang attribute on this page.',
-    elementSelector: '[data-a11y-id="landing-page-language"]',
   },
   {
     id: 'contact-form-labels',
@@ -132,7 +129,6 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'contact',
     description:
       'The contact form inputs rely on placeholder text only — no <label> elements are present.',
-    elementSelector: '[data-a11y-id="contact-form-labels"]',
   },
   {
     id: 'contact-focus-indicator',
@@ -140,7 +136,6 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'contact',
     description:
       'Contact form inputs have outline: none applied via CSS, removing all visible focus indication.',
-    elementSelector: '[data-a11y-id="contact-focus-indicator"]',
   },
   {
     id: 'contact-error-announcement',
@@ -148,7 +143,6 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'contact',
     description:
       'Contact form error messages appear visually but lack role="alert" and aria-describedby, so screen readers do not announce them.',
-    elementSelector: '[data-a11y-id="contact-error-announcement"]',
   },
   {
     id: 'team-delete-dialog',
@@ -156,7 +150,6 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'team',
     description:
       'The delete confirmation dialog is a plain <div> overlay with no semantic role, no focus management, and no keyboard support.',
-    elementSelector: '[data-a11y-id="team-delete-dialog"]',
   },
   {
     id: 'team-notification',
@@ -164,7 +157,6 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'team',
     description:
       'Success notifications use window.alert() for additions, an auto-dismiss toast without ARIA for edits, and no notification at all for deletions.',
-    elementSelector: '[data-a11y-id="team-notification"]',
   },
   {
     id: 'team-delete-button',
@@ -172,7 +164,6 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'team',
     description:
       'The delete button on team cards is a <div> with onClick — it has no role, no accessible name, no focus indicator, and cannot be activated via keyboard.',
-    elementSelector: '[data-a11y-id="team-delete-button"]',
   },
 ];
 
