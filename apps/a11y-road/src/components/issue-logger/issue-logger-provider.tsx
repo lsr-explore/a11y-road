@@ -1,9 +1,9 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import type { Evaluation, Finding, IssueSet } from '../../data/evaluation-types';
+import type { Evaluation, Finding, IssueSet, MatchDetails } from '../../data/evaluation-types';
 import defaultIssueSets from '../../data/issue-sets.json';
-import { registry } from '../../data/issues-registry';
+import { issueDefinitions, registry } from '../../data/issues-registry';
 
 const STORAGE_KEY = 'a11y-road-evaluations';
 
@@ -52,32 +52,86 @@ const saveEvaluations = (evaluations: Evaluation[]) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(evaluations));
 };
 
+const parseWcagIds = (criteria: string): string[] =>
+  criteria
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+
 const matchFinding = (
-  finding: Omit<Finding, 'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId'>,
+  finding: Omit<Finding, 'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId' | 'matchDetails'>,
   issueSet: IssueSet,
-): { matchResult: Finding['matchResult']; matchedInstanceId?: string } => {
+): {
+  matchResult: Finding['matchResult'];
+  matchedInstanceId?: string;
+  matchDetails: MatchDetails;
+} => {
   const allInstances = registry.getInstances();
   const setInstances = issueSet.instanceIds.includes('all')
     ? allInstances
     : allInstances.filter((inst) => issueSet.instanceIds.includes(inst.id));
 
-  // Exact match: same element and same issue type
-  const exactMatch = setInstances.find(
-    (inst) => inst.id === finding.elementId && inst.issueId === finding.issueTypeId,
-  );
-  if (exactMatch) {
-    return { matchResult: 'correct', matchedInstanceId: exactMatch.id };
+  const findingWcag = parseWcagIds(finding.wcagCriteria);
+
+  // Find the best matching instance
+  for (const inst of setInstances) {
+    const pageMatched = inst.pageId === finding.pageId;
+    const elementMatched = inst.id === finding.elementId;
+
+    if (!elementMatched) continue;
+
+    const definition = issueDefinitions.find((def) => def.id === inst.issueId);
+    const expectedWcag = definition?.wcagCriteria.map((wc) => wc.id) ?? [];
+    const wcagMatched =
+      findingWcag.length > 0 && findingWcag.some((wcId) => expectedWcag.includes(wcId));
+
+    if (pageMatched && elementMatched && wcagMatched) {
+      return {
+        matchResult: 'correct',
+        matchedInstanceId: inst.id,
+        matchDetails: { pageMatched, elementMatched, wcagMatched, reason: 'All criteria matched' },
+      };
+    }
+
+    if (pageMatched && elementMatched) {
+      return {
+        matchResult: 'partial',
+        matchedInstanceId: inst.id,
+        matchDetails: {
+          pageMatched,
+          elementMatched,
+          wcagMatched,
+          reason: `Element matched but WCAG criteria did not (expected: ${expectedWcag.join(', ')})`,
+        },
+      };
+    }
   }
 
-  // Partial match: same element but different issue type, or same issue type on same page
-  const partialMatch = setInstances.find(
-    (inst) => inst.id === finding.elementId || inst.issueId === finding.issueTypeId,
-  );
-  if (partialMatch) {
-    return { matchResult: 'partial', matchedInstanceId: partialMatch.id };
+  // Check for page-only matches (element on right page but wrong element selected)
+  const pageMatch = setInstances.find((inst) => inst.pageId === finding.pageId);
+  if (pageMatch) {
+    return {
+      matchResult: 'not-found',
+      matchedInstanceId: undefined,
+      matchDetails: {
+        pageMatched: true,
+        elementMatched: false,
+        wcagMatched: false,
+        reason: 'Page matched but element did not match any known issue',
+      },
+    };
   }
 
-  return { matchResult: 'not-found' };
+  return {
+    matchResult: 'not-found',
+    matchedInstanceId: undefined,
+    matchDetails: {
+      pageMatched: false,
+      elementMatched: false,
+      wcagMatched: false,
+      reason: 'No matching issue found',
+    },
+  };
 };
 
 export const IssueLoggerProvider = ({ children }: { children: React.ReactNode }) => {
@@ -129,11 +183,16 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
   }, []);
 
   const submitFinding = useCallback(
-    (input: Omit<Finding, 'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId'>): Finding => {
+    (
+      input: Omit<
+        Finding,
+        'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId' | 'matchDetails'
+      >,
+    ): Finding => {
       const issueSet =
         issueSets.find((set) => set.id === currentEvaluation?.issueSetId) ??
         (issueSets[0] as IssueSet);
-      const { matchResult, matchedInstanceId } = matchFinding(input, issueSet);
+      const { matchResult, matchedInstanceId, matchDetails } = matchFinding(input, issueSet);
 
       const finding: Finding = {
         ...input,
@@ -141,6 +200,7 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
         timestamp: new Date().toISOString(),
         matchResult,
         matchedInstanceId,
+        matchDetails,
       };
 
       setCurrentEvaluation((prev) => {
@@ -172,7 +232,9 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
     if (currentEvaluation) {
       setEvaluations((prev) =>
         prev.map((ev) =>
-          ev.id === currentEvaluation.id ? { ...ev, status: 'submitted' as const } : ev,
+          ev.id === currentEvaluation.id
+            ? { ...ev, status: 'submitted' as const, submittedAt: new Date().toISOString() }
+            : ev,
         ),
       );
     }

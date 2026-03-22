@@ -12,17 +12,28 @@ export interface Evaluation {
   issueSetId: string;
   userId: string;
   startedAt: string;
+  submittedAt?: string;
   status: EvaluationStatus;
   findings: Finding[];
 }
 
+export interface MatchDetails {
+  pageMatched: boolean;
+  elementMatched: boolean;
+  wcagMatched: boolean;
+  reason: string;
+}
+
 export interface Finding {
   id: string;
+  pageId: string;
   elementId: string;
   issueTypeId: string;
   wcagCriteria: string;
   description: string;
+  proposedSolution?: string;
   timestamp: string;
   matchResult: 'correct' | 'partial' | 'not-found';
   matchedInstanceId?: string;
+  matchDetails?: MatchDetails;
 }
