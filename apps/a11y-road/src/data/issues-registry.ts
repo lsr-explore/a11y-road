@@ -10,7 +10,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     wcagCriteria: [{ id: '1.1.1', title: 'Non-text Content', level: 'A' }],
     impactedUsers: ['Screen reader users', 'Users with images disabled'],
     tags: ['images'],
-    testingMethod: 'automated',
+    testingMethods: ['automated', 'screen-reader'],
   },
   {
     id: 'low-contrast-text',
@@ -20,7 +20,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     wcagCriteria: [{ id: '1.4.3', title: 'Contrast (Minimum)', level: 'AA' }],
     impactedUsers: ['Low vision users', 'Users in bright environments'],
     tags: ['color', 'contrast'],
-    testingMethod: 'automated',
+    testingMethods: ['automated', 'color-contrast'],
   },
   {
     id: 'missing-page-language',
@@ -30,7 +30,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     wcagCriteria: [{ id: '3.1.1', title: 'Language of Page', level: 'A' }],
     impactedUsers: ['Screen reader users'],
     tags: ['html', 'language'],
-    testingMethod: 'automated',
+    testingMethods: ['automated'],
   },
   {
     id: 'missing-form-labels',
@@ -43,7 +43,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     ],
     impactedUsers: ['Screen reader users', 'Users with cognitive disabilities'],
     tags: ['forms', 'labels'],
-    testingMethod: 'automated',
+    testingMethods: ['automated', 'screen-reader'],
   },
   {
     id: 'missing-focus-indicator',
@@ -53,7 +53,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     wcagCriteria: [{ id: '2.4.7', title: 'Focus Visible', level: 'AA' }],
     impactedUsers: ['Keyboard users', 'Users with motor disabilities'],
     tags: ['forms', 'focus'],
-    testingMethod: 'manual',
+    testingMethods: ['keyboard'],
   },
   {
     id: 'errors-not-announced',
@@ -63,7 +63,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     wcagCriteria: [{ id: '3.3.1', title: 'Error Identification', level: 'A' }],
     impactedUsers: ['Screen reader users'],
     tags: ['forms', 'errors'],
-    testingMethod: 'semi-automated',
+    testingMethods: ['semi-automated', 'screen-reader'],
   },
   {
     id: 'non-semantic-dialog',
@@ -76,7 +76,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     ],
     impactedUsers: ['Screen reader users', 'Keyboard users'],
     tags: ['dialog', 'focus'],
-    testingMethod: 'manual',
+    testingMethods: ['keyboard', 'screen-reader'],
   },
   {
     id: 'inaccessible-notification',
@@ -86,7 +86,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     wcagCriteria: [{ id: '4.1.3', title: 'Status Messages', level: 'AA' }],
     impactedUsers: ['Screen reader users'],
     tags: ['notifications', 'aria'],
-    testingMethod: 'manual',
+    testingMethods: ['screen-reader'],
   },
   {
     id: 'non-interactive-delete',
@@ -99,7 +99,7 @@ export const issueDefinitions: A11yIssueDefinition[] = [
     ],
     impactedUsers: ['Screen reader users', 'Keyboard users', 'Users with motor disabilities'],
     tags: ['buttons', 'keyboard'],
-    testingMethod: 'automated',
+    testingMethods: ['automated', 'keyboard'],
   },
 ];
 
@@ -109,6 +109,7 @@ const issueInstances: A11yIssueInstance[] = [
     issueId: 'missing-alt-text',
     pageId: 'landing',
     description: 'The hero image has no alt attribute, making it invisible to screen reader users.',
+    solutionDescription: 'Add descriptive alt text to the hero image.',
   },
   {
     id: 'landing-cta-contrast',
@@ -116,12 +117,15 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'landing',
     description:
       'The CTA button uses light gray text (#d1d5db) on a near-white background (#f3f4f6), with a contrast ratio of ~1.3:1.',
+    solutionDescription:
+      'Change the text or background color to achieve at least a 4.5:1 contrast ratio.',
   },
   {
     id: 'landing-page-language',
     issueId: 'missing-page-language',
     pageId: 'landing',
     description: 'The <html> element is missing a lang attribute on this page.',
+    solutionDescription: 'Add lang="en" to the <html> element.',
   },
   {
     id: 'contact-form-labels',
@@ -129,6 +133,7 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'contact',
     description:
       'The contact form inputs rely on placeholder text only — no <label> elements are present.',
+    solutionDescription: 'Add visible <label> elements associated with each input via htmlFor/id.',
   },
   {
     id: 'contact-focus-indicator',
@@ -136,6 +141,8 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'contact',
     description:
       'Contact form inputs have outline: none applied via CSS, removing all visible focus indication.',
+    solutionDescription:
+      'Remove outline: none and ensure a visible focus indicator is present on all interactive elements.',
   },
   {
     id: 'contact-error-announcement',
@@ -143,6 +150,8 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'contact',
     description:
       'Contact form error messages appear visually but lack role="alert" and aria-describedby, so screen readers do not announce them.',
+    solutionDescription:
+      'Add role="alert" to error message containers and aria-describedby on the associated inputs.',
   },
   {
     id: 'team-delete-dialog',
@@ -150,6 +159,8 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'team',
     description:
       'The delete confirmation dialog is a plain <div> overlay with no semantic role, no focus management, and no keyboard support.',
+    solutionDescription:
+      'Replace the <div> overlay with a native <dialog> element with proper focus management and Escape key dismissal.',
   },
   {
     id: 'team-notification',
@@ -157,6 +168,8 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'team',
     description:
       'Success notifications use window.alert() for additions, an auto-dismiss toast without ARIA for edits, and no notification at all for deletions.',
+    solutionDescription:
+      'Use a live region with role="status" for all success notifications instead of window.alert() or unsemantic toasts.',
   },
   {
     id: 'team-delete-button',
@@ -164,6 +177,8 @@ const issueInstances: A11yIssueInstance[] = [
     pageId: 'team',
     description:
       'The delete button on team cards is a <div> with onClick — it has no role, no accessible name, no focus indicator, and cannot be activated via keyboard.',
+    solutionDescription:
+      'Replace the <div> with a <button> element with an accessible name like "Delete [member name]".',
   },
 ];
 

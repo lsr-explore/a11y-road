@@ -11,6 +11,8 @@ export type {
   A11yIssueDefinition,
   A11yIssueInstance,
   ResolvedInstance,
+  TestingMethod,
   UserProfile,
   UserRole,
 } from './types';
+export { testingMethodLabels } from './types';

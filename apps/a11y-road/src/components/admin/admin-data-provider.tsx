@@ -44,6 +44,31 @@ const AdminDataContext = createContext<AdminDataContextValue>({
   resetToDefaults: () => {},
 });
 
+const migrateDefinitions = (data: unknown[]): A11yIssueDefinition[] => {
+  return data.map((item) => {
+    const def = item as Record<string, unknown>;
+    if ('testingMethod' in def && !('testingMethods' in def)) {
+      const { testingMethod, ...rest } = def;
+      return {
+        ...rest,
+        testingMethods: [testingMethod as string],
+      } as unknown as A11yIssueDefinition;
+    }
+    return item as A11yIssueDefinition;
+  });
+};
+
+const migrateInstances = (data: unknown[]): A11yIssueInstance[] => {
+  return data.map((item) => {
+    const inst = item as Record<string, unknown>;
+    if ('elementSelector' in inst) {
+      const { elementSelector: _removed, ...rest } = inst;
+      return rest as unknown as A11yIssueInstance;
+    }
+    return item as A11yIssueInstance;
+  });
+};
+
 const loadFromStorage = <T,>(key: string, fallback: T): T => {
   if (typeof window === 'undefined') return fallback;
   try {
@@ -69,8 +94,10 @@ export const AdminDataProvider = ({ children }: { children: React.ReactNode }) =
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setDefinitions(loadFromStorage(DEFINITIONS_KEY, defaultDefinitions));
-    setInstances(loadFromStorage(INSTANCES_KEY, defaultInstances));
+    const storedDefs = loadFromStorage<unknown[]>(DEFINITIONS_KEY, defaultDefinitions);
+    setDefinitions(migrateDefinitions(storedDefs));
+    const storedInsts = loadFromStorage<unknown[]>(INSTANCES_KEY, defaultInstances);
+    setInstances(migrateInstances(storedInsts));
     setIssueSets(loadFromStorage(ISSUE_SETS_KEY, defaultIssueSets as IssueSet[]));
     setMounted(true);
   }, []);

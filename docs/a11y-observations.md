@@ -15,22 +15,22 @@ Milestones
 
 ## Issue Definitions
 
-- [ ] Title - show ID that will be generated
-- [ ] WCAG Criteria - Show a popup of all WCAG criteria and allow selecting multiple and auto populating the field with chiclets with an x to delete
-- [ ] Testing Method - Replace the current single-value field with a multi-select of specific testing methods (screen reader, keyboard, zoom, color contrast, automated, semi-automated). Include a definition of what each method means.
-- [ ] Should display a success banner that indicates what has been added/edited/deleted
+- [x] ~~Title - show ID when editing~~ — ID shown as read-only text when editing, editable field when adding
+- [x] ~~WCAG Criteria - multi-select with chiclets~~ — searchable dropdown from wcag-criteria.json, selected criteria shown as chiclets with remove buttons
+- [x] ~~Testing Method - multi-select~~ — changed from single `testingMethod` to `testingMethods: TestingMethod[]` with 6 options (screen reader, keyboard, zoom, color contrast, automated, semi-automated) with descriptions
+- [x] ~~Should display a success banner that indicates what has been added/edited/deleted~~
 - [ ] Allow json export (Milestone: Certification)
 
 ## Issue Instances
 
 - [x] ~~Remove element selector~~ — removed `elementSelector` from `A11yIssueInstance` type, admin form, and all registry data
-- [ ] Show id that is generated when editing/adding
-- [ ] Show list of issue definition ids to select from when adding an issue
+- [x] ~~Show id when editing/adding~~ — ID shown as read-only text when editing, editable field when adding
+- [x] ~~Show list of issue definition ids to select from when adding an issue~~ — dropdown now shows title and ID together
 - [ ] Export to json (Milestone: Certification)
-- [ ] In the table, display the full text in multiline cell
-- [ ] Allow sorting by Page or ID
-- [ ] Should display a success banner that indicates what has been added/edited/deleted
-- [ ] Add a solution description field - describes what the "fixed" version does (e.g. "add descriptive alt text to the hero image"). This is used for evaluation matching.
+- [x] ~~In the table, display the full text in multiline cell~~ — changed from `truncate` to `whitespace-normal`
+- [x] ~~Allow sorting by Page or ID~~ — sortable column headers with ascending/descending toggle
+- [x] ~~Should display a success banner that indicates what has been added/edited/deleted~~
+- [x] ~~Add a solution description field~~ — added `solutionDescription` (optional) to `A11yIssueInstance` type, form, table, and all registry data
 
 ## Issue Sets (Milestone: Certification)
 
