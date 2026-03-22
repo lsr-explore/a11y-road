@@ -2,6 +2,11 @@
 
 This document captures observations and suggested changes.
 
+Milestones
+
+- Certification - These are items that will be needed if we flesh out certification flow.  For now, these items can be deferred.
+- Advanced Features - These are items that are a bit larger in scope and can be tackled later.
+
 ## General
 
 - [ ] Rename Admin Dashboard to Accessibility Issues Dashboard
@@ -13,25 +18,25 @@ This document captures observations and suggested changes.
 - [ ] WCAG Criteria - Show a popup of all WCAG criteria and allow selecting multiple and auto populating the field with chiclets with an x to delete
 - [ ] Testing Method - Replace the current single-value field with a multi-select of specific testing methods (screen reader, keyboard, zoom, color contrast, automated, semi-automated). Include a definition of what each method means.
 - [ ] Should display a success banner that indicates what has been added/edited/deleted
-- [ ] Allow json export
+- [ ] Allow json export (Milestone: Certification)
 
 ## Issue Instances
 
 - [ ] Remove element selector - no longer used. Also remove from `A11yIssueInstance` type in a11y-kit since ref-based registration replaced it.
 - [ ] Show id that is generated when editing/adding
 - [ ] Show list of issue definition ids to select from when adding an issue
-- [ ] Export to json
+- [ ] Export to json (Milestone: Certification)
 - [ ] In the table, display the full text in multiline cell
 - [ ] Allow sorting by Page or ID
 - [ ] Should display a success banner that indicates what has been added/edited/deleted
 - [ ] Add a solution description field - describes what the "fixed" version does (e.g. "add descriptive alt text to the hero image"). This is used for evaluation matching.
 
-## Issue Sets
+## Issue Sets (Milestone: Certification)
 
 - [ ] Sets should consist of only instances (remove definitionIds from the model). Instances can be filtered by definition type and page when building the set, but the set itself only stores instance IDs.
 - [ ] Instances should be a dialog with a way to filter by page or definition type
 - [ ] Instance should show definition id
-- [ ] Ability to add all by page or all by definition id
+- [ ] Ability to add all by page or all by definition id 
 - [ ] Support random set generation - randomly sample N instances with optional constraints (e.g. "at least one from each page", "at least 3 different issue types"). Useful for certification scenarios where variability is needed across multiple test sessions.
 
 ### Use cases for sets
@@ -46,8 +51,9 @@ This document captures observations and suggested changes.
 - [ ] Issue type should be a free-text field rather than a dropdown selector — the dropdown gives away the answer
 - [ ] WCAG criteria should be a dialog selector (not auto-filled — tester must identify the correct SC as part of the evaluation)
 - [ ] Should have a field for proposed solution
-- [ ] Need a way to manage duplicates
-- [ ] Flag as partial if WCAG is incorrect
+- [ ] Need a way to manage duplicates (Milestone: Advanced Features)
+- [ ] Need a different way to identify an element - the id reveals the accessibility error
+- [ ] Display only elements found on the current page
 
 ## Evaluation Scoring
 
@@ -73,6 +79,7 @@ Currently only WCAG can be reliably auto-matched. Issue type and solution requir
 - [ ] Logging out and back in should not reset an evaluation status. When I logged out and back in an evaluation that was ended was reopened. **Bug**: Need to add a `status` field (`active | submitted`) to the Evaluation type so ended evaluations are not resumed on login.
 - [ ] An ended evaluation should display start and end date/time and stats as seen on the individual evaluations page.
 - [ ] Show the correct answer alongside the tester's answer for each finding (expected issue type, WCAG criteria, and solution description from the instance)
+- [ ] Identify issues that don't match known issues.  It may be a valid issue, so it should be flagged for manual review.
 
 ## Resolved Questions
 
