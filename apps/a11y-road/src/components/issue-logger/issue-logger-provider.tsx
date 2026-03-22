@@ -76,7 +76,7 @@ const matchFinding = (
   // Find the best matching instance
   for (const inst of setInstances) {
     const pageMatched = inst.pageId === finding.pageId;
-    const elementMatched = inst.id === finding.elementId;
+    const elementMatched = inst.label === finding.elementId;
 
     if (!elementMatched) continue;
 

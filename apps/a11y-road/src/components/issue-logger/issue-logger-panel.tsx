@@ -2,15 +2,12 @@
 
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { registry } from '../../data/issues-registry';
 import { getPageByRoute } from '../../data/page-metadata';
 import wcagCriteriaData from '../../data/wcag-criteria.json';
 import { FindingsList } from './findings-list';
 import { useIssueLogger } from './issue-logger-provider';
 
 type WcagCriterion = { id: string; title: string; level: 'A' | 'AA' | 'AAA' };
-
-const allInstances = registry.getInstances();
 
 const WcagSelector = ({
   selected,
@@ -127,11 +124,29 @@ const WcagSelector = ({
   );
 };
 
+const queryPageElements = (): string[] => {
+  if (typeof document === 'undefined') return [];
+  const nodes = document.querySelectorAll('[data-a11y-name]');
+  return [
+    ...new Set(
+      Array.from(nodes)
+        .map((node) => node.getAttribute('data-a11y-name') ?? '')
+        .filter(Boolean),
+    ),
+  ];
+};
+
 export const IssueLoggerPanel = () => {
   const { currentEvaluation, submitFinding, startEvaluation, issueSets } = useIssueLogger();
   const pathname = usePathname();
   const currentPage = getPageByRoute(pathname);
+  const [pageElements, setPageElements] = useState<string[]>([]);
   const [elementId, setElementId] = useState('');
+  // biome-ignore lint/correctness/useExhaustiveDependencies: pathname triggers DOM re-query on navigation
+  useEffect(() => {
+    const timer = setTimeout(() => setPageElements(queryPageElements()), 100);
+    return () => clearTimeout(timer);
+  }, [pathname]);
   const [otherElement, setOtherElement] = useState('');
   const [issueType, setIssueType] = useState('');
   const [wcagCriteria, setWcagCriteria] = useState<string[]>([]);
@@ -256,13 +271,11 @@ export const IssueLoggerPanel = () => {
                   className="block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 >
                   <option value="">Select element...</option>
-                  {allInstances
-                    .filter((inst) => !currentPage || inst.pageId === currentPage.id)
-                    .map((inst) => (
-                      <option key={inst.id} value={inst.id}>
-                        {inst.id}
-                      </option>
-                    ))}
+                  {pageElements.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
                   <option value="other">Other (describe below)</option>
                 </select>
               </div>

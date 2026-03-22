@@ -108,6 +108,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'landing-hero-img-alt',
     issueId: 'missing-alt-text',
     pageId: 'landing',
+    label: 'Hero image',
     description: 'The hero image has no alt attribute, making it invisible to screen reader users.',
     solutionDescription: 'Add descriptive alt text to the hero image.',
   },
@@ -115,6 +116,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'landing-cta-contrast',
     issueId: 'low-contrast-text',
     pageId: 'landing',
+    label: 'Book appointment button',
     description:
       'The CTA button uses light gray text (#d1d5db) on a near-white background (#f3f4f6), with a contrast ratio of ~1.3:1.',
     solutionDescription:
@@ -124,6 +126,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'landing-page-language',
     issueId: 'missing-page-language',
     pageId: 'landing',
+    label: 'Page language',
     description: 'The <html> element is missing a lang attribute on this page.',
     solutionDescription: 'Add lang="en" to the <html> element.',
   },
@@ -131,6 +134,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'contact-form-labels',
     issueId: 'missing-form-labels',
     pageId: 'contact',
+    label: 'Name field group',
     description:
       'The contact form inputs rely on placeholder text only — no <label> elements are present.',
     solutionDescription: 'Add visible <label> elements associated with each input via htmlFor/id.',
@@ -139,6 +143,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'contact-focus-indicator',
     issueId: 'missing-focus-indicator',
     pageId: 'contact',
+    label: 'Name input',
     description:
       'Contact form inputs have outline: none applied via CSS, removing all visible focus indication.',
     solutionDescription:
@@ -148,6 +153,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'contact-error-announcement',
     issueId: 'errors-not-announced',
     pageId: 'contact',
+    label: 'Name error message',
     description:
       'Contact form error messages appear visually but lack role="alert" and aria-describedby, so screen readers do not announce them.',
     solutionDescription:
@@ -157,6 +163,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'team-delete-dialog',
     issueId: 'non-semantic-dialog',
     pageId: 'team',
+    label: 'Delete confirmation dialog',
     description:
       'The delete confirmation dialog is a plain <div> overlay with no semantic role, no focus management, and no keyboard support.',
     solutionDescription:
@@ -166,6 +173,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'team-notification',
     issueId: 'inaccessible-notification',
     pageId: 'team',
+    label: 'Team notification',
     description:
       'Success notifications use window.alert() for additions, an auto-dismiss toast without ARIA for edits, and no notification at all for deletions.',
     solutionDescription:
@@ -175,6 +183,7 @@ const issueInstances: A11yIssueInstance[] = [
     id: 'team-delete-button',
     issueId: 'non-interactive-delete',
     pageId: 'team',
+    label: 'Delete member button',
     description:
       'The delete button on team cards is a <div> with onClick — it has no role, no accessible name, no focus indicator, and cannot be activated via keyboard.',
     solutionDescription:

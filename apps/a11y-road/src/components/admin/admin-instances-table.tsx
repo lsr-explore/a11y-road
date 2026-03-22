@@ -9,6 +9,7 @@ const emptyInstance: A11yIssueInstance = {
   id: '',
   issueId: '',
   pageId: '',
+  label: '',
   description: '',
   solutionDescription: '',
 };
@@ -97,6 +98,20 @@ const InstanceForm = ({
             </option>
           ))}
         </select>
+      </div>
+      <div>
+        <label htmlFor="inst-label" className="block text-xs font-medium text-gray-700">
+          Label (matches data-a11y-name)
+        </label>
+        <input
+          id="inst-label"
+          type="text"
+          value={form.label}
+          onChange={(ev) => setForm((prev) => ({ ...prev, label: ev.target.value }))}
+          required
+          placeholder="e.g. Hero image, Name input..."
+          className="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+        />
       </div>
       <div>
         <label htmlFor="inst-desc" className="block text-xs font-medium text-gray-700">

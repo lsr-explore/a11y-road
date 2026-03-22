@@ -47,6 +47,7 @@ export interface A11yIssueInstance {
   id: string;
   issueId: string;
   pageId: string;
+  label: string;
   description: string;
   solutionDescription?: string;
 }

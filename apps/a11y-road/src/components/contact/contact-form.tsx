@@ -47,9 +47,13 @@ export const ContactForm = () => {
 
   if (isAccessible) {
     return (
-      <form onSubmit={handleSubmit} noValidate className="space-y-6">
+      <form onSubmit={handleSubmit} noValidate className="space-y-6" data-a11y-name="Contact form">
         <A11yDemo instanceId="contact-form-labels" label="Name field group">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+            data-a11y-name="Name field group"
+          >
             Full Name
           </label>
           <A11yDemo instanceId="contact-focus-indicator" label="Name input">
@@ -57,6 +61,7 @@ export const ContactForm = () => {
               type="text"
               id="name"
               name="name"
+              data-a11y-name="Name input"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-2 focus:outline-teal-600 focus:border-teal-600"
               aria-describedby={errors.name ? 'name-error' : undefined}
               aria-invalid={errors.name ? true : undefined}
@@ -64,7 +69,12 @@ export const ContactForm = () => {
           </A11yDemo>
           {errors.name && (
             <A11yDemo instanceId="contact-error-announcement" label="Name error message">
-              <p id="name-error" role="alert" className="mt-1 text-sm text-red-600">
+              <p
+                id="name-error"
+                role="alert"
+                className="mt-1 text-sm text-red-600"
+                data-a11y-name="Name error message"
+              >
                 {errors.name}
               </p>
             </A11yDemo>
@@ -79,6 +89,7 @@ export const ContactForm = () => {
             type="email"
             id="email"
             name="email"
+            data-a11y-name="Email input"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-2 focus:outline-teal-600 focus:border-teal-600"
             aria-describedby={errors.email ? 'email-error' : undefined}
             aria-invalid={errors.email ? true : undefined}
@@ -98,6 +109,7 @@ export const ContactForm = () => {
             id="message"
             name="message"
             rows={5}
+            data-a11y-name="Message input"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-2 focus:outline-teal-600 focus:border-teal-600"
             aria-describedby={errors.message ? 'message-error' : undefined}
             aria-invalid={errors.message ? true : undefined}
@@ -111,6 +123,7 @@ export const ContactForm = () => {
 
         <button
           type="submit"
+          data-a11y-name="Send message button"
           className="px-6 py-3 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-teal-600"
         >
           Send Message
@@ -120,20 +133,23 @@ export const ContactForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-6" data-a11y-name="Contact form">
       <A11yDemo instanceId="contact-form-labels" label="Name field group">
         <A11yDemo instanceId="contact-focus-indicator" label="Name input">
           <input
             type="text"
             name="name"
             placeholder="Full Name"
+            data-a11y-name="Name input"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
             style={{ outline: 'none' }}
           />
         </A11yDemo>
         {errors.name && (
           <A11yDemo instanceId="contact-error-announcement" label="Name error message">
-            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+            <p className="mt-1 text-sm text-red-600" data-a11y-name="Name error message">
+              {errors.name}
+            </p>
           </A11yDemo>
         )}
       </A11yDemo>
@@ -143,6 +159,7 @@ export const ContactForm = () => {
           type="email"
           name="email"
           placeholder="Email Address"
+          data-a11y-name="Email input"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
           style={{ outline: 'none' }}
         />
@@ -154,6 +171,7 @@ export const ContactForm = () => {
           name="message"
           placeholder="Message"
           rows={5}
+          data-a11y-name="Message input"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
           style={{ outline: 'none' }}
         />
@@ -162,6 +180,7 @@ export const ContactForm = () => {
 
       <button
         type="submit"
+        data-a11y-name="Send message button"
         className="px-6 py-3 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 transition-colors"
         style={{ outline: 'none' }}
       >
