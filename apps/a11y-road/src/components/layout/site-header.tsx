@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { registry } from '../../data/issues-registry';
 import { getPageByRoute } from '../../data/page-metadata';
+import { useIssueLoggerPanel } from '../issue-logger/issue-logger-panel-provider';
 import { useSidePanel } from '../providers/side-panel-provider';
 import { useUserRole } from '../providers/user-role-provider';
 
@@ -39,6 +40,24 @@ const SidePanelToggle = () => {
   );
 };
 
+const IssueLoggerToggle = () => {
+  const { isOpen, toggle } = useIssueLoggerPanel();
+
+  return (
+    <button
+      onClick={toggle}
+      type="button"
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+        isOpen ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
+      }`}
+      aria-label={isOpen ? 'Close issue logger' : 'Open issue logger'}
+      aria-expanded={isOpen}
+    >
+      <span>Log an Issue</span>
+    </button>
+  );
+};
+
 const isNavLinkActive = (pathname: string, href: string): boolean => {
   if (href === '/maple-valley-health') return pathname === href;
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -49,6 +68,7 @@ export const SiteHeader = () => {
   const { role, displayName, isRole } = useUserRole();
   const isTester = isRole('tester');
   const isContentEditor = isRole('content-editor');
+  const isGuidePage = pathname.startsWith('/maple-valley-health/getting-started');
 
   const navLinks = [
     { href: '/maple-valley-health', label: 'Home' },
@@ -59,6 +79,9 @@ export const SiteHeader = () => {
       : []),
     ...(isTester ? [{ href: '/maple-valley-health/evaluation', label: 'Evaluation' }] : []),
     ...(isContentEditor ? [{ href: '/maple-valley-health/editor', label: 'Editor' }] : []),
+    ...(!isContentEditor && role
+      ? [{ href: '/maple-valley-health/getting-started', label: 'Guide' }]
+      : []),
   ];
 
   return (
@@ -99,7 +122,8 @@ export const SiteHeader = () => {
               })}
             </ul>
           </nav>
-          {showDemoTools && !isTester && <SidePanelToggle />}
+          {showDemoTools && !isTester && !isGuidePage && <SidePanelToggle />}
+          {isTester && !isGuidePage && <IssueLoggerToggle />}
           {role && (
             <div className="flex items-center gap-3 text-sm border-l border-gray-200 pl-4">
               <span className="text-gray-600">{displayName}</span>

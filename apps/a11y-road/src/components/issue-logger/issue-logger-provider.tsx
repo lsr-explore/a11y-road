@@ -15,6 +15,14 @@ interface IssueLoggerContextValue {
   submitFinding: (
     finding: Omit<Finding, 'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId'>,
   ) => Finding;
+  updateFinding: (
+    findingId: string,
+    updates: Omit<
+      Finding,
+      'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId' | 'matchDetails'
+    >,
+  ) => Finding | null;
+  deleteFinding: (findingId: string) => void;
   clearFindings: () => void;
   endEvaluation: () => void;
   getEvaluationById: (id: string) => Evaluation | undefined;
@@ -26,6 +34,8 @@ const IssueLoggerContext = createContext<IssueLoggerContextValue>({
   issueSets: defaultIssueSets as IssueSet[],
   startEvaluation: () => {},
   submitFinding: () => ({}) as Finding,
+  updateFinding: () => null,
+  deleteFinding: () => {},
   clearFindings: () => {},
   endEvaluation: () => {},
   getEvaluationById: () => undefined,
@@ -218,6 +228,75 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
     [currentEvaluation, issueSets],
   );
 
+  const updateFinding = useCallback(
+    (
+      findingId: string,
+      updates: Omit<
+        Finding,
+        'id' | 'timestamp' | 'matchResult' | 'matchedInstanceId' | 'matchDetails'
+      >,
+    ): Finding | null => {
+      if (!currentEvaluation || currentEvaluation.status !== 'active') return null;
+
+      const issueSet =
+        issueSets.find((set) => set.id === currentEvaluation.issueSetId) ??
+        (issueSets[0] as IssueSet);
+      const { matchResult, matchedInstanceId, matchDetails } = matchFinding(updates, issueSet);
+
+      const existingFinding = currentEvaluation.findings.find(
+        (finding) => finding.id === findingId,
+      );
+      if (!existingFinding) return null;
+
+      const updatedFinding: Finding = {
+        ...updates,
+        id: findingId,
+        timestamp: existingFinding.timestamp,
+        matchResult,
+        matchedInstanceId,
+        matchDetails,
+      };
+
+      const updateFindings = (findings: Finding[]) =>
+        findings.map((finding) => (finding.id === findingId ? updatedFinding : finding));
+
+      setCurrentEvaluation((prev) => {
+        if (!prev) return prev;
+        return { ...prev, findings: updateFindings(prev.findings) };
+      });
+      setEvaluations((prev) =>
+        prev.map((ev) =>
+          ev.id === currentEvaluation.id ? { ...ev, findings: updateFindings(ev.findings) } : ev,
+        ),
+      );
+
+      return updatedFinding;
+    },
+    [currentEvaluation, issueSets],
+  );
+
+  const deleteFinding = useCallback(
+    (findingId: string) => {
+      if (!currentEvaluation || currentEvaluation.status !== 'active') return;
+
+      const removeFromFindings = (findings: Finding[]) =>
+        findings.filter((finding) => finding.id !== findingId);
+
+      setCurrentEvaluation((prev) => {
+        if (!prev) return prev;
+        return { ...prev, findings: removeFromFindings(prev.findings) };
+      });
+      setEvaluations((prev) =>
+        prev.map((ev) =>
+          ev.id === currentEvaluation.id
+            ? { ...ev, findings: removeFromFindings(ev.findings) }
+            : ev,
+        ),
+      );
+    },
+    [currentEvaluation],
+  );
+
   const clearFindings = useCallback(() => {
     setCurrentEvaluation((prev) => {
       if (!prev) return prev;
@@ -253,6 +332,8 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
       issueSets,
       startEvaluation,
       submitFinding,
+      updateFinding,
+      deleteFinding,
       clearFindings,
       endEvaluation,
       getEvaluationById,
@@ -263,6 +344,8 @@ export const IssueLoggerProvider = ({ children }: { children: React.ReactNode })
       issueSets,
       startEvaluation,
       submitFinding,
+      updateFinding,
+      deleteFinding,
       clearFindings,
       endEvaluation,
       getEvaluationById,

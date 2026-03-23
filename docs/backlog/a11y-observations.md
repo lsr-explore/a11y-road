@@ -12,6 +12,7 @@ Milestones
 
 - [x] ~~Rename Admin Dashboard to Accessibility Issues Dashboard~~
 - [x] ~~Rename route /admin to /editor~~ — route is now `/editor`, nav label is "Editor", sub-page back links say "Back to Dashboard"
+- [x] ~~When the learner or tester logs in, they should land on an intro/help page that gives an overview of the flow and what they need to know to work through it.~~ — Separate guide pages for learner and tester at `/maple-valley-health/getting-started`. Cookie `a11y-road-seen-intro-{role}` skips redirect on repeat logins. "Guide" link in nav. Side panels and issue logger hidden on guide page. `{/* TODO: add screenshot */}` comments placed throughout with descriptions of what to capture. "Get Started" CTA links to home page.
 
 ## Issue Definitions
 
@@ -37,7 +38,7 @@ Milestones
 - [x] ~~Remove `definitionIds` from the `IssueSet` model~~ — removed from type, default JSON, form UI, and table display
 - [ ] Instances should be a dialog with a way to filter by page or definition type
 - [ ] Instance should show definition id
-- [ ] Ability to add all by page or all by definition id 
+- [ ] Ability to add all by page or all by definition id
 - [ ] Support random set generation - randomly sample N instances with optional constraints (e.g. "at least one from each page", "at least 3 different issue types"). Useful for certification scenarios where variability is needed across multiple test sessions.
 
 ### Use cases for sets
@@ -55,8 +56,11 @@ Milestones
 - [ ] Need a way to manage duplicates (Milestone: Needs Design) — Rather than duplicate detection, allow testers to edit or delete their own findings from the evaluation page before submission. For scoring: if two findings match the same known issue instance, only the best-scoring one counts. This handles accidental duplicates without blocking legitimate multiple issues on the same element.
 - [x] ~~Need a different way to identify an element~~ — replaced instance IDs with `data-a11y-name` attributes; dropdown shows human-readable labels that don't reveal the issue. See docs/features/element-identification.md
 - [x] ~~Display only elements found on the current page~~ — dropdown queries `document.querySelectorAll('[data-a11y-name]')` which is automatically page-scoped
-- [ ] Need a way to dismiss the banner that displays after an issue is submitted.  Dismiss if the page is changed or one of the fields is updated in the issue logger.  Also add an x to be able to dismiss it.
-- [ ] Edit an issue - I accidentally selected the wrong element
+- [x] ~~Need a way to dismiss the banner that displays after an issue is submitted.~~ — Banner dismisses on page change, on any form field change, or via an X button.
+- [x] ~~Edit an issue - I accidentally selected the wrong element.~~ — Edit from the issue logger panel (populates form in edit mode) or from the evaluation results page (edit dialog). Both re-run matching. Delete also available. Only for active evaluations.
+- [x] ~~There should be a way to hide the log an issue panel as having it open would impact testing.~~ — Panel defaults to closed. X button to close, "Log an Issue" toggle in nav to reopen. (Milestone: Needs Design) — Still need to think through focus management: focus trap in panel, skip link to main content, avoiding Escape conflicts with keyboard testing.
+- [ ] There should be a way to see the element names as specified by data-a11y-name so that the tester can select the one that they intend to select. Rather than an overlay (not accessible), toggle to inject a small button adjacent to each data-a11y-name element. Buttons should be focusable and announce "Select [element name]" for screen readers. Clicking a button populates the element field in the issue logger.
+- [ ] Improve the WCAG picker - it is a very long list.  It is used in the log an issue side panel and in the modal for edit an issue in the evaluations page.
 
 ## Evaluation Scoring
 
@@ -71,7 +75,7 @@ See `docs/features/evaluation-scoring.md` for the full scoring model, open chall
 - [x] ~~An ended evaluation should display start and end date/time and stats~~ — detail page shows start time, submitted time (when available), status badge, and full stats
 - [x] ~~Show the correct answer alongside the tester's answer~~ — submitted evaluations show an "Expected" column with the matched definition's title, WCAG criteria, and solution description
 - [x] ~~Identify issues that don't match known issues~~ — findings with `not-found` status show "Needs review" label, and a summary banner shows the count of flagged findings
-- [ ] Figure out how to present the tester's answer and the expected answer in the table. (Milestone: Needs Design)
+- [x] ~~Figure out how to present the tester's answer and the expected answer in the table.~~ — For submitted evaluations, WCAG criteria are shown inline under the tester's answer (and expected answer) instead of a separate column. Findings heading shows count.
 - [x] ~~Issue Logger side panel should be hidden when in the Evaluation view~~ — panel hidden when pathname starts with `/maple-valley-health/evaluation`
 - [x] ~~Description of scoring criteria~~ — see `docs/features/evaluation-scoring.md`
 - [x] ~~Include page in the Findings displayed on the Evaluation~~ — page column added, auto-detected from current route

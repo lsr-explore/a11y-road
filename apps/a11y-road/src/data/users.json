@@ -1,19 +1,19 @@
 [
   {
     "username": "learner",
-    "password": "learn123",
+    "password": "learnA11y123",
     "role": "learner",
     "displayName": "Alex Learner"
   },
   {
     "username": "tester",
-    "password": "test123",
+    "password": "testA11y123",
     "role": "tester",
     "displayName": "Sam Tester"
   },
   {
     "username": "editor",
-    "password": "edit123",
+    "password": "editA11y123",
     "role": "content-editor",
     "displayName": "Morgan Editor"
   }
