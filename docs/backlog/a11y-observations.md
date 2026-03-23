@@ -53,9 +53,10 @@ Milestones
 - [x] ~~WCAG criteria should be a dialog selector~~ — searchable multi-select picker from wcag-criteria.json; tester must identify the correct SC
 - [x] ~~Should have a field for proposed solution~~ — added `proposedSolution` field to Finding type and issue logger form
 - [ ] Need a way to manage duplicates (Milestone: Needs Design) — Rather than duplicate detection, allow testers to edit or delete their own findings from the evaluation page before submission. For scoring: if two findings match the same known issue instance, only the best-scoring one counts. This handles accidental duplicates without blocking legitimate multiple issues on the same element.
-- [ ] Need a different way to identify an element - the id reveals the accessibility error
-- [ ] Display only elements found on the current page - see docs/features/element-identification.md
+- [x] ~~Need a different way to identify an element~~ — replaced instance IDs with `data-a11y-name` attributes; dropdown shows human-readable labels that don't reveal the issue. See docs/features/element-identification.md
+- [x] ~~Display only elements found on the current page~~ — dropdown queries `document.querySelectorAll('[data-a11y-name]')` which is automatically page-scoped
 - [ ] Need a way to dismiss the banner that displays after an issue is submitted.  Dismiss if the page is changed or one of the fields is updated in the issue logger.  Also add an x to be able to dismiss it.
+- [ ] Edit an issue - I accidentally selected the wrong element
 
 ## Evaluation Scoring
 
@@ -87,6 +88,7 @@ Currently only WCAG can be reliably auto-matched. Issue type and solution requir
 - [ ] Description of scoring criteria
 - [x] Include page in the Findings displayed on the Evaluation
 - [ ] Saved results should include which fields matched and why something failed or was marked as partial
+- [ ] Before starting an evaluation, provide a form where someone can enter in the devices and tools they used.  They should also be able to edit this on the evaluations page.  This way if someone is reporting an issue that we haven't flagged, we can better understand the context.
 
 ## Resolved Questions
 
