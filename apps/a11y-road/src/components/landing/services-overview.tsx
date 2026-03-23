@@ -25,8 +25,16 @@ export const ServicesOverview = () => {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-gray-900 text-center">Our Services</h2>
-        <p className="mt-2 text-gray-600 text-center max-w-2xl mx-auto">
+        <h2
+          data-a11y-name="Services heading"
+          className="text-3xl font-bold text-gray-900 text-center"
+        >
+          Our Services
+        </h2>
+        <p
+          data-a11y-name="Services description"
+          className="mt-2 text-gray-600 text-center max-w-2xl mx-auto"
+        >
           We offer a wide range of healthcare services to meet your needs.
         </p>
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
