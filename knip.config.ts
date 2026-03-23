@@ -40,6 +40,7 @@ const config: KnipConfig = {
     // globally installed binaries used in scripts
     'pandoc',
     'vercel',
+    'dot',
   ],
   ignoreDependencies: [
     // Nx plugins used implicitly via nx.json
