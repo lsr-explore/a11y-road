@@ -31,6 +31,7 @@
     "src/**/*.js",
     "src/**/*.jsx",
     "src/**/*.mdx",
+    "src/**/*.json",
     "../../libs/a11y-kit/src/**/*.ts",
     "../../libs/a11y-kit/src/**/*.tsx",
     "../../libs/a11y-ui/src/**/*.ts",

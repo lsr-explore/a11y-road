@@ -40,6 +40,7 @@ export const DeleteDialog = ({ memberName, isOpen, onConfirm, onCancel }: Delete
           onClose={handleDialogClose}
           aria-labelledby="delete-dialog-title"
           aria-describedby="delete-dialog-description"
+          data-a11y-name="Delete confirmation dialog"
           className="rounded-lg border border-gray-200 bg-white p-6 shadow-xl backdrop:bg-black/50 max-w-md"
         >
           <h2 id="delete-dialog-title" className="text-lg font-semibold text-gray-900">
@@ -73,7 +74,10 @@ export const DeleteDialog = ({ memberName, isOpen, onConfirm, onCancel }: Delete
   return (
     <A11yDemo instanceId="team-delete-dialog" label="Delete confirmation dialog">
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="rounded-lg bg-white p-6 shadow-xl max-w-md">
+        <div
+          data-a11y-name="Delete confirmation dialog"
+          className="rounded-lg bg-white p-6 shadow-xl max-w-md"
+        >
           <div className="text-lg font-semibold text-gray-900">Remove team member</div>
           <div className="mt-2 text-sm text-gray-600">
             Are you sure you want to remove {memberName} from the team? This action cannot be

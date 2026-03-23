@@ -43,6 +43,7 @@ export const TeamNotification = () => {
     return (
       <div
         role="alert"
+        data-a11y-name="Team notification"
         className="mb-6 flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3"
       >
         <p className="text-sm font-medium text-green-800">{messages[notification.type]}</p>
@@ -68,7 +69,10 @@ export const TeamNotification = () => {
 
   if (notification.type === 'edit') {
     return (
-      <div className="fixed bottom-4 right-4 z-50 rounded-lg bg-gray-800 px-4 py-3 text-sm text-white shadow-lg">
+      <div
+        data-a11y-name="Team notification"
+        className="fixed bottom-4 right-4 z-50 rounded-lg bg-gray-800 px-4 py-3 text-sm text-white shadow-lg"
+      >
         <p>{notification.memberName}&apos;s profile has been updated.</p>
       </div>
     );

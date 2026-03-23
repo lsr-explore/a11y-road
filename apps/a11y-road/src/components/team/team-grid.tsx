@@ -32,13 +32,16 @@ export const TeamGrid = () => {
 
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Meet the Team</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 data-a11y-name="Team heading" className="text-3xl font-bold text-gray-900">
+            Meet the Team
+          </h1>
+          <p data-a11y-name="Team description" className="mt-2 text-gray-600">
             Get to know the healthcare professionals dedicated to your well-being.
           </p>
         </div>
         <Link
           href="/maple-valley-health/team/add"
+          data-a11y-name="Add team member button"
           className="px-4 py-2 bg-teal-700 text-white text-sm font-semibold rounded-lg hover:bg-teal-800 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-teal-600"
         >
           Add Team Member

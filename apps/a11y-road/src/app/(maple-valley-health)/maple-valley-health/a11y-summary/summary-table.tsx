@@ -1,10 +1,11 @@
 'use client';
 
 import type { ResolvedInstance } from '@a11y-road/a11y-kit';
+import { testingMethodLabels } from '@a11y-road/a11y-kit';
 import { useMemo, useState } from 'react';
 import { pages } from '@/data/page-metadata';
 
-type SortField = 'page' | 'issue' | 'level' | 'testingMethod';
+type SortField = 'page' | 'issue' | 'level' | 'testingMethods';
 type SortDir = 'asc' | 'desc';
 
 export const SummaryTable = ({ resolved }: { resolved: ResolvedInstance[] }) => {
@@ -53,8 +54,10 @@ export const SummaryTable = ({ resolved }: { resolved: ResolvedInstance[] }) => 
           cmp = (levelOrder[leftLevel] || 0) - (levelOrder[rightLevel] || 0);
           break;
         }
-        case 'testingMethod':
-          cmp = left.definition.testingMethod.localeCompare(right.definition.testingMethod);
+        case 'testingMethods':
+          cmp = left.definition.testingMethods
+            .join(',')
+            .localeCompare(right.definition.testingMethods.join(','));
           break;
       }
       return sortDir === 'asc' ? cmp : -cmp;
@@ -147,7 +150,7 @@ export const SummaryTable = ({ resolved }: { resolved: ResolvedInstance[] }) => 
               </th>
               <th className="px-4 py-3">Impacted Users</th>
               <th className="px-4 py-3">
-                <SortButton field="testingMethod">Testing</SortButton>
+                <SortButton field="testingMethods">Testing</SortButton>
               </th>
             </tr>
           </thead>
@@ -176,9 +179,16 @@ export const SummaryTable = ({ resolved }: { resolved: ResolvedInstance[] }) => 
                   {item.definition.impactedUsers.join(', ')}
                 </td>
                 <td className="px-4 py-3">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-50 text-teal-800 capitalize">
-                    {item.definition.testingMethod}
-                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {item.definition.testingMethods.map((method) => (
+                      <span
+                        key={method}
+                        className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-50 text-teal-800"
+                      >
+                        {testingMethodLabels[method].label}
+                      </span>
+                    ))}
+                  </div>
                 </td>
               </tr>
             ))}

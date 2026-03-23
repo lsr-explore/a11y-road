@@ -1,19 +1,17 @@
 'use client';
 
 import type { ResolvedInstance } from '@a11y-road/a11y-kit';
-import { highlightElementByRef, useElementRegistry } from '@a11y-road/a11y-kit';
+import {
+  highlightElementByRef,
+  testingMethodLabels,
+  useElementRegistry,
+} from '@a11y-road/a11y-kit';
 import { useState } from 'react';
 
 const levelColors: Record<string, string> = {
   A: 'bg-blue-100 text-blue-800',
   AA: 'bg-purple-100 text-purple-800',
   AAA: 'bg-orange-100 text-orange-800',
-};
-
-const methodLabels: Record<string, string> = {
-  automated: 'Automated',
-  manual: 'Manual',
-  'semi-automated': 'Semi-auto',
 };
 
 export const IssueCard = ({ resolved }: { resolved: ResolvedInstance }) => {
@@ -87,9 +85,14 @@ export const IssueCard = ({ resolved }: { resolved: ResolvedInstance }) => {
                   {tag}
                 </span>
               ))}
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-100 text-teal-800">
-                {methodLabels[definition.testingMethod]}
-              </span>
+              {definition.testingMethods.map((method) => (
+                <span
+                  key={method}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-teal-100 text-teal-800"
+                >
+                  {testingMethodLabels[method].label}
+                </span>
+              ))}
             </div>
 
             <button

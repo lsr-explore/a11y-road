@@ -1,0 +1,8 @@
+[
+  {
+    "id": "default-full",
+    "name": "Full Assessment",
+    "description": "All known issues across all pages",
+    "instanceIds": ["all"]
+  }
+]

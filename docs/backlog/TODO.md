@@ -39,6 +39,7 @@
   - [ ] A11y issues
   - [ ] Issues Registry
 - [ ] understand use of common cache in node_modules for libs/a11y-ui/vite.config.mts - specifies ../../node_modules/.vite/libs/a11y-ui
+- [ ] add pino logging
 
 ```js
  That cacheDir setting points Vite's cache to the workspace root's
@@ -82,11 +83,11 @@
 - [ ] Accessibility metrics dashboard — stats view on top of the summary page (issues by category, WCAG level coverage, pass rate)
 - [ ] Export evaluation as PDF/report — downloadable report of user findings with grading results
 - [ ] Hide "Highlight" button in IssueCard when element is not in the ref registry (e.g., `landing-page-language`, `team-notification`)
-- [ ] Remove unused `elementSelector` field from `A11yIssueInstance` type and registry data (replaced by ref registry)
+- [x] ~~Remove unused `elementSelector` field from `A11yIssueInstance` type and registry data~~ — removed, replaced by `label` field and `data-a11y-name` attributes
 
 ## A11y Issue UX and management
 
-- [ ] See design doc at `docs/a11y-issue-ux.md` for full feature spec
+- [x] ~~See design doc at `docs/a11y-issue-ux.md`~~ — content moved to `docs/features/evaluation-scoring.md` and `docs/backlog/a11y-observations.md`
 
 ## Design
 

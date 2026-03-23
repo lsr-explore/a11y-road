@@ -1,0 +1,20 @@
+[
+  {
+    "username": "learner",
+    "password": "learn123",
+    "role": "learner",
+    "displayName": "Alex Learner"
+  },
+  {
+    "username": "tester",
+    "password": "test123",
+    "role": "tester",
+    "displayName": "Sam Tester"
+  },
+  {
+    "username": "editor",
+    "password": "edit123",
+    "role": "content-editor",
+    "displayName": "Morgan Editor"
+  }
+]

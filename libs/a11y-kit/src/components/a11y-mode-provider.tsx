@@ -18,31 +18,45 @@ const STORAGE_KEY = 'a11y-kit-mode';
 export const A11yModeProvider = ({
   children,
   storageKey = STORAGE_KEY,
+  forceBroken = false,
 }: {
   children: ReactNode;
   storageKey?: string;
+  forceBroken?: boolean;
 }) => {
   const [isAccessible, setIsAccessible] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    if (forceBroken) {
+      setMounted(true);
+      return;
+    }
     const stored = sessionStorage.getItem(storageKey);
     if (stored === 'true') {
       setIsAccessible(true);
     }
     setMounted(true);
-  }, [storageKey]);
+  }, [storageKey, forceBroken]);
 
   useEffect(() => {
-    if (mounted) {
+    if (mounted && !forceBroken) {
       sessionStorage.setItem(storageKey, String(isAccessible));
     }
-  }, [isAccessible, mounted, storageKey]);
+  }, [isAccessible, mounted, storageKey, forceBroken]);
 
-  const toggle = () => setIsAccessible((prev) => !prev);
+  const toggle = () => {
+    if (!forceBroken) {
+      setIsAccessible((prev) => !prev);
+    }
+  };
+
+  const effectiveAccessible = forceBroken ? false : isAccessible;
 
   return (
-    <A11yModeContext.Provider value={{ isAccessible, toggle }}>{children}</A11yModeContext.Provider>
+    <A11yModeContext.Provider value={{ isAccessible: effectiveAccessible, toggle }}>
+      {children}
+    </A11yModeContext.Provider>
   );
 };
 

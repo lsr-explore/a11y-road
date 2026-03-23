@@ -62,7 +62,9 @@ export const TeamCard = ({
       </div>
       <div className="p-4 flex flex-col flex-1">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
+          <h3 data-a11y-name={`${name} card`} className="text-lg font-semibold text-gray-900">
+            {name}
+          </h3>
           <p className="text-sm text-teal-700 font-medium">{roleLabel}</p>
         </div>
         <p className="mt-1 text-sm text-gray-600">{specialty}</p>
@@ -90,6 +92,7 @@ export const TeamCard = ({
         <div className="mt-auto pt-4 flex items-center justify-between">
           <Link
             href={`/maple-valley-health/team/${id}/edit`}
+            data-a11y-name={`Edit ${name} profile`}
             className="text-sm font-medium text-teal-700 hover:text-teal-800 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-teal-600 rounded"
           >
             Edit profile
@@ -100,6 +103,7 @@ export const TeamCard = ({
                 type="button"
                 onClick={onDelete}
                 aria-label={`Delete ${name}`}
+                data-a11y-name="Delete member button"
                 className="text-gray-400 hover:text-red-600 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-teal-600 rounded p-1"
               >
                 <TrashIcon />
@@ -108,6 +112,7 @@ export const TeamCard = ({
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- intentionally inaccessible for a11y demo
               <div
                 onClick={onDelete}
+                data-a11y-name="Delete member button"
                 className="cursor-pointer text-gray-400 hover:text-red-600 transition-colors p-1"
                 style={{ outline: 'none' }}
               >
