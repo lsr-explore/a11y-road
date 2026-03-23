@@ -60,19 +60,7 @@ Milestones
 
 ## Evaluation Scoring
 
-Scoring model for a given element:
-
-- **Correct** — Issue type matches, WCAG matches, solution matches
-- **Partial** — Issue type and WCAG match, solution is filled in but doesn't match the expected fix
-- **Failure** — Issue type OR WCAG doesn't match, or solution is empty
-
-### What can be reliably matched today
-
-- **WCAG criteria** — exact match against the instance's definition (reliable)
-- **Issue type** — free-text comparison against known definitions (approximate, needs fuzzy or AI matching)
-- **Solution** — free-text comparison against the solution description (requires manual review or AI)
-
-Currently only WCAG can be reliably auto-matched. Issue type and solution require manual review by a content editor until AI-assisted matching is added. See [a11y-issue-ux.md](a11y-issue-ux.md) for the review workflow.
+See `docs/features/evaluation-scoring.md` for the full scoring model, open challenges, and manual review workflow.
 
 ## Evaluation
 
@@ -84,10 +72,10 @@ Currently only WCAG can be reliably auto-matched. Issue type and solution requir
 - [x] ~~Show the correct answer alongside the tester's answer~~ — submitted evaluations show an "Expected" column with the matched definition's title, WCAG criteria, and solution description
 - [x] ~~Identify issues that don't match known issues~~ — findings with `not-found` status show "Needs review" label, and a summary banner shows the count of flagged findings
 - [ ] Figure out how to present the tester's answer and the expected answer in the table. (Milestone: Needs Design)
-- [ ] Issue Logger side panel should be hidden when in the Evaluation view.
-- [ ] Description of scoring criteria
-- [x] Include page in the Findings displayed on the Evaluation
-- [ ] Saved results should include which fields matched and why something failed or was marked as partial
+- [x] ~~Issue Logger side panel should be hidden when in the Evaluation view~~ — panel hidden when pathname starts with `/maple-valley-health/evaluation`
+- [x] ~~Description of scoring criteria~~ — see `docs/features/evaluation-scoring.md`
+- [x] ~~Include page in the Findings displayed on the Evaluation~~ — page column added, auto-detected from current route
+- [x] ~~Saved results should include which fields matched and why~~ — `matchDetails` on Finding stores `pageMatched`, `elementMatched`, `wcagMatched`, and `reason`
 - [ ] Before starting an evaluation, provide a form where someone can enter in the devices and tools they used.  They should also be able to edit this on the evaluations page.  This way if someone is reporting an issue that we haven't flagged, we can better understand the context.
 
 ## Resolved Questions

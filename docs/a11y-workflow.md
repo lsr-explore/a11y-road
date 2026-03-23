@@ -10,7 +10,7 @@ Route protection is handled by `src/proxy.ts`:
 
 - Public routes (`/`, `/login`, `/about`, `/tutorial/*`) require no authentication
 - Protected routes (`/maple-valley-health/*`) require any authenticated role
-- Admin routes (`/maple-valley-health/admin/*`) require the `content-editor` role
+- Admin routes (`/maple-valley-health/editor/*`) require the `content-editor` role
 
 Auth utilities live in `src/lib/auth.ts`. Demo credentials are in `src/data/users.json`.
 
@@ -47,7 +47,7 @@ Fields:
 | `wcagCriteria` | Array of `{ id, title, level }` — the WCAG success criteria violated |
 | `impactedUsers` | Who is affected (e.g. `["Screen reader users"]`) |
 | `tags` | Categorization (e.g. `["images"]`, `["forms", "labels"]`) |
-| `testingMethod` | `"automated"`, `"manual"`, or `"semi-automated"` |
+| `testingMethods` | Array of testing methods: `"screen-reader"`, `"keyboard"`, `"zoom"`, `"color-contrast"`, `"automated"`, `"semi-automated"` |
 
 ### Issue Instance (`A11yIssueInstance`)
 
@@ -60,8 +60,9 @@ Fields:
 | `id` | Unique slug for this instance (e.g. `"landing-hero-img-alt"`) |
 | `issueId` | References an `A11yIssueDefinition.id` (e.g. `"missing-alt-text"`) |
 | `pageId` | Route segment matching `page-metadata.ts` (e.g. `"landing"`, `"contact"`) |
+| `label` | Human-readable name matching the `data-a11y-name` attribute and `A11yDemo` label prop |
 | `description` | Instance-specific context explaining how this issue manifests here |
-| `elementSelector` | CSS selector used for highlighting — always `[data-a11y-id="<instance.id>"]` |
+| `solutionDescription` | (optional) Describes what the fixed version does, used for evaluation matching |
 
 ### Resolved Instance (`ResolvedInstance`)
 
@@ -69,7 +70,7 @@ A joined pair of `{ instance, definition }`, created at runtime by the registry 
 
 ### Issue Set (`IssueSet`)
 
-Defined in `src/data/issue-sets.json` and editable via the admin UI. A curated subset of definitions and instances used for tester evaluations. Content editors create these to scope what testers are evaluated against.
+Defined in `src/data/issue-sets.json` and editable via the editor UI. A curated subset of instances used for tester evaluations. Content editors create these to scope what testers are evaluated against.
 
 Fields:
 
@@ -78,7 +79,6 @@ Fields:
 | `id` | Unique slug (e.g. `"default-full"`) |
 | `name` | Display name |
 | `description` | What this set covers |
-| `definitionIds` | Array of definition IDs, or `["all"]` for all |
 | `instanceIds` | Array of instance IDs, or `["all"]` for all |
 
 ### Evaluation & Finding
@@ -87,8 +87,8 @@ Evaluations track a tester's session of findings against an issue set. Types are
 
 | Type | Key Fields |
 |------|------------|
-| `Evaluation` | `id`, `issueSetId`, `userId`, `startedAt`, `findings[]` |
-| `Finding` | `id`, `elementId`, `issueTypeId`, `wcagCriteria`, `description`, `matchResult`, `matchedInstanceId` |
+| `Evaluation` | `id`, `issueSetId`, `userId`, `startedAt`, `submittedAt`, `status`, `findings[]` |
+| `Finding` | `id`, `pageId`, `elementId`, `issueTypeId`, `wcagCriteria`, `description`, `proposedSolution`, `matchResult`, `matchedInstanceId`, `matchDetails` |
 
 ## Type Definitions
 
@@ -116,33 +116,34 @@ If no matching definition exists, add one (via admin UI or directly in code):
   ],
   impactedUsers: ['Screen reader users', 'Users with images disabled'],
   tags: ['images'],
-  testingMethod: 'automated',
+  testingMethods: ['automated', 'screen-reader'],
 },
 ```
 
 ### Step 2: Create an instance
 
-Add an entry to `issueInstances` in `src/data/issues-registry.ts` (or via the admin UI):
+Add an entry to `issueInstances` in `src/data/issues-registry.ts` (or via the editor UI):
 
 ```ts
 {
   id: 'landing-hero-img-alt',
   issueId: 'missing-alt-text',        // links to the definition
   pageId: 'landing',                   // matches page-metadata.ts
+  label: 'Hero image',                // matches data-a11y-name on the element
   description: 'The hero image has no alt attribute...',
-  elementSelector: '[data-a11y-id="landing-hero-img-alt"]',
+  solutionDescription: 'Add descriptive alt text to the hero image.',
 },
 ```
 
-The `elementSelector` must match the `data-a11y-id` attribute you apply in Step 3. By convention, it always follows the pattern `[data-a11y-id="<instance.id>"]`.
+The `label` must match the `data-a11y-name` attribute on the element and the `label` prop on `A11yDemo`.
 
 ### Step 3: Annotate the element in code
 
-Use the `A11yDemo` component (`src/components/a11y-demo.tsx`). It has two modes:
+Use the `A11yDemo` component (`src/components/a11y-demo.tsx`). It has two modes. Add `data-a11y-name` to the meaningful child element inside the wrapper, matching the `label` prop. Also add `data-a11y-name` to non-issue elements on the page so the attribute's presence doesn't reveal which elements have known issues.
 
 #### Toggle mode — when the broken and fixed versions are different markup
 
-Use `broken` and `fixed` props. `A11yDemo` reads the accessibility toggle and renders the appropriate version. It wraps the content in a `<div data-a11y-id="<instanceId>">`.
+Use `broken` and `fixed` props. `A11yDemo` reads the accessibility toggle and renders the appropriate version.
 
 ```tsx
 import { A11yDemo } from '../a11y-demo';
@@ -157,7 +158,7 @@ import { A11yDemo } from '../a11y-demo';
 
 #### Children mode — when the parent manages the toggle or you just need to mark an element
 
-Wrap the element with `A11yDemo` using children. The parent component calls `useA11yMode()` to decide what to render. `A11yDemo` applies the `data-a11y-id` attribute.
+Wrap the element with `A11yDemo` using children. The parent component calls `useA11yMode()` to decide what to render.
 
 ```tsx
 import { A11yDemo } from '../a11y-demo';
@@ -198,12 +199,12 @@ The side panel is visible to learners and content editors. Testers see the issue
 
 Each `IssueCard` has a "Highlight" button. When clicked, it:
 
-1. Calls `document.querySelector(instance.elementSelector)` — this finds the element with `data-a11y-id="<instance.id>"` (the `<div>` rendered by `A11yDemo`)
+1. Looks up the element ref from the `ElementRegistryProvider` using the instance ID
 2. Scrolls the element into view with `scrollIntoView({ behavior: 'smooth', block: 'center' })`
 3. Applies a red pulsing outline animation via inline styles and the `a11y-highlight-pulse` CSS class
 4. Removes the highlight after 3 seconds
 
-This works because `A11yDemo` always renders a `<div data-a11y-id="<instanceId>">` wrapper, and the instance's `elementSelector` targets that attribute.
+This works because `A11yDemo` registers its wrapper `<div>` ref with the `ElementRegistryProvider` on mount.
 
 ## How the Issue Logger Works
 
@@ -214,43 +215,45 @@ Components:
 | Component | Description |
 |-----------|-------------|
 | `IssueLoggerProvider` | Context holding current evaluation, findings, and issue sets. Persists to localStorage. |
-| `IssueLoggerPanel` | Form for submitting findings with element/issue type dropdowns, WCAG auto-fill, and inline feedback |
+| `IssueLoggerPanel` | Form for submitting findings with element dropdown (from `data-a11y-name`), free-text issue type, WCAG multi-select, proposed solution, and inline feedback. Hidden on evaluation pages. |
 | `FindingsList` | Scrollable list of submitted findings with color-coded match status |
 
 ### Matching logic
 
-When a finding is submitted, it is compared against the active issue set:
+When a finding is submitted, it is compared against the active issue set using Page + Element + WCAG:
 
-- **Correct** — Element ID and issue type both match a known instance
-- **Partial** — Element ID or issue type matches, but not both
-- **Not Found** — No match in the current issue set
+- **Correct** — Page matches, element label matches a known instance, and at least one WCAG criterion overlaps
+- **Partial** — Page and element match, but WCAG criteria do not overlap
+- **Not Found** — Element does not match any known issue in the set
+
+See `docs/features/evaluation-scoring.md` for the full scoring model and open challenges.
 
 ### Evaluation pages
 
 - `/maple-valley-health/evaluation` — Current evaluation summary or list of past evaluations
 - `/maple-valley-health/evaluation/[id]` — View a specific past evaluation
 
-## How the Admin View Works
+## How the Editor View Works
 
-The admin view (`src/app/(maple-valley-health)/maple-valley-health/admin/`) is accessible only to the `content-editor` role. Route protection is enforced by `src/proxy.ts`.
+The editor view (`src/app/(maple-valley-health)/maple-valley-health/editor/`) is accessible only to the `content-editor` role. Route protection is enforced by `src/proxy.ts`.
 
 Components:
 
 | Component | Description |
 |-----------|-------------|
-| `AdminDataProvider` | Context holding editable copies of definitions, instances, and issue sets. Initializes from registry + localStorage, persists edits back to localStorage. |
-| `AdminDefinitionsTable` | Table with inline edit forms for issue definitions |
-| `AdminInstancesTable` | Table with dropdowns for issue type and page selection |
-| `AdminIssueSetsTable` | Table with multi-select checkboxes for definitions and instances |
+| `AdminDataProvider` | Context holding editable copies of definitions, instances, and issue sets. Initializes from registry + localStorage, persists edits back to localStorage. Includes data migration for old formats. |
+| `AdminDefinitionsTable` | Table with inline edit forms, WCAG multi-select with chiclets, testing methods checkboxes, success banners |
+| `AdminInstancesTable` | Table with dropdowns for issue type and page, label field, solution description, sortable columns, success banners |
+| `AdminIssueSetsTable` | Table with multi-select checkboxes for instances |
 
-Admin pages:
+Editor pages:
 
 | Page | Path | Description |
 |------|------|-------------|
-| Dashboard | `/admin` | Counts and links to sub-pages, reset to defaults button |
-| Definitions | `/admin/definitions` | CRUD for issue definitions |
-| Instances | `/admin/instances` | CRUD for issue instances |
-| Issue Sets | `/admin/issue-sets` | Create/edit curated subsets for evaluations |
+| Dashboard | `/editor` | Accessibility Issues Dashboard — counts and links, reset to defaults |
+| Definitions | `/editor/definitions` | CRUD for issue definitions |
+| Instances | `/editor/instances` | CRUD for issue instances |
+| Issue Sets | `/editor/issue-sets` | Create/edit curated subsets for evaluations |
 
 ## How the Summary Page Works
 
@@ -338,6 +341,8 @@ The reusable parts of the a11y system live in `libs/a11y-kit/`. Any Next.js or R
 | `A11yIssueDefinition` | Type for issue templates (created by SME) |
 | `A11yIssueInstance` | Type for instances (created by developer) |
 | `ResolvedInstance` | Type for joined instance + definition pair |
+| `TestingMethod` | Type for testing method values |
+| `testingMethodLabels` | Labels and descriptions for each testing method |
 | `UserRole` | Type for user roles (`'learner' \| 'tester' \| 'content-editor'`) |
 | `UserProfile` | Type for user data (username, password, role, displayName) |
 | `A11yRegistry` | Class that takes definitions and instances, provides query helpers |
@@ -392,8 +397,8 @@ The actual issue definitions and instances live in the app at `src/data/issues-r
       "id": "landing-hero-img-alt",
       "issueId": "missing-alt-text",
       "pageId": "landing",
+      "label": "Hero image",
       "description": "The hero image has no alt attribute...",
-      "elementSelector": "[data-a11y-id=\"landing-hero-img-alt\"]",
       "definition": { "id": "missing-alt-text", "title": "Missing alt text", ... }
     }
   ],

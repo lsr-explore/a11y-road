@@ -8,7 +8,7 @@ The site uses demo-only authentication with base64-encoded session cookies. Cred
 
 - **Public routes**: `/`, `/login`, `/about`, `/tutorial/*`
 - **Protected routes**: `/maple-valley-health/*` — requires any authenticated role
-- **Admin routes**: `/maple-valley-health/admin/*` — requires `content-editor` role
+- **Admin routes**: `/maple-valley-health/editor/*` — requires `content-editor` role
 - Route protection is handled by `src/proxy.ts` (Next.js 16 proxy)
 
 ### Demo accounts
@@ -51,7 +51,7 @@ The following role is external to the application:
 | A11y Summary nav | Yes | No | Yes |
 | Issue Logger panel | No | Yes | No |
 | Evaluation nav | No | Yes | No |
-| Admin nav link | No | No | Yes |
+| Editor nav link | No | No | Yes |
 | A11yMode locked broken | No | Yes | No |
 | Display name + logout | Yes | Yes | Yes |
 
@@ -72,45 +72,48 @@ The following role is external to the application:
 3. The issue logger panel is visible on the right side
 4. Click "Start Evaluation" to begin a new evaluation session
 5. For each issue found:
-   - Select the element from the dropdown (or choose "Other (manual)")
-   - Select the issue type
-   - WCAG criteria auto-populates from the selected issue type (editable)
-   - Add a description
-   - Submit — immediate feedback shows whether the finding matches a known issue
-6. Navigate to `/maple-valley-health/evaluation` to see:
+   - Select the element from the dropdown (populated from `data-a11y-name` on the current page, or choose "Other")
+   - Enter the issue type as free text
+   - Select WCAG criteria from the searchable multi-select picker
+   - Add a description and proposed solution
+   - Submit — immediate feedback shows match result with explanation
+6. Navigate to `/maple-valley-health/evaluation` to see a list of all evaluations with status (Active/Submitted)
+7. Click an evaluation to view the detail page with:
    - Summary stats: total findings, correct matches, partial matches, coverage percentage
-   - Findings table with match status
-   - Missed issues table (issues in the set not found by tester)
+   - Findings table with match status and reasons
+   - For submitted evaluations: expected answers alongside tester's answers, missed issues table
 7. Past evaluations are accessible at `/maple-valley-health/evaluation/[id]`
 8. Evaluations are persisted to localStorage under key `a11y-road-evaluations`
 
 ### Evaluation Matching
 
-When a finding is submitted, it is compared against the active issue set:
+When a finding is submitted, it is compared against the active issue set using Page + Element + WCAG:
 
-- **Correct** — Element ID and issue type both match a known instance
-- **Partial** — Element ID or issue type matches, but not both
-- **Not Found** — No match in the current issue set
+- **Correct** — Page matches, element label matches a known instance, and at least one WCAG criterion overlaps
+- **Partial** — Page and element match, but WCAG criteria do not overlap
+- **Not Found** — Element does not match any known issue in the set
+
+See `docs/features/evaluation-scoring.md` for the full scoring model.
 
 ## Content Editor Flow
 
 1. Sign in with editor credentials
 2. Arrive at `/maple-valley-health` — same view as learner (toggle, side panel, summary)
-3. Navigate to Admin via the header nav link
-4. Admin dashboard at `/maple-valley-health/admin` shows counts of definitions, instances, and issue sets
-5. Manage issue definitions at `/maple-valley-health/admin/definitions`:
+3. Navigate to Editor via the header nav link
+4. Accessibility Issues Dashboard at `/maple-valley-health/editor` shows counts of definitions, instances, and issue sets
+5. Manage issue definitions at `/maple-valley-health/editor/definitions`:
    - View all definitions in a table
    - Inline edit by expanding a row
    - Add new definitions
    - Delete definitions
-6. Manage issue instances at `/maple-valley-health/admin/instances`:
+6. Manage issue instances at `/maple-valley-health/editor/instances`:
    - View all instances with linked issue type
    - Inline edit with dropdowns for issue type and page
    - Add new instances
    - Delete instances
-7. Manage issue sets at `/maple-valley-health/admin/issue-sets`:
-   - Create named subsets of definitions and instances for evaluations
-   - Multi-select checkboxes for definitions and instances
+7. Manage issue sets at `/maple-valley-health/editor/issue-sets`:
+   - Create named subsets of instances for evaluations
+   - Multi-select checkboxes for instances
    - "All" option to include everything
 8. Admin edits are persisted to localStorage (keys: `a11y-road-admin-definitions`, `a11y-road-admin-instances`, `a11y-road-issue-sets`)
 9. Use "Reset to Defaults" on the dashboard to discard localStorage edits
@@ -138,7 +141,7 @@ Describes a particular accessibility rule that is not implemented. Can be assign
   wcagCriteria: [{ id: '1.1.1', title: 'Non-text Content', level: 'A' }],
   impactedUsers: ['Screen reader users', 'Users with images disabled'],
   tags: ['images'],
-  testingMethod: 'automated',
+  testingMethods: ['automated', 'screen-reader'],
 },
 ```
 
@@ -151,8 +154,9 @@ Describes a particular instance where an issue definition is applied. Associated
   id: 'landing-hero-img-alt',
   issueId: 'missing-alt-text',
   pageId: 'landing',
+  label: 'Hero image',
   description: 'The hero image has no alt attribute, making it invisible to screen reader users.',
-  elementSelector: '[data-a11y-id="landing-hero-img-alt"]',
+  solutionDescription: 'Add descriptive alt text to the hero image.',
 },
 ```
 
@@ -183,14 +187,13 @@ Describes a particular instance where an issue definition is applied. Associated
 
 ### Issue Set
 
-A curated subset of definitions and instances used for evaluations. Content editors create these via the admin UI to scope what testers are evaluated against.
+A curated subset of instances used for evaluations. Content editors create these via the editor UI to scope what testers are evaluated against.
 
 ```json
 {
   "id": "default-full",
   "name": "Full Assessment",
   "description": "All known issues across all pages",
-  "definitionIds": ["all"],
   "instanceIds": ["all"]
 }
 ```
@@ -205,6 +208,8 @@ A tester's session of findings against a specific issue set. Each evaluation get
   issueSetId: string;   // which issue set is being tested against
   userId: string;
   startedAt: string;
+  submittedAt?: string; // ISO timestamp when evaluation was submitted
+  status: 'active' | 'submitted';
   findings: Finding[];
 }
 ```

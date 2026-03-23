@@ -106,3 +106,19 @@ The current model assumes every accessibility issue maps to one or more WCAG suc
 These edge cases sit in the space between "passes WCAG" and "is actually accessible" — the difference between compliance and usability. They're also the kind of judgment calls that are hard to capture in a checklist or automated scoring, which is why manual expert review remains important even with structured evaluation tools.
 
 For this project, the WCAG-based scoring model is sufficient. But the limitation should be acknowledged: a perfect score doesn't mean a perfectly accessible site, only that the tester correctly identified the known issues against their WCAG criteria.
+
+## Manual Review Workflow (planned)
+
+Content editors (or future site admins) should be able to manually review tester evaluations and override match results. This is needed because automated matching cannot reliably score issue type (free text) or proposed solution (free text).
+
+### Review steps
+
+1. Tester submits an evaluation
+2. Content editor opens the evaluation in a review mode
+3. For each finding, the reviewer sees the tester's answer alongside the expected answer (issue type, WCAG criteria, and solution description from the instance)
+4. The reviewer can override the match result (correct, partial, not-found) with a note explaining the override
+5. Overridden results are reflected in the evaluation stats
+
+### AI-assisted matching (future)
+
+AI-assisted matching would reduce the manual review burden by comparing the tester's free-text issue type and proposed solution against the known definitions and solution descriptions using semantic similarity. Manual override would still be available as a fallback.
