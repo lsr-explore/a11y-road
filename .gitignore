@@ -74,3 +74,6 @@ pandoc/output/
 .env
 
 vitest.config.*.timestamp*
+
+# dependency cruiser
+deps.svg
