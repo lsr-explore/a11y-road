@@ -3,6 +3,7 @@
 import type { UserRole } from '@a11y-road/a11y-kit';
 import { usePathname } from 'next/navigation';
 import { IssueLoggerPanel } from '@/components/issue-logger/issue-logger-panel';
+import { IssueLoggerPanelProvider } from '@/components/issue-logger/issue-logger-panel-provider';
 import { IssueLoggerProvider } from '@/components/issue-logger/issue-logger-provider';
 import { DemoBanner } from '@/components/layout/demo-banner';
 import { SiteFooter } from '@/components/layout/site-footer';
@@ -29,9 +30,10 @@ export const MapleValleyHealthClientLayout = ({
   const pathname = usePathname();
   const isTester = userRole === 'tester';
   const isEvaluationPage = pathname.startsWith('/maple-valley-health/evaluation');
-  const showBanner = showDemoTools && !isTester;
-  const showSidePanel = showDemoTools && !isTester;
-  const showIssueLogger = isTester && !isEvaluationPage;
+  const isGuidePage = pathname.startsWith('/maple-valley-health/getting-started');
+  const showBanner = showDemoTools && !isTester && !isGuidePage;
+  const showSidePanel = showDemoTools && !isTester && !isGuidePage;
+  const showIssueLogger = isTester && !isEvaluationPage && !isGuidePage;
 
   const content = (
     <UserRoleProvider role={userRole} displayName={displayName}>
@@ -55,7 +57,11 @@ export const MapleValleyHealthClientLayout = ({
   );
 
   if (isTester) {
-    return <IssueLoggerProvider>{content}</IssueLoggerProvider>;
+    return (
+      <IssueLoggerProvider>
+        <IssueLoggerPanelProvider>{content}</IssueLoggerPanelProvider>
+      </IssueLoggerProvider>
+    );
   }
 
   return content;

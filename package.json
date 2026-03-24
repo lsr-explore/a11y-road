@@ -29,7 +29,7 @@
     "search:index": "pagefind --site apps/a11y-road/.next/server/app --output-path apps/a11y-road/public/pagefind",
     "pandoc": "pandoc --defaults pandoc/pdf-templates/pdf-defaults.yaml",
     "vercel-deploy": "vercel --prod --confirm",
-    "dep": "dependency-cruiser --config .dependency-cruiser.js --output-type dot apps/a11y-road/src | dot -T svg > deps.svg"
+    "dep": "dependency-cruiser --config .dependency-cruiser.js --output-type dot apps/a11y-road/src. | dot -T svg > deps.svg"
   },
   "private": true,
   "dependencies": {

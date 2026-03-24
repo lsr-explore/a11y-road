@@ -2,8 +2,61 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { EditFindingDialog } from '@/components/issue-logger/edit-finding-dialog';
 import { useIssueLogger } from '@/components/issue-logger/issue-logger-provider';
+import type { Finding } from '@/data/evaluation-types';
 import { issueDefinitions, registry } from '@/data/issues-registry';
+
+const DeleteConfirmDialog = ({
+  elementName,
+  onConfirm,
+  onCancel,
+}: {
+  elementName: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.open) {
+      dialog.showModal();
+    }
+  }, []);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      onClose={onCancel}
+      className="w-full max-w-sm rounded-lg border border-gray-200 shadow-xl p-0 backdrop:bg-black/50"
+    >
+      <div className="p-6">
+        <h2 className="text-lg font-semibold text-gray-900">Delete Finding</h2>
+        <p className="mt-2 text-sm text-gray-600">
+          Are you sure you want to delete the finding for <strong>{elementName}</strong>?
+        </p>
+        <div className="flex justify-end gap-3 mt-6">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-md bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </dialog>
+  );
+};
 
 const matchBadge = (result: string) => {
   const styles =
@@ -23,8 +76,26 @@ const matchBadge = (result: string) => {
 const EvaluationDetailPage = () => {
   const params = useParams();
   const evaluationId = params.id as string;
-  const { getEvaluationById, issueSets, endEvaluation } = useIssueLogger();
+  const { getEvaluationById, issueSets, endEvaluation, updateFinding, deleteFinding } =
+    useIssueLogger();
+  const [editingFinding, setEditingFinding] = useState<Finding | null>(null);
+  const [deletingFinding, setDeletingFinding] = useState<Finding | null>(null);
+  const [deletedMessage, setDeletedMessage] = useState<string | null>(null);
   const evaluation = getEvaluationById(evaluationId);
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (deletingFinding) {
+      deleteFinding(deletingFinding.id);
+      setDeletedMessage(`Deleted finding for "${deletingFinding.elementId}".`);
+      setDeletingFinding(null);
+    }
+  }, [deletingFinding, deleteFinding]);
+
+  useEffect(() => {
+    if (!deletedMessage) return undefined;
+    const timer = setTimeout(() => setDeletedMessage(null), 4000);
+    return () => clearTimeout(timer);
+  }, [deletedMessage]);
 
   if (!evaluation) {
     return (
@@ -141,7 +212,9 @@ const EvaluationDetailPage = () => {
       {/* Findings table */}
       {evaluation.findings.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">Findings</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Findings ({evaluation.findings.length})
+          </h2>
           {notFoundCount > 0 && (
             <p className="mb-3 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
               {notFoundCount} finding{notFoundCount > 1 ? 's' : ''} did not match known issues and{' '}
@@ -156,8 +229,9 @@ const EvaluationDetailPage = () => {
                   <th className="py-2 pr-4 font-medium text-gray-700">Element</th>
                   <th className="py-2 pr-4 font-medium text-gray-700">Tester&apos;s Answer</th>
                   {isSubmitted && <th className="py-2 pr-4 font-medium text-gray-700">Expected</th>}
-                  <th className="py-2 pr-4 font-medium text-gray-700">WCAG</th>
+                  {!isSubmitted && <th className="py-2 pr-4 font-medium text-gray-700">WCAG</th>}
                   <th className="py-2 pr-4 font-medium text-gray-700">Status</th>
+                  {!isSubmitted && <th className="py-2 pr-4 font-medium text-gray-700">Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -168,13 +242,17 @@ const EvaluationDetailPage = () => {
                   const expectedDef = matchedInstance
                     ? issueDefinitions.find((def) => def.id === matchedInstance.issueId)
                     : undefined;
-
                   return (
                     <tr key={finding.id} className="border-b border-gray-100 align-top">
                       <td className="py-2 pr-4 text-xs text-gray-500">{finding.pageId}</td>
                       <td className="py-2 pr-4 font-mono text-xs">{finding.elementId}</td>
                       <td className="py-2 pr-4">
                         <span className="text-sm">{finding.issueTypeId}</span>
+                        {isSubmitted && finding.wcagCriteria && (
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            WCAG: {finding.wcagCriteria}
+                          </p>
+                        )}
                         {finding.proposedSolution && (
                           <p className="text-xs text-gray-500 mt-0.5">
                             Solution: {finding.proposedSolution}
@@ -204,7 +282,9 @@ const EvaluationDetailPage = () => {
                           )}
                         </td>
                       )}
-                      <td className="py-2 pr-4 text-gray-500">{finding.wcagCriteria}</td>
+                      {!isSubmitted && (
+                        <td className="py-2 pr-4 text-gray-500">{finding.wcagCriteria}</td>
+                      )}
                       <td className="py-2 pr-4">
                         {matchBadge(finding.matchResult)}
                         {finding.matchDetails?.reason && (
@@ -213,6 +293,26 @@ const EvaluationDetailPage = () => {
                           </span>
                         )}
                       </td>
+                      {!isSubmitted && (
+                        <td className="py-2 pr-4">
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setEditingFinding(finding)}
+                              className="text-indigo-600 hover:text-indigo-800 text-xs underline"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeletingFinding(finding)}
+                              className="text-red-600 hover:text-red-800 text-xs underline"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
@@ -256,6 +356,39 @@ const EvaluationDetailPage = () => {
             </table>
           </div>
         </div>
+      )}
+
+      {deletedMessage && (
+        <div
+          role="status"
+          className="mb-4 rounded-md p-3 text-sm bg-green-50 text-green-800 border border-green-200 flex items-center justify-between gap-2"
+        >
+          <span>{deletedMessage}</span>
+          <button
+            type="button"
+            onClick={() => setDeletedMessage(null)}
+            className="shrink-0 opacity-60 hover:opacity-100"
+            aria-label="Dismiss"
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
+      {editingFinding && (
+        <EditFindingDialog
+          finding={editingFinding}
+          onSave={updateFinding}
+          onClose={() => setEditingFinding(null)}
+        />
+      )}
+
+      {deletingFinding && (
+        <DeleteConfirmDialog
+          elementName={deletingFinding.elementId}
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setDeletingFinding(null)}
+        />
       )}
     </div>
   );

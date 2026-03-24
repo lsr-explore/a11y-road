@@ -2,9 +2,11 @@
 
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { Finding } from '../../data/evaluation-types';
 import { getPageByRoute } from '../../data/page-metadata';
 import wcagCriteriaData from '../../data/wcag-criteria.json';
 import { FindingsList } from './findings-list';
+import { useIssueLoggerPanel } from './issue-logger-panel-provider';
 import { useIssueLogger } from './issue-logger-provider';
 
 type WcagCriterion = { id: string; title: string; level: 'A' | 'AA' | 'AAA' };
@@ -137,7 +139,15 @@ const queryPageElements = (): string[] => {
 };
 
 export const IssueLoggerPanel = () => {
-  const { currentEvaluation, submitFinding, startEvaluation, issueSets } = useIssueLogger();
+  const {
+    currentEvaluation,
+    submitFinding,
+    updateFinding,
+    deleteFinding,
+    startEvaluation,
+    issueSets,
+  } = useIssueLogger();
+  const { isOpen, close } = useIssueLoggerPanel();
   const pathname = usePathname();
   const currentPage = getPageByRoute(pathname);
   const [pageElements, setPageElements] = useState<string[]>([]);
@@ -152,11 +162,68 @@ export const IssueLoggerPanel = () => {
   const [wcagCriteria, setWcagCriteria] = useState<string[]>([]);
   const [description, setDescription] = useState('');
   const [proposedSolution, setProposedSolution] = useState('');
+  const [editingFindingId, setEditingFindingId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{
     message: string;
     type: 'correct' | 'partial' | 'not-found';
   } | null>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const justSubmittedRef = useRef(false);
+
+  // Dismiss feedback when navigating to a different page
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only dismiss on page change
+  useEffect(() => {
+    setFeedback(null);
+  }, [pathname]);
+
+  // Dismiss feedback when a form field changes (but not right after submit clears the form)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: dismiss on any field change
+  useEffect(() => {
+    if (justSubmittedRef.current) {
+      justSubmittedRef.current = false;
+      return;
+    }
+    setFeedback(null);
+  }, [elementId, otherElement, issueType, wcagCriteria, description, proposedSolution]);
+
+  const clearForm = useCallback(() => {
+    setElementId('');
+    setOtherElement('');
+    setIssueType('');
+    setWcagCriteria([]);
+    setDescription('');
+    setProposedSolution('');
+    setEditingFindingId(null);
+  }, []);
+
+  const handleEdit = useCallback(
+    (finding: Finding) => {
+      const isKnownElement = pageElements.includes(finding.elementId);
+      setElementId(isKnownElement ? finding.elementId : 'other');
+      if (!isKnownElement) setOtherElement(finding.elementId);
+      setIssueType(finding.issueTypeId);
+      setWcagCriteria(finding.wcagCriteria.split(', ').filter(Boolean));
+      setDescription(finding.description);
+      setProposedSolution(finding.proposedSolution ?? '');
+      setEditingFindingId(finding.id);
+      setFeedback(null);
+    },
+    [pageElements],
+  );
+
+  const setFeedbackFromResult = useCallback(
+    (result: { matchResult: Finding['matchResult']; matchDetails?: { reason: string } }) => {
+      const reason = result.matchDetails?.reason ?? '';
+      if (result.matchResult === 'correct') {
+        setFeedback({ message: 'Correct — all criteria matched.', type: 'correct' });
+      } else if (result.matchResult === 'partial') {
+        setFeedback({ message: `Partial match — ${reason}`, type: 'partial' });
+      } else {
+        setFeedback({ message: `Not found — ${reason}`, type: 'not-found' });
+      }
+    },
+    [],
+  );
 
   const handleSubmit = useCallback(
     (formEvent: React.FormEvent) => {
@@ -164,39 +231,27 @@ export const IssueLoggerPanel = () => {
       const resolvedElementId = elementId === 'other' ? otherElement : elementId;
       if (!resolvedElementId || !issueType) return;
 
-      const finding = submitFinding({
+      const findingData = {
         pageId: currentPage?.id ?? 'unknown',
         elementId: resolvedElementId,
         issueTypeId: issueType,
         wcagCriteria: wcagCriteria.join(', '),
         description,
         proposedSolution: proposedSolution || undefined,
-      });
+      };
 
-      const reason = finding.matchDetails?.reason ?? '';
-      if (finding.matchResult === 'correct') {
-        setFeedback({
-          message: 'Correct — all criteria matched.',
-          type: 'correct',
-        });
-      } else if (finding.matchResult === 'partial') {
-        setFeedback({
-          message: `Partial match — ${reason}`,
-          type: 'partial',
-        });
+      if (editingFindingId) {
+        const updated = updateFinding(editingFindingId, findingData);
+        if (updated) {
+          setFeedbackFromResult(updated);
+        }
       } else {
-        setFeedback({
-          message: `Not found — ${reason}`,
-          type: 'not-found',
-        });
+        const finding = submitFinding(findingData);
+        setFeedbackFromResult(finding);
       }
 
-      setElementId('');
-      setOtherElement('');
-      setIssueType('');
-      setWcagCriteria([]);
-      setDescription('');
-      setProposedSolution('');
+      justSubmittedRef.current = true;
+      clearForm();
     },
     [
       elementId,
@@ -205,8 +260,12 @@ export const IssueLoggerPanel = () => {
       wcagCriteria,
       description,
       proposedSolution,
+      editingFindingId,
       submitFinding,
+      updateFinding,
       currentPage,
+      clearForm,
+      setFeedbackFromResult,
     ],
   );
 
@@ -219,12 +278,14 @@ export const IssueLoggerPanel = () => {
 
   const findingsCount = currentEvaluation?.findings.length ?? 0;
 
+  if (!isOpen) return null;
+
   return (
     <aside
       className="w-80 border-l border-gray-200 bg-gray-50 overflow-y-auto flex flex-col"
       aria-label="Issue logger"
     >
-      <div className="p-4 border-b border-gray-200 bg-white">
+      <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between">
         <h2 className="text-sm font-semibold text-gray-900">
           Issue Logger
           {findingsCount > 0 && (
@@ -233,6 +294,16 @@ export const IssueLoggerPanel = () => {
             </span>
           )}
         </h2>
+        <button
+          type="button"
+          onClick={close}
+          className="text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Close issue logger"
+        >
+          <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+          </svg>
+        </button>
       </div>
 
       <div className="p-4 flex-1 overflow-y-auto">
@@ -354,19 +425,30 @@ export const IssueLoggerPanel = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Submit Finding
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  {editingFindingId ? 'Update Finding' : 'Submit Finding'}
+                </button>
+                {editingFindingId && (
+                  <button
+                    type="button"
+                    onClick={clearForm}
+                    className="rounded-md bg-gray-200 px-3 py-1.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
             </form>
 
             {feedback && (
               <div
                 ref={statusRef}
                 role="status"
-                className={`mt-3 rounded-md p-3 text-sm ${
+                className={`mt-3 rounded-md p-3 text-sm flex items-start justify-between gap-2 ${
                   feedback.type === 'correct'
                     ? 'bg-green-50 text-green-800 border border-green-200'
                     : feedback.type === 'partial'
@@ -374,7 +456,15 @@ export const IssueLoggerPanel = () => {
                       : 'bg-red-50 text-red-800 border border-red-200'
                 }`}
               >
-                {feedback.message}
+                <span>{feedback.message}</span>
+                <button
+                  type="button"
+                  onClick={() => setFeedback(null)}
+                  className="shrink-0 opacity-60 hover:opacity-100"
+                  aria-label="Dismiss feedback"
+                >
+                  &times;
+                </button>
               </div>
             )}
 
@@ -382,6 +472,8 @@ export const IssueLoggerPanel = () => {
               findings={currentEvaluation.findings.filter(
                 (finding) => !currentPage || finding.pageId === currentPage.id,
               )}
+              onEdit={handleEdit}
+              onDelete={deleteFinding}
             />
           </>
         )}

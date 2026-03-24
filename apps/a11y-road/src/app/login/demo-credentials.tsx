@@ -11,9 +11,14 @@ const roleDescriptions: Record<string, string> = {
 };
 
 const credentials = [
-  { username: 'learner', password: 'learn123', role: 'learner', displayName: 'Alex Learner' },
-  { username: 'tester', password: 'test123', role: 'tester', displayName: 'Sam Tester' },
-  { username: 'editor', password: 'edit123', role: 'content-editor', displayName: 'Morgan Editor' },
+  { username: 'learner', password: 'learnA11y123', role: 'learner', displayName: 'Alex Learner' },
+  { username: 'tester', password: 'testA11y123', role: 'tester', displayName: 'Sam Tester' },
+  {
+    username: 'editor',
+    password: 'editA11y123',
+    role: 'content-editor',
+    displayName: 'Morgan Editor',
+  },
 ];
 
 export const DemoCredentials = () => {

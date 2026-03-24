@@ -122,3 +122,5 @@ Content editors (or future site admins) should be able to manually review tester
 ### AI-assisted matching (future)
 
 AI-assisted matching would reduce the manual review burden by comparing the tester's free-text issue type and proposed solution against the known definitions and solution descriptions using semantic similarity. Manual override would still be available as a fallback.
+
+In the event that a tester uses an external guided tool to do testing, e.g. Ta11y, the site should be able to accept a set of findings as either a json, pdf, or json file and be able to score it with an AI assistant.
