@@ -65,5 +65,28 @@ export const hashPassword = (plain: string): string => {
   return Buffer.from(plain).toString('base64');
 };
 
-export { AUTH_COOKIE };
+const SITE_AUTH_GATE_COOKIE = 'site-auth-gate';
+
+/**
+ * Sets the site-wide auth gate cookie after verifying
+ * credentials against SITE_AUTH_USERNAME / SITE_AUTH_PASSWORD env vars.
+ */
+export const verifySiteAuthGate = (username: string, password: string): boolean => {
+  const expectedUsername = process.env.SITE_AUTH_USERNAME;
+  const expectedPassword = process.env.SITE_AUTH_PASSWORD;
+  if (!expectedUsername || !expectedPassword) return false;
+  return username === expectedUsername && password === expectedPassword;
+};
+
+export const createSiteAuthGateCookie = async (): Promise<void> => {
+  const cookieStore = await cookies();
+  cookieStore.set(SITE_AUTH_GATE_COOKIE, 'authorized', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 30,
+  });
+};
+
+export { AUTH_COOKIE, SITE_AUTH_GATE_COOKIE };
 export type { SessionUser };
