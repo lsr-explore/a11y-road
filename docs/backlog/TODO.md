@@ -40,6 +40,7 @@
   - [ ] Issues Registry
 - [ ] understand use of common cache in node_modules for libs/a11y-ui/vite.config.mts - specifies ../../node_modules/.vite/libs/a11y-ui
 - [ ] add pino logging
+- [ ] update to tailwind 4 - disable dependabot rule once update is complete
 
 ```js
  That cacheDir setting points Vite's cache to the workspace root's

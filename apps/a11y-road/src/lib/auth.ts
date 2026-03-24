@@ -88,5 +88,5 @@ export const createSiteAuthGateCookie = async (): Promise<void> => {
   });
 };
 
-export { AUTH_COOKIE, SITE_AUTH_GATE_COOKIE };
 export type { SessionUser };
+export { AUTH_COOKIE, SITE_AUTH_GATE_COOKIE };

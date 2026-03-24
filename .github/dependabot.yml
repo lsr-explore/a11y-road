@@ -9,6 +9,11 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      - dependency-name: tailwindcss
+        versions: [">=4"]
+      - dependency-name: eslint
+        versions: [">=10"]
     groups:
       production-dependencies:
         dependency-type: production
