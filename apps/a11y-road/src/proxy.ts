@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 const AUTH_COOKIE = 'site-auth';
+const SITE_AUTH_GATE_COOKIE = 'site-auth-gate';
 
 const PUBLIC_ROUTES = new Set(['/', '/login', '/about']);
 
@@ -12,6 +13,12 @@ const isPublicRoute = (pathname: string): boolean => {
   if (pathname.startsWith('/pagefind')) return true;
   if (pathname === '/favicon.ico') return true;
   return false;
+};
+
+const isStaticAsset = (pathname: string): boolean => {
+  return (
+    pathname.startsWith('/_next') || pathname === '/favicon.ico' || pathname.startsWith('/pagefind')
+  );
 };
 
 const parseSession = (
@@ -31,6 +38,17 @@ const parseSession = (
 
 export const proxy = (request: NextRequest) => {
   const { pathname } = request.nextUrl;
+
+  // Site-wide auth gate: when enabled, require gate cookie before anything else
+  if (process.env.SITE_AUTH_ENABLED === 'true' && !isStaticAsset(pathname)) {
+    const gateCookie = request.cookies.get(SITE_AUTH_GATE_COOKIE);
+    if (!gateCookie?.value) {
+      if (pathname !== '/site-auth') {
+        return NextResponse.redirect(new URL('/site-auth', request.url));
+      }
+      return NextResponse.next();
+    }
+  }
 
   if (isPublicRoute(pathname)) {
     // Redirect authenticated users away from login
