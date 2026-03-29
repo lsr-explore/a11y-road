@@ -1,0 +1,37 @@
+{
+  "config": {
+    "default": true,
+    // Prose content doesn't need hard line wrapping
+    "MD013": false,
+    // We use inline HTML tables because remark-gfm is not available with Turbopack
+    "MD033": false,
+    // Narrative scenes use italic paragraphs, not headings
+    "MD036": false,
+    // Bare URLs in resource sections are intentional and readable
+    "MD034": false,
+    // Allow duplicate headings in different sections (e.g., "Contrast" under Low Vision and Color Vision)
+    "MD024": { "siblings_only": true },
+    // Blockquotes use blank lines to separate quote text from attribution
+    "MD028": false,
+    // Fenced code blocks without language are acceptable in docs
+    "MD040": false,
+    // Table column alignment is not enforced
+    "MD060": false,
+    // Lists in ADRs and notes don't always have surrounding blank lines
+    "MD032": false,
+    // Some docs files don't end with a trailing newline
+    "MD047": false,
+    // Ordered list prefix style varies in docs
+    "MD029": false,
+    // Not all docs files start with a top-level heading
+    "MD041": false,
+    // Blank lines around headings not always followed in notes
+    "MD022": false
+  },
+  "ignores": [
+    "node_modules/**",
+    ".next/**",
+    "coverage/**",
+    "storybook-static/**"
+  ]
+}

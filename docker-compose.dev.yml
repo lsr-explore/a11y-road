@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+      - /app/.nx
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - NEXT_TELEMETRY_DISABLED=1
+      - NX_DAEMON=false
+      - NX_NO_TUI=true
+    stdin_open: true
+    tty: true

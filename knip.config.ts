@@ -16,6 +16,7 @@ const config: KnipConfig = {
         'src/app/**/layout.tsx',
         'src/app/**/route.ts',
         'src/test-setup.ts',
+        'src/**/*.stories.tsx',
       ],
       project: ['src/**/*.{ts,tsx}'],
       ignore: ['src/data/a11y-issues.ts'],
@@ -41,6 +42,7 @@ const config: KnipConfig = {
     'pandoc',
     'vercel',
     'dot',
+    'tree',
   ],
   ignoreDependencies: [
     // Nx plugins used implicitly via nx.json
@@ -50,8 +52,11 @@ const config: KnipConfig = {
     'eslint-plugin-import',
     'eslint-plugin-react',
     'eslint-plugin-react-hooks',
+    'eslint-plugin-storybook',
     'typescript-eslint',
     '@eslint/js',
+    // pino-pretty is loaded at runtime via pino transport config
+    'pino-pretty',
   ],
 };
 

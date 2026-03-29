@@ -1,0 +1,19 @@
+FROM node:22-slim
+
+RUN corepack enable && corepack prepare pnpm@9 --activate
+
+WORKDIR /app
+
+# Copy dependency manifests for layer caching
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/a11y-road/package.json apps/a11y-road/
+COPY apps/maple-valley-health-e2e/package.json apps/maple-valley-health-e2e/
+COPY libs/a11y-kit/package.json libs/a11y-kit/
+COPY libs/a11y-ui/package.json libs/a11y-ui/
+
+RUN pnpm install --frozen-lockfile
+
+# Source code is volume-mounted at runtime for hot reload
+EXPOSE 3000
+
+CMD ["pnpm", "dev"]

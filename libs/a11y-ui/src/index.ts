@@ -1,3 +1,4 @@
+export { ErrorBoundary } from './components/error-boundary';
 export * from './components/ui/badge';
 export * from './components/ui/button';
 export * from './components/ui/input';
