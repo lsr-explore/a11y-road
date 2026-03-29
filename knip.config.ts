@@ -51,8 +51,11 @@ const config: KnipConfig = {
     'eslint-plugin-import',
     'eslint-plugin-react',
     'eslint-plugin-react-hooks',
+    'eslint-plugin-storybook',
     'typescript-eslint',
     '@eslint/js',
+    // pino-pretty is loaded at runtime via pino transport config
+    'pino-pretty',
   ],
 };
 

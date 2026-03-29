@@ -77,3 +77,6 @@ vitest.config.*.timestamp*
 
 # dependency cruiser
 deps.svg
+
+# Storybook
+storybook-static/

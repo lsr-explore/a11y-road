@@ -6,6 +6,7 @@ export {
 } from './components/element-registry-provider';
 export { SidePanelProvider, useSidePanel } from './components/side-panel-provider';
 export { highlightCss, highlightElement, highlightElementByRef } from './highlight';
+export { logger } from './lib/logger';
 export { A11yRegistry } from './registry';
 export type {
   A11yIssueDefinition,
