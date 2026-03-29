@@ -16,6 +16,7 @@ const config: KnipConfig = {
         'src/app/**/layout.tsx',
         'src/app/**/route.ts',
         'src/test-setup.ts',
+        'src/**/*.stories.tsx',
       ],
       project: ['src/**/*.{ts,tsx}'],
       ignore: ['src/data/a11y-issues.ts'],
