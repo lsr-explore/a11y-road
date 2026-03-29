@@ -32,6 +32,7 @@ Milestones
 - [x] ~~Allow sorting by Page or ID~~ — sortable column headers with ascending/descending toggle
 - [x] ~~Should display a success banner that indicates what has been added/edited/deleted~~
 - [x] ~~Add a solution description field~~ — added `solutionDescription` (optional) to `A11yIssueInstance` type, form, table, and all registry data
+- [ ] On the team card - add an accessibility issue where alt is not defined for the profile picture.
 
 ## Issue Sets (Milestone: Certification)
 
