@@ -41,6 +41,7 @@ const config: KnipConfig = {
     'pandoc',
     'vercel',
     'dot',
+    'tree',
   ],
   ignoreDependencies: [
     // Nx plugins used implicitly via nx.json
