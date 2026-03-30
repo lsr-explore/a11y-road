@@ -31,7 +31,6 @@ export const tutorialPages: TutorialPage[] = [
   { slug: 'wcag-overview', title: 'Understanding WCAG', section: 'standards' },
   { slug: 'wcag-by-example', title: 'WCAG by Example', section: 'standards' },
   { slug: 'wcag-in-practice', title: 'WCAG in Practice', section: 'standards' },
-  { slug: 'wcag-people-map', title: 'WCAG by User Group', section: 'standards' },
   // The Business Case
   { slug: 'business-case', title: 'The Business Case', section: 'business' },
   { slug: 'legal-landscape', title: 'The Legal Landscape', section: 'business' },
