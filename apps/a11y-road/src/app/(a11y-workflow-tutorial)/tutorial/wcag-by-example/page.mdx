@@ -1,0 +1,1053 @@
+# WCAG by Example
+
+---
+
+*Jordan had just added alt text to every image on the dashboard. "Done. All images have alt attributes. We pass 1.1.1."*
+
+*Priya pulled up a screen reader and tabbed to the first image. It announced: "Image. DSC_4027.jpg." She moved to the next. "Image. photo." And the next. "Image. banner-final-v2."*
+
+*"Technically those aren't empty," Jordan said slowly.*
+
+*"Technically they pass the linter," Priya agreed. "But a screen reader user just heard three file names and learned nothing. The criterion says 'text alternative that serves the equivalent purpose.' These don't."*
+
+*Marcus leaned in. "So the standard is a floor, not a ceiling?"*
+
+*"Exactly," Priya said. "Passing the check is step one. Making it actually useful is the goal. It's like keyboard access — you can make every element reachable with Tab, but if it takes forty keystrokes to reach the main content, you've met the letter of 2.1.1 and missed the point."*
+
+*Ava opened her notebook. "So what would help us? Something that shows each criterion, what it actually looks like when it's done right, and how we catch it when it's not?"*
+
+---
+
+## A Practical Way to Read WCAG
+
+The [Intopia WCAG 2.2 Map](https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf) is an excellent visual reference that organizes every success criterion by principle and guideline — the way WCAG itself is structured. It answers the question: **"What does WCAG say?"**
+
+This page answers a different question: **"What does each criterion look like in practice?"**
+
+For every WCAG 2.2 success criterion, this table shows who benefits, how to check for it, what a real example looks like, and how to catch and prevent regressions. Many criteria help more than one user group — that's not a mistake. It reflects how interconnected accessibility is. Fixing contrast helps low vision users *and* people with color vision differences. Good heading structure helps screen reader users *and* people with cognitive differences.
+
+Conformance levels are marked: **A** (minimum), **AA** (standard target), **AAA** (aspirational). Criteria new in WCAG 2.2 are marked with ✱.
+
+### Beyond the standard
+
+WCAG defines the *minimum* bar for accessibility, not the finish line. Many criteria can be met technically while still leaving users with a poor experience. A few examples:
+
+- **Alt text** (1.1.1) — an image with `alt="IMG_3841.jpg"` passes automated checks but tells a screen reader user nothing. Meaningful alt text describes the *purpose* of the image, not just its presence.
+- **Keyboard access** (2.1.1) — every interactive element might be reachable via Tab, but if a user needs forty keystrokes to reach the main content, the experience is frustrating. Efficient keyboard flows matter as much as basic reachability.
+- **Captions** (1.2.2) — auto-generated captions technically exist, but garbled output is worse than no captions for someone relying on them. Accurate, well-timed captions are the real goal.
+- **Error messages** (3.3.1) — "Invalid input" next to a form field satisfies the criterion, but "Please enter a date in MM/DD/YYYY format" actually helps someone fix the problem.
+
+As you work through the table below, keep this in mind: each criterion is a starting point. The examples in the table aim to show what *good* looks like, not just what passes.
+
+---
+
+## How to Read This Table
+
+Each table below covers one WCAG 2.2 principle. The columns are:
+
+- **WCAG SC** — The success criterion number, title, and conformance level (A, AA, or AAA). Criteria new in WCAG 2.2 are marked with ✱.
+- **How to check** — A plain-English description of what to look for.
+- **Who benefits** — The user groups that benefit most. Many criteria help more than one group.
+- **Example** — A concrete scenario that shows what passing or failing looks like.
+- **How to catch** — The tools and methods that can detect failures.
+- **Regression prevention** — For items that require manual testing, a suggested automated test strategy to prevent regressions once the issue is fixed.
+
+### User group key
+
+Each group has a **quick check** — a single question to keep in mind while reviewing.
+
+- **Screen reader** — People who use screen readers (blind or low-vision users). *Quick check: Can someone understand this without seeing it?*
+- **Keyboard** — People who navigate with keyboard only. *Quick check: Can I complete the entire task with Tab, Enter, and arrow keys?*
+- **Low vision** — People with low vision who zoom, magnify, or customize display. *Quick check: Does the page still work at 200-400% zoom?*
+- **Color vision** — People with color vision differences. *Quick check: If I remove color, does the meaning remain clear?*
+- **Cognitive** — People with cognitive, learning, or neurological differences. *Quick check: If someone is confused, does the interface help them recover?*
+- **Hearing** — People who are deaf or hard of hearing. *Quick check: Can someone use this without hearing the audio?*
+- **Motor** — People with motor or mobility impairments. *Quick check: Can someone with limited movement still complete the task?*
+- **Vestibular** — People with vestibular disorders or motion sensitivity. *Quick check: Does anything move, flash, or animate without the user asking for it?*
+
+### Detection method key
+
+- **Linter** — eslint-plugin-jsx-a11y or similar static analysis
+- **axe** — axe-core (via Playwright, vitest-axe, or browser extension)
+- **DevTools** — Browser developer tools (accessibility tree, contrast checker, etc.)
+- **Screen reader** — Manual testing with a screen reader (VoiceOver, NVDA, JAWS)
+- **Inspection** — Visual or code review
+- **axe DevTools** — axe DevTools browser extension (includes guided tests beyond free axe-core)
+
+---
+
+## Principle 1: Perceivable
+
+*Information and user interface components must be presentable to users in ways they can perceive.*
+
+### 1.1 Text Alternatives
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.1.1 Non-text Content (A)</td>
+      <td>Every image, icon, and non-text element has a text alternative that serves the same purpose. Decorative images are hidden from assistive tech.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A product photo has alt text describing the item. A decorative divider has an empty alt attribute.</td>
+      <td>Linter, axe, Screen reader</td>
+      <td>Unit test: assert all <code>&lt;img&gt;</code> elements have non-empty <code>alt</code> or <code>role="presentation"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+### 1.2 Time-based Media
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.2.1 Audio-only and Video-only (Prerecorded) (A)</td>
+      <td>Prerecorded audio has a text transcript. Prerecorded video (no audio) has a text description or audio track.</td>
+      <td>Hearing, Screen reader</td>
+      <td>A podcast episode includes a full transcript below the player.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify transcript element is present alongside audio/video elements</td>
+    </tr>
+    <tr>
+      <td>1.2.2 Captions (Prerecorded) (A)</td>
+      <td>Prerecorded video with audio has synchronized captions.</td>
+      <td>Hearing, Cognitive</td>
+      <td>A training video has accurate captions that include speaker identification and sound effects.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify <code>&lt;track kind="captions"&gt;</code> element exists on video elements</td>
+    </tr>
+    <tr>
+      <td>1.2.3 Audio Description or Media Alternative (Prerecorded) (A)</td>
+      <td>Prerecorded video has audio description or a full text alternative describing the visual content.</td>
+      <td>Screen reader</td>
+      <td>A cooking tutorial has audio description narrating the visual steps between dialogue.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify audio description track or text alternative is present</td>
+    </tr>
+    <tr>
+      <td>1.2.4 Captions (Live) (AA)</td>
+      <td>Live video with audio has real-time captions.</td>
+      <td>Hearing</td>
+      <td>A live webinar uses real-time captioning so deaf attendees can follow along.</td>
+      <td>Inspection</td>
+      <td>n/a — requires live captioning service</td>
+    </tr>
+    <tr>
+      <td>1.2.5 Audio Description (Prerecorded) (AA)</td>
+      <td>Prerecorded video has audio description for important visual content not conveyed by the main audio track.</td>
+      <td>Screen reader</td>
+      <td>A documentary includes an audio description track that narrates on-screen text and visual action.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify audio description track element is present on video</td>
+    </tr>
+    <tr>
+      <td>1.2.6 Sign Language (Prerecorded) (AAA)</td>
+      <td>Prerecorded video with audio includes a sign language interpretation.</td>
+      <td>Hearing</td>
+      <td>A company announcement video includes an ASL interpreter in a picture-in-picture window.</td>
+      <td>Inspection</td>
+      <td>n/a — requires sign language content production</td>
+    </tr>
+    <tr>
+      <td>1.2.7 Extended Audio Description (Prerecorded) (AAA)</td>
+      <td>Where pauses in audio are too short for audio description, the video pauses to allow extended descriptions.</td>
+      <td>Screen reader</td>
+      <td>A fast-paced tutorial video pauses automatically to allow longer audio descriptions of complex diagrams.</td>
+      <td>Inspection</td>
+      <td>n/a — requires video production changes</td>
+    </tr>
+    <tr>
+      <td>1.2.8 Media Alternative (Prerecorded) (AAA)</td>
+      <td>A full text alternative is provided for all prerecorded video content.</td>
+      <td>Screen reader, Hearing, Cognitive</td>
+      <td>A product demo video has an accompanying page with a complete written walkthrough of everything shown.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify a linked or adjacent text alternative exists for video content</td>
+    </tr>
+    <tr>
+      <td>1.2.9 Audio-only (Live) (AAA)</td>
+      <td>Live audio content has a text alternative that presents equivalent information in real time.</td>
+      <td>Hearing</td>
+      <td>A live audio broadcast provides real-time text captions or a live transcript.</td>
+      <td>Inspection</td>
+      <td>n/a — requires live transcription service</td>
+    </tr>
+  </tbody>
+</table>
+
+### 1.3 Adaptable
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.3.1 Info and Relationships (A)</td>
+      <td>Structure conveyed visually (headings, lists, tables, form labels) is also conveyed programmatically through proper HTML semantics or ARIA.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A form uses <code>&lt;label&gt;</code> elements properly associated with inputs, not just placeholder text.</td>
+      <td>Linter, axe, Screen reader</td>
+      <td>Unit test: assert form inputs have associated labels; assert heading hierarchy is valid</td>
+    </tr>
+    <tr>
+      <td>1.3.2 Meaningful Sequence (A)</td>
+      <td>The reading order in the DOM matches the visual presentation order. CSS does not rearrange content in a way that changes meaning.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A two-column layout reads in the correct order when CSS is disabled or when read by a screen reader.</td>
+      <td>Screen reader, Inspection</td>
+      <td>E2E test: compare DOM order of key content sections against expected order</td>
+    </tr>
+    <tr>
+      <td>1.3.3 Sensory Characteristics (A)</td>
+      <td>Instructions do not rely solely on shape, color, size, position, or sound. Multiple cues are provided.</td>
+      <td>Screen reader, Color vision, Cognitive</td>
+      <td>Instead of "click the green button on the right," the instruction says "click the Submit button."</td>
+      <td>Inspection</td>
+      <td>n/a — requires content review</td>
+    </tr>
+    <tr>
+      <td>1.3.4 Orientation (AA)</td>
+      <td>Content does not restrict its view to a single display orientation (portrait or landscape) unless a specific orientation is essential.</td>
+      <td>Motor, Low vision</td>
+      <td>A web app works in both portrait and landscape mode on a tablet. A user with a mounted device can use either orientation.</td>
+      <td>DevTools (responsive mode), Inspection</td>
+      <td>E2E test: run viewport tests in both portrait and landscape dimensions</td>
+    </tr>
+    <tr>
+      <td>1.3.5 Identify Input Purpose (AA)</td>
+      <td>Form inputs that collect user information have <code>autocomplete</code> attributes that identify their purpose.</td>
+      <td>Cognitive, Motor, Screen reader</td>
+      <td>A checkout form uses <code>autocomplete="shipping street-address"</code> so the browser can autofill.</td>
+      <td>Linter, axe, Inspection</td>
+      <td>Unit test: assert common form inputs (name, email, address) have appropriate <code>autocomplete</code> values</td>
+    </tr>
+    <tr>
+      <td>1.3.6 Identify Purpose (AAA)</td>
+      <td>The purpose of UI components, icons, and regions can be programmatically determined (e.g., via ARIA landmarks, <code>role</code>, or microdata).</td>
+      <td>Cognitive, Screen reader</td>
+      <td>Page regions use landmark roles (<code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;aside&gt;</code>) so users can personalize or simplify the interface.</td>
+      <td>Linter, axe, Screen reader</td>
+      <td>Unit test: assert key page regions have appropriate landmark roles</td>
+    </tr>
+  </tbody>
+</table>
+
+### 1.4 Distinguishable
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.4.1 Use of Color (A)</td>
+      <td>Color is not the only visual means of conveying information, indicating action, prompting response, or distinguishing elements.</td>
+      <td>Color vision, Low vision, Screen reader</td>
+      <td>Error fields have a red border <em>and</em> an error icon plus text — not just a color change.</td>
+      <td>Inspection, axe DevTools</td>
+      <td>Unit test: assert error states include text or icon indicators, not just color changes</td>
+    </tr>
+    <tr>
+      <td>1.4.2 Audio Control (A)</td>
+      <td>If audio plays automatically for more than 3 seconds, there is a mechanism to pause, stop, or control the volume independently.</td>
+      <td>Screen reader, Cognitive, Hearing</td>
+      <td>A homepage hero video with audio includes visible pause and volume controls.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify autoplay audio elements have visible pause/stop controls</td>
+    </tr>
+    <tr>
+      <td>1.4.3 Contrast (Minimum) (AA)</td>
+      <td>Text has a contrast ratio of at least 4.5:1 against its background (3:1 for large text).</td>
+      <td>Low vision, Color vision</td>
+      <td>Body text is dark gray (#333) on white, meeting the 4.5:1 ratio. Light gray placeholder text (#999) on white fails.</td>
+      <td>axe, DevTools (contrast checker), axe DevTools</td>
+      <td>Unit test: verify CSS custom properties for text/background color pairings maintain required ratios</td>
+    </tr>
+    <tr>
+      <td>1.4.4 Resize Text (AA)</td>
+      <td>Text can be resized up to 200% without loss of content or functionality. Use relative units (rem, em) rather than px for text.</td>
+      <td>Low vision</td>
+      <td>Zooming the browser to 200% does not cause text to overlap, get clipped, or disappear behind other elements.</td>
+      <td>DevTools (zoom), Inspection</td>
+      <td>E2E test: run key page tests at 200% zoom viewport and assert no overflow or content clipping</td>
+    </tr>
+    <tr>
+      <td>1.4.5 Images of Text (AA)</td>
+      <td>Text is used to convey information rather than images of text, unless the image is essential (e.g., a logo).</td>
+      <td>Low vision, Screen reader, Cognitive</td>
+      <td>A banner heading uses styled HTML text, not a PNG image of the heading.</td>
+      <td>Inspection</td>
+      <td>n/a — requires design review</td>
+    </tr>
+    <tr>
+      <td>1.4.6 Contrast (Enhanced) (AAA)</td>
+      <td>Text has a contrast ratio of at least 7:1 against its background (4.5:1 for large text).</td>
+      <td>Low vision, Color vision</td>
+      <td>Body text uses black (#000) on white (#fff) for maximum contrast.</td>
+      <td>axe, DevTools (contrast checker)</td>
+      <td>Unit test: verify CSS custom properties maintain enhanced contrast ratios</td>
+    </tr>
+    <tr>
+      <td>1.4.7 Low or No Background Audio (AAA)</td>
+      <td>Prerecorded audio-only content that is primarily speech has no background sounds, or background sounds are at least 20 dB lower.</td>
+      <td>Hearing, Cognitive</td>
+      <td>A narrated tutorial has no background music, so the speech is clear.</td>
+      <td>Inspection</td>
+      <td>n/a — requires audio production review</td>
+    </tr>
+    <tr>
+      <td>1.4.8 Visual Presentation (AAA)</td>
+      <td>For blocks of text: user can select foreground/background colors, width is no more than 80 characters, text is not justified, line spacing is at least 1.5, and text can be resized to 200%.</td>
+      <td>Low vision, Cognitive</td>
+      <td>A reading view limits line width to 80 characters, uses left-aligned text, and allows color customization.</td>
+      <td>Inspection, DevTools</td>
+      <td>Unit test: verify max-width on text containers; verify <code>text-align</code> is not <code>justify</code></td>
+    </tr>
+    <tr>
+      <td>1.4.9 Images of Text (No Exception) (AAA)</td>
+      <td>Images of text are only used for pure decoration or where a particular presentation is essential (e.g., a logotype).</td>
+      <td>Low vision, Screen reader</td>
+      <td>All text content, including decorative headings, uses real text with CSS styling instead of images.</td>
+      <td>Inspection</td>
+      <td>n/a — requires design review</td>
+    </tr>
+    <tr>
+      <td>1.4.10 Reflow (AA)</td>
+      <td>Content reflows to a single column at 320px width (400% zoom) without requiring horizontal scrolling. Two-dimensional scrolling is acceptable for content that requires it (data tables, maps).</td>
+      <td>Low vision</td>
+      <td>At 400% zoom, the page content stacks into a single column with no horizontal scroll bar.</td>
+      <td>DevTools (responsive mode), Inspection</td>
+      <td>E2E test: run key pages at 320px viewport width and assert no horizontal scrollbar</td>
+    </tr>
+    <tr>
+      <td>1.4.11 Non-text Contrast (AA)</td>
+      <td>UI components (buttons, inputs, icons) and meaningful graphics have a contrast ratio of at least 3:1 against adjacent colors.</td>
+      <td>Low vision, Color vision</td>
+      <td>A form input border has at least 3:1 contrast against the background so users can see where to type.</td>
+      <td>axe DevTools, DevTools (contrast picker), Inspection</td>
+      <td>Unit test: verify border and icon color tokens meet 3:1 ratio against background tokens</td>
+    </tr>
+    <tr>
+      <td>1.4.12 Text Spacing (AA)</td>
+      <td>No loss of content or functionality when the user overrides: line height to 1.5x, paragraph spacing to 2x font size, letter spacing to 0.12x, and word spacing to 0.16x.</td>
+      <td>Low vision, Cognitive</td>
+      <td>Applying a text-spacing bookmarklet does not cause text to overflow containers or become hidden.</td>
+      <td>DevTools (text spacing bookmarklet), Inspection</td>
+      <td>E2E test: inject text-spacing overrides via CSS and assert no content overflow</td>
+    </tr>
+    <tr>
+      <td>1.4.13 Content on Hover or Focus (AA)</td>
+      <td>Content that appears on hover or focus (tooltips, dropdowns) is dismissible, hoverable, and persistent until the user removes hover/focus or dismisses it.</td>
+      <td>Low vision, Cognitive, Keyboard</td>
+      <td>A tooltip can be dismissed with Escape, stays visible when the mouse moves onto it, and does not disappear until the user leaves.</td>
+      <td>Screen reader, Inspection, DevTools</td>
+      <td>E2E test: trigger hover/focus content, verify it is dismissible via Escape, and persists on hover</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Principle 2: Operable
+
+*User interface components and navigation must be operable by all users.*
+
+### 2.1 Keyboard Accessible
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.1.1 Keyboard (A)</td>
+      <td>All functionality is operable through a keyboard interface. No specific timing is required for individual keystrokes.</td>
+      <td>Keyboard, Screen reader, Motor</td>
+      <td>A dropdown menu can be opened, navigated, and closed using only the keyboard.</td>
+      <td>Inspection (tab through page), Screen reader</td>
+      <td>E2E test: script keyboard interactions (Tab, Enter, Escape, Arrow keys) for interactive components</td>
+    </tr>
+    <tr>
+      <td>2.1.2 No Keyboard Trap (A)</td>
+      <td>Keyboard focus can be moved away from any component using standard keys (Tab, Escape). If non-standard keys are needed, the user is informed.</td>
+      <td>Keyboard, Screen reader, Motor</td>
+      <td>A modal dialog can be closed by pressing Escape, returning focus to the trigger element.</td>
+      <td>axe, Inspection (tab through page)</td>
+      <td>E2E test: tab into components and verify focus can always tab or Escape out</td>
+    </tr>
+    <tr>
+      <td>2.1.3 Keyboard (No Exception) (AAA)</td>
+      <td>All functionality is operable through a keyboard with no exceptions (stricter than 2.1.1).</td>
+      <td>Keyboard, Screen reader, Motor</td>
+      <td>Even freehand drawing tools provide a keyboard-accessible alternative (e.g., coordinate input).</td>
+      <td>Inspection</td>
+      <td>E2E test: same as 2.1.1 but covering all interactive elements without exception</td>
+    </tr>
+    <tr>
+      <td>2.1.4 Character Key Shortcuts (A)</td>
+      <td>If single-character keyboard shortcuts exist, they can be turned off, remapped, or are only active when the relevant component has focus.</td>
+      <td>Motor, Screen reader, Cognitive</td>
+      <td>A "press S to search" shortcut only works when focus is not in a text input, and can be disabled in settings.</td>
+      <td>Inspection</td>
+      <td>Unit test: verify shortcut handlers check for modifier keys or active element type before firing</td>
+    </tr>
+  </tbody>
+</table>
+
+### 2.2 Enough Time
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.2.1 Timing Adjustable (A)</td>
+      <td>If a time limit exists, the user can turn it off, adjust it, or extend it (with at least 20 seconds warning and 10 extensions).</td>
+      <td>Cognitive, Motor, Screen reader</td>
+      <td>A session timeout shows a warning dialog with a "Keep me signed in" button before logging the user out.</td>
+      <td>Inspection</td>
+      <td>E2E test: trigger timeout warning and verify extension mechanism works</td>
+    </tr>
+    <tr>
+      <td>2.2.2 Pause, Stop, Hide (A)</td>
+      <td>Moving, blinking, or auto-updating content can be paused, stopped, or hidden by the user.</td>
+      <td>Cognitive, Vestibular, Screen reader</td>
+      <td>An auto-scrolling news ticker has a visible pause button.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify animated/auto-updating elements have pause controls; verify content respects <code>prefers-reduced-motion</code></td>
+    </tr>
+    <tr>
+      <td>2.2.3 No Timing (AAA)</td>
+      <td>Timing is not an essential part of the activity (no time limits at all).</td>
+      <td>Cognitive, Motor</td>
+      <td>An online exam has no time limit, allowing users to complete it at their own pace.</td>
+      <td>Inspection</td>
+      <td>n/a — requires design decision</td>
+    </tr>
+    <tr>
+      <td>2.2.4 Interruptions (AAA)</td>
+      <td>Interruptions (alerts, notifications) can be postponed or suppressed by the user.</td>
+      <td>Cognitive</td>
+      <td>A messaging app lets users set "Do Not Disturb" to suppress popup notifications.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify notification suppression setting prevents interruptions when enabled</td>
+    </tr>
+    <tr>
+      <td>2.2.5 Re-authenticating (AAA)</td>
+      <td>When a session expires, the user can re-authenticate and continue the activity without losing data.</td>
+      <td>Cognitive, Motor</td>
+      <td>After session timeout on a long form, re-login restores all previously entered data.</td>
+      <td>Inspection</td>
+      <td>E2E test: fill form, trigger session expiry, re-authenticate, verify form data is preserved</td>
+    </tr>
+    <tr>
+      <td>2.2.6 Timeouts (AAA)</td>
+      <td>Users are warned about any timeout that could cause data loss, unless data is preserved for at least 20 hours.</td>
+      <td>Cognitive, Motor</td>
+      <td>A checkout page warns: "Your cart will expire in 30 minutes" and offers to extend.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify timeout warning appears before data-loss timeout fires</td>
+    </tr>
+  </tbody>
+</table>
+
+### 2.3 Seizures and Physical Reactions
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.3.1 Three Flashes or Below Threshold (A)</td>
+      <td>No content flashes more than three times per second, or the flash is below the general flash and red flash thresholds.</td>
+      <td>Vestibular, Cognitive</td>
+      <td>A video intro avoids rapid strobe effects that could trigger seizures.</td>
+      <td>Inspection, PEAT (Photosensitive Epilepsy Analysis Tool)</td>
+      <td>n/a — requires content/animation review</td>
+    </tr>
+    <tr>
+      <td>2.3.2 Three Flashes (AAA)</td>
+      <td>No content flashes more than three times per second at all (no threshold exception).</td>
+      <td>Vestibular, Cognitive</td>
+      <td>All animations and video content have been reviewed to contain zero rapid flashing.</td>
+      <td>Inspection, PEAT</td>
+      <td>n/a — requires content/animation review</td>
+    </tr>
+    <tr>
+      <td>2.3.3 Animation from Interactions (AAA)</td>
+      <td>Motion animation triggered by user interaction can be disabled, unless essential to the functionality.</td>
+      <td>Vestibular, Cognitive</td>
+      <td>Parallax scrolling effects are disabled when <code>prefers-reduced-motion</code> is set.</td>
+      <td>DevTools (emulate reduced motion), Inspection</td>
+      <td>E2E test: enable <code>prefers-reduced-motion</code> and verify animations are suppressed</td>
+    </tr>
+  </tbody>
+</table>
+
+### 2.4 Navigable
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.4.1 Bypass Blocks (A)</td>
+      <td>A mechanism (skip link, landmarks) allows users to bypass repeated blocks of content.</td>
+      <td>Keyboard, Screen reader</td>
+      <td>A "Skip to main content" link appears on focus at the top of every page.</td>
+      <td>axe, Inspection, Screen reader</td>
+      <td>E2E test: Tab from page load and verify skip link appears and moves focus to main content</td>
+    </tr>
+    <tr>
+      <td>2.4.2 Page Titled (A)</td>
+      <td>Every page has a descriptive <code>&lt;title&gt;</code> that identifies its topic or purpose.</td>
+      <td>Screen reader, Cognitive, Keyboard</td>
+      <td>The page title reads "Order Confirmation — Acme Store" not just "Acme Store" on every page.</td>
+      <td>axe, Inspection</td>
+      <td>E2E test: assert each route has a unique, descriptive <code>document.title</code></td>
+    </tr>
+    <tr>
+      <td>2.4.3 Focus Order (A)</td>
+      <td>When users navigate sequentially (Tab), focus moves in a logical order that preserves meaning and operability.</td>
+      <td>Keyboard, Screen reader</td>
+      <td>Focus moves through a form in the order: name, email, message, submit — not jumping to the sidebar mid-form.</td>
+      <td>Inspection (tab through page), Screen reader</td>
+      <td>E2E test: script Tab key presses and assert focus lands on expected elements in order</td>
+    </tr>
+    <tr>
+      <td>2.4.4 Link Purpose (In Context) (A)</td>
+      <td>The purpose of each link can be determined from the link text alone, or from the link text together with its surrounding context.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A link reads "View order #1234 details" instead of "Click here."</td>
+      <td>Linter, axe, Screen reader</td>
+      <td>Unit test: assert links do not use generic text like "click here" or "read more" without <code>aria-label</code></td>
+    </tr>
+    <tr>
+      <td>2.4.5 Multiple Ways (AA)</td>
+      <td>More than one way is available to locate a page (e.g., site search, sitemap, navigation, breadcrumbs).</td>
+      <td>Cognitive, Screen reader</td>
+      <td>Users can find the contact page via the main nav, the footer, site search, or the sitemap.</td>
+      <td>Inspection</td>
+      <td>n/a — requires site architecture review</td>
+    </tr>
+    <tr>
+      <td>2.4.6 Headings and Labels (AA)</td>
+      <td>Headings and labels describe topic or purpose clearly.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A form section heading reads "Shipping Address" not just "Section 2."</td>
+      <td>Inspection, Screen reader</td>
+      <td>n/a — requires content review</td>
+    </tr>
+    <tr>
+      <td>2.4.7 Focus Visible (AA)</td>
+      <td>Any keyboard-focusable element has a visible focus indicator.</td>
+      <td>Keyboard, Low vision</td>
+      <td>Buttons and links show a clear outline or highlight ring when focused via keyboard.</td>
+      <td>Inspection (tab through page), DevTools</td>
+      <td>E2E test: Tab to interactive elements and verify a focus indicator style is present (e.g., outline not <code>none</code>)</td>
+    </tr>
+    <tr>
+      <td>2.4.8 Location (AAA)</td>
+      <td>Information about the user's location within a set of pages is available (breadcrumbs, highlighted nav item).</td>
+      <td>Cognitive, Screen reader</td>
+      <td>A breadcrumb trail shows Home &rarr; Products &rarr; Shoes &rarr; Running Shoes.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify breadcrumb or <code>aria-current</code> on active nav item matches current page</td>
+    </tr>
+    <tr>
+      <td>2.4.9 Link Purpose (Link Only) (AAA)</td>
+      <td>The purpose of each link can be determined from the link text alone (without surrounding context).</td>
+      <td>Screen reader, Cognitive</td>
+      <td>Every link has self-describing text: "Download 2024 annual report (PDF)" instead of "Download."</td>
+      <td>Screen reader, Inspection</td>
+      <td>Unit test: assert all link elements have descriptive inner text or <code>aria-label</code></td>
+    </tr>
+    <tr>
+      <td>2.4.10 Section Headings (AAA)</td>
+      <td>Section headings are used to organize content.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A long article is broken into sections with clear headings, not presented as one continuous block of text.</td>
+      <td>Inspection, Screen reader</td>
+      <td>Unit test: assert long content pages have multiple heading elements</td>
+    </tr>
+    <tr>
+      <td>2.4.11 Focus Not Obscured (Minimum) (AA) ✱</td>
+      <td>When an element receives keyboard focus, it is not entirely hidden by other content (sticky headers, modals, banners).</td>
+      <td>Keyboard, Low vision</td>
+      <td>A sticky header does not completely cover the focused element when tabbing through page content.</td>
+      <td>Inspection (tab through page with sticky elements), DevTools</td>
+      <td>E2E test: Tab to elements near sticky headers/footers and verify the focused element is at least partially visible in the viewport</td>
+    </tr>
+    <tr>
+      <td>2.4.12 Focus Not Obscured (Enhanced) (AAA) ✱</td>
+      <td>When an element receives keyboard focus, no part of it is hidden by other content (stricter than 2.4.11).</td>
+      <td>Keyboard, Low vision</td>
+      <td>Focused elements are always fully visible — sticky banners scroll out of the way or account for focus position.</td>
+      <td>Inspection (tab through page), DevTools</td>
+      <td>E2E test: Tab to elements and verify the entire focused element bounding box is visible in the viewport</td>
+    </tr>
+    <tr>
+      <td>2.4.13 Focus Appearance (AA) ✱</td>
+      <td>The focus indicator has sufficient size (at least 2px outline or equivalent area) and contrast (3:1 against unfocused state and adjacent colors).</td>
+      <td>Keyboard, Low vision</td>
+      <td>A button's focus ring is a 2px solid outline with 3:1 contrast against both the button and the page background.</td>
+      <td>DevTools (inspect focus styles), Inspection</td>
+      <td>Unit test: verify focus styles use at least 2px outline width; E2E test: Tab to elements and screenshot-compare focus appearance</td>
+    </tr>
+  </tbody>
+</table>
+
+### 2.5 Input Modalities
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.5.1 Pointer Gestures (A)</td>
+      <td>Functionality that uses multipoint or path-based gestures (pinch, swipe) can also be operated with a single pointer without a path-based gesture.</td>
+      <td>Motor, Cognitive</td>
+      <td>A map that supports pinch-to-zoom also has plus/minus buttons for zooming.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify single-click alternatives exist for all gesture-based interactions</td>
+    </tr>
+    <tr>
+      <td>2.5.2 Pointer Cancellation (A)</td>
+      <td>Functions triggered by a single pointer use at least one of: no down-event, abort/undo, up reversal, or essential exception.</td>
+      <td>Motor, Cognitive</td>
+      <td>A delete button fires on mouse-up (not mouse-down), so users can move their pointer away to cancel.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify destructive actions fire on click (up) events, not mousedown/pointerdown</td>
+    </tr>
+    <tr>
+      <td>2.5.3 Label in Name (A)</td>
+      <td>For components with a visible text label, the accessible name contains the visible label text.</td>
+      <td>Motor (voice control), Screen reader</td>
+      <td>A button visually labeled "Search" has <code>aria-label="Search"</code> (not <code>aria-label="Find items"</code>), so voice control users can say "click Search."</td>
+      <td>axe, Linter, Screen reader</td>
+      <td>Unit test: assert <code>aria-label</code> values contain the visible text content of their elements</td>
+    </tr>
+    <tr>
+      <td>2.5.4 Motion Actuation (A)</td>
+      <td>Functionality triggered by device motion (shake, tilt) can also be operated via a standard UI control, and motion can be disabled.</td>
+      <td>Motor</td>
+      <td>A "shake to undo" feature also has an on-screen undo button, and motion detection can be turned off.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify UI control alternatives exist for motion-triggered actions</td>
+    </tr>
+    <tr>
+      <td>2.5.5 Target Size (Enhanced) (AAA)</td>
+      <td>Touch/click targets are at least 44x44 CSS pixels.</td>
+      <td>Motor, Low vision</td>
+      <td>All buttons and links in a mobile interface are at least 44x44 pixels.</td>
+      <td>DevTools (inspect element size), Inspection</td>
+      <td>E2E test: query interactive elements and assert minimum dimensions of 44x44px</td>
+    </tr>
+    <tr>
+      <td>2.5.6 Concurrent Input Mechanisms (AAA)</td>
+      <td>The application does not restrict input to a single modality (e.g., touch-only) when the platform supports multiple inputs.</td>
+      <td>Motor</td>
+      <td>A tablet app works equally well with touch, stylus, keyboard, and mouse.</td>
+      <td>Inspection</td>
+      <td>n/a — requires design/architecture review</td>
+    </tr>
+    <tr>
+      <td>2.5.7 Dragging Movements (AA) ✱</td>
+      <td>Functionality that uses dragging can be achieved with a single pointer without dragging (e.g., click-based alternative).</td>
+      <td>Motor</td>
+      <td>A sortable list supports drag-and-drop <em>and</em> up/down arrow buttons to reorder items.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify click/button alternatives exist for all drag-and-drop interactions</td>
+    </tr>
+    <tr>
+      <td>2.5.8 Target Size (Minimum) (AA) ✱</td>
+      <td>Touch/click targets are at least 24x24 CSS pixels, with exceptions for inline links, user-agent-controlled elements, and essential presentations.</td>
+      <td>Motor, Low vision</td>
+      <td>Icon buttons in a toolbar are at least 24x24 pixels. A small "x" close button is at least 24x24 pixels including padding.</td>
+      <td>DevTools (inspect element size), axe DevTools</td>
+      <td>E2E test: query interactive elements and assert minimum dimensions of 24x24px</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Principle 3: Understandable
+
+*Information and the operation of the user interface must be understandable.*
+
+### 3.1 Readable
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.1.1 Language of Page (A)</td>
+      <td>The default human language of each page is identified in the <code>lang</code> attribute on the <code>&lt;html&gt;</code> element.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>An English page has <code>&lt;html lang="en"&gt;</code> so screen readers use the correct pronunciation.</td>
+      <td>axe, Linter</td>
+      <td>Unit test: assert <code>&lt;html&gt;</code> element has a valid <code>lang</code> attribute</td>
+    </tr>
+    <tr>
+      <td>3.1.2 Language of Parts (AA)</td>
+      <td>Content in a different language than the page default is marked with a <code>lang</code> attribute.</td>
+      <td>Screen reader</td>
+      <td>A French quote on an English page is wrapped in <code>&lt;span lang="fr"&gt;</code> so screen readers switch pronunciation.</td>
+      <td>Inspection, Screen reader</td>
+      <td>Unit test: assert elements with known foreign-language content have appropriate <code>lang</code> attributes</td>
+    </tr>
+    <tr>
+      <td>3.1.3 Unusual Words (AAA)</td>
+      <td>A mechanism is available to identify specific definitions of words or phrases used in an unusual way, including idioms and jargon.</td>
+      <td>Cognitive, Screen reader</td>
+      <td>Technical terms link to a glossary, or definitions appear in a tooltip on hover.</td>
+      <td>Inspection</td>
+      <td>n/a — requires content strategy</td>
+    </tr>
+    <tr>
+      <td>3.1.4 Abbreviations (AAA)</td>
+      <td>A mechanism for identifying the expanded form of abbreviations is provided.</td>
+      <td>Cognitive, Screen reader</td>
+      <td>First use of "WCAG" on a page reads "Web Content Accessibility Guidelines (WCAG)" or uses an <code>&lt;abbr&gt;</code> tag.</td>
+      <td>Inspection</td>
+      <td>Unit test: assert abbreviation elements have <code>title</code> attributes with expanded forms</td>
+    </tr>
+    <tr>
+      <td>3.1.5 Reading Level (AAA)</td>
+      <td>When text requires more than a lower secondary education reading level, a simplified version or supplemental content is available.</td>
+      <td>Cognitive</td>
+      <td>A legal terms page includes a "plain language summary" section at the top.</td>
+      <td>Inspection</td>
+      <td>n/a — requires content review</td>
+    </tr>
+    <tr>
+      <td>3.1.6 Pronunciation (AAA)</td>
+      <td>A mechanism is available to identify pronunciation of words where meaning is ambiguous without pronunciation.</td>
+      <td>Cognitive, Screen reader</td>
+      <td>The word "read" (past tense) is clarified with a pronunciation guide or context that removes ambiguity.</td>
+      <td>Inspection</td>
+      <td>n/a — requires content review</td>
+    </tr>
+  </tbody>
+</table>
+
+### 3.2 Predictable
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.2.1 On Focus (A)</td>
+      <td>When a component receives focus, it does not trigger a change of context (page navigation, form submission, etc.).</td>
+      <td>Keyboard, Screen reader, Cognitive</td>
+      <td>Tabbing to a dropdown does not automatically submit the form or navigate away.</td>
+      <td>Inspection (tab through page), Screen reader</td>
+      <td>E2E test: Tab to form elements and verify no unexpected navigation or submission occurs</td>
+    </tr>
+    <tr>
+      <td>3.2.2 On Input (A)</td>
+      <td>Changing the value of a form input does not automatically cause a change of context unless the user is warned beforehand.</td>
+      <td>Keyboard, Screen reader, Cognitive</td>
+      <td>Selecting a country in a dropdown does not auto-submit the form. A submit button is required.</td>
+      <td>Inspection, Screen reader</td>
+      <td>E2E test: change form input values and verify no unexpected context changes</td>
+    </tr>
+    <tr>
+      <td>3.2.3 Consistent Navigation (AA)</td>
+      <td>Navigation menus that appear on multiple pages are in the same relative order each time.</td>
+      <td>Cognitive, Screen reader, Low vision</td>
+      <td>The main navigation has the same order of links on every page of the site.</td>
+      <td>Inspection</td>
+      <td>E2E test: visit multiple pages and assert navigation items appear in the same order</td>
+    </tr>
+    <tr>
+      <td>3.2.4 Consistent Identification (AA)</td>
+      <td>Components with the same functionality are identified consistently across pages (same labels, icons, alt text).</td>
+      <td>Cognitive, Screen reader</td>
+      <td>The search feature is labeled "Search" everywhere, not "Search" on one page and "Find" on another.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify common components (search, nav, footer) have consistent accessible names across pages</td>
+    </tr>
+    <tr>
+      <td>3.2.5 Change on Request (AAA)</td>
+      <td>Changes of context are initiated only by user request, or a mechanism is available to turn off such changes.</td>
+      <td>Cognitive, Screen reader</td>
+      <td>Auto-redirects include a link: "If you are not redirected, click here" rather than forcing navigation.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify no automatic context changes occur without user action</td>
+    </tr>
+    <tr>
+      <td>3.2.6 Consistent Help (A) ✱</td>
+      <td>If help mechanisms (contact info, chat, FAQ link) appear on multiple pages, they are in the same relative location each time.</td>
+      <td>Cognitive</td>
+      <td>The "Contact Support" link is always in the footer, in the same position on every page.</td>
+      <td>Inspection</td>
+      <td>E2E test: visit multiple pages and assert help mechanism location is consistent</td>
+    </tr>
+  </tbody>
+</table>
+
+### 3.3 Input Assistance
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.3.1 Error Identification (A)</td>
+      <td>When an input error is detected, the item in error is identified and the error described to the user in text.</td>
+      <td>Screen reader, Cognitive, Color vision</td>
+      <td>A form shows "Email address is required" next to the email field, not just a red border.</td>
+      <td>axe, Screen reader, Inspection</td>
+      <td>Unit test: submit form with invalid data and assert error messages are rendered with <code>aria-describedby</code> or <code>aria-errormessage</code></td>
+    </tr>
+    <tr>
+      <td>3.3.2 Labels or Instructions (A)</td>
+      <td>Labels or instructions are provided when content requires user input.</td>
+      <td>Screen reader, Cognitive</td>
+      <td>A date field includes the label "Date of birth" and helper text "Format: MM/DD/YYYY."</td>
+      <td>Linter, axe, Screen reader</td>
+      <td>Unit test: assert all form inputs have associated visible labels</td>
+    </tr>
+    <tr>
+      <td>3.3.3 Error Suggestion (AA)</td>
+      <td>When an input error is detected, suggestions for correction are provided (unless it would compromise security).</td>
+      <td>Cognitive, Screen reader</td>
+      <td>An invalid email field shows: "Please enter a valid email address, e.g., name@example.com."</td>
+      <td>Inspection, Screen reader</td>
+      <td>Unit test: trigger validation errors and assert suggestion text is present in error messages</td>
+    </tr>
+    <tr>
+      <td>3.3.4 Error Prevention (Legal, Financial, Data) (AA)</td>
+      <td>For submissions with legal, financial, or data consequences: submissions are reversible, data is checked and user can correct, or a confirmation step is provided.</td>
+      <td>Cognitive, Motor</td>
+      <td>A purchase checkout has a review step showing the order summary before final submission.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify confirmation/review step exists before final submission of critical forms</td>
+    </tr>
+    <tr>
+      <td>3.3.5 Help (AAA)</td>
+      <td>Context-sensitive help is available for form inputs and interactions.</td>
+      <td>Cognitive</td>
+      <td>A complex form field has a help icon that reveals instructions when clicked.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify help mechanisms exist for complex form fields</td>
+    </tr>
+    <tr>
+      <td>3.3.6 Error Prevention (All) (AAA)</td>
+      <td>For all forms that require user submission: submissions are reversible, checked, or confirmed (stricter than 3.3.4).</td>
+      <td>Cognitive, Motor</td>
+      <td>Every form submission can be reviewed and corrected before final submission.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify all forms include a review or confirmation step</td>
+    </tr>
+    <tr>
+      <td>3.3.7 Redundant Entry (A) ✱</td>
+      <td>Information previously entered by the user is auto-populated or available for selection when the same information is needed again in the same process.</td>
+      <td>Cognitive, Motor</td>
+      <td>A checkout flow with separate billing and shipping forms has a "Same as shipping" checkbox to avoid re-entering the address.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify previously entered data is available for re-use in multi-step forms</td>
+    </tr>
+    <tr>
+      <td>3.3.8 Accessible Authentication (Minimum) (AA) ✱</td>
+      <td>No cognitive function test (memorizing a password, solving a puzzle) is required for authentication, unless an alternative method is available, a mechanism helps the user complete it, or it is object/content recognition.</td>
+      <td>Cognitive</td>
+      <td>Login supports password managers (no paste-blocking), and CAPTCHAs have an audio or alternative method.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify password fields allow paste; verify CAPTCHA alternatives exist</td>
+    </tr>
+    <tr>
+      <td>3.3.9 Accessible Authentication (Enhanced) (AAA) ✱</td>
+      <td>No cognitive function test is required for authentication at all (stricter than 3.3.8 — no object/content recognition exception).</td>
+      <td>Cognitive</td>
+      <td>Authentication uses passkeys, magic links, or biometrics — no puzzles, memory tests, or CAPTCHAs.</td>
+      <td>Inspection</td>
+      <td>E2E test: verify authentication flow requires no cognitive function tests</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Principle 4: Robust
+
+*Content must be robust enough to be interpreted reliably by a wide variety of user agents, including assistive technologies.*
+
+### 4.1 Compatible
+
+<table>
+  <thead>
+    <tr>
+      <th>WCAG SC</th>
+      <th>How to check</th>
+      <th>Who benefits</th>
+      <th>Example</th>
+      <th>How to catch</th>
+      <th>Regression prevention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4.1.1 Parsing (A) — obsolete in WCAG 2.2</td>
+      <td>This criterion was removed in WCAG 2.2 because modern browsers and assistive technologies handle parsing errors well. Previously required valid HTML with no duplicate IDs or broken nesting.</td>
+      <td>Screen reader</td>
+      <td>n/a — criterion is obsolete. Good HTML hygiene is still best practice but no longer a conformance requirement.</td>
+      <td>n/a</td>
+      <td>n/a</td>
+    </tr>
+    <tr>
+      <td>4.1.2 Name, Role, Value (A)</td>
+      <td>All UI components have an accessible name, correct role, and states/values that can be programmatically determined. Custom components use ARIA correctly.</td>
+      <td>Screen reader, Keyboard</td>
+      <td>A custom toggle button uses <code>role="switch"</code> and <code>aria-checked="true/false"</code> so screen readers announce its state.</td>
+      <td>Linter, axe, Screen reader</td>
+      <td>Unit test: assert custom components have correct ARIA roles and state attributes that update on interaction</td>
+    </tr>
+    <tr>
+      <td>4.1.3 Status Messages (AA)</td>
+      <td>Status messages (success, error, progress) are communicated to assistive technologies via ARIA live regions without receiving focus.</td>
+      <td>Screen reader</td>
+      <td>After adding an item to a cart, a live region announces "Item added to cart" without moving focus away from the current element.</td>
+      <td>Screen reader, Inspection</td>
+      <td>Unit test: assert status messages use <code>role="status"</code>, <code>role="alert"</code>, or <code>aria-live</code> attributes</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Summary
+
+WCAG 2.2 contains **87 success criteria** across four principles:
+
+- **Perceivable** — 29 criteria covering text alternatives, captions, contrast, and adaptability
+- **Operable** — 32 criteria covering keyboard access, timing, seizure safety, navigation, and input
+- **Understandable** — 21 criteria covering readability, predictability, and input assistance
+- **Robust** — 3 criteria (after 4.1.1 was deprecated) covering compatibility with assistive technologies
+
+Of these, **9 criteria are new in WCAG 2.2** (marked with ✱), and **1 criterion (4.1.1 Parsing) was deprecated**.
+
+For most projects, **A and AA conformance** (50 active criteria) is the standard target. AAA criteria are aspirational goals that improve the experience for many users but may not be achievable for all content types.
+
+---
+
+## Using This Table
+
+This table and the [Intopia WCAG 2.2 Map](https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf) complement each other:
+
+- **Intopia map** — start with WCAG's structure, find the criteria you need to meet. Best for compliance reviews and audits.
+- **This table** — start with a criterion and see what it looks like in practice — who it helps, how to check for it, and how to prevent regressions. Best for development, testing, and code review.
+
+Use the Intopia map when you need to verify conformance. Use this table when you need to understand what *good* looks like and how to build it into your workflow.
+
+And remember: the standard is the floor. The quick checks, the examples, and the regression strategies here are meant to help you go beyond passing and toward something that actually works for the people using it.
+
+---
+
+## Resources
+
+- W3C — Web Content Accessibility Guidelines (WCAG) 2.2: https://www.w3.org/TR/WCAG22/
+- W3C — How to Meet WCAG (Quick Reference): https://www.w3.org/WAI/WCAG22/quickref/
+- W3C — What's New in WCAG 2.2: https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/
+- Intopia — WCAG 2.2 Map (CC BY-SA 4.0): https://intopia.digital/wp-content/uploads/2023/12/Intopia-WCAG-2.2-Map-Landscape-version.pdf

@@ -29,6 +29,7 @@ export const tutorialPages: TutorialPage[] = [
   { slug: 'try-it-yourself', title: 'Try It Yourself', section: 'foundations' },
   // Standards & Law
   { slug: 'wcag-overview', title: 'Understanding WCAG', section: 'standards' },
+  { slug: 'wcag-by-example', title: 'WCAG by Example', section: 'standards' },
   { slug: 'wcag-in-practice', title: 'WCAG in Practice', section: 'standards' },
   { slug: 'wcag-people-map', title: 'WCAG by User Group', section: 'standards' },
   // The Business Case
