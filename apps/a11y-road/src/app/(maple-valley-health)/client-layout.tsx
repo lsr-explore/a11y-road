@@ -6,7 +6,6 @@ import { IssueLoggerPanel } from '@/components/issue-logger/issue-logger-panel';
 import { IssueLoggerPanelProvider } from '@/components/issue-logger/issue-logger-panel-provider';
 import { IssueLoggerProvider } from '@/components/issue-logger/issue-logger-provider';
 import { DemoBanner } from '@/components/layout/demo-banner';
-import { SiteFooter } from '@/components/layout/site-footer';
 import { SiteHeader } from '@/components/layout/site-header';
 import { A11yModeProvider } from '@/components/providers/a11y-mode-provider';
 import { ElementRegistryProvider } from '@/components/providers/element-registry-provider';
@@ -49,7 +48,6 @@ export const MapleValleyHealthClientLayout = ({
               {showSidePanel && <SidePanel />}
               {showIssueLogger && <IssueLoggerPanel />}
             </div>
-            <SiteFooter />
           </SidePanelProvider>
         </ElementRegistryProvider>
       </A11yModeProvider>

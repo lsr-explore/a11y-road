@@ -1,7 +1,10 @@
 export { ErrorBoundary } from './components/error-boundary';
 export * from './components/ui/badge';
 export * from './components/ui/button';
+export * from './components/ui/collapsible';
+export * from './components/ui/dropdown-menu';
 export * from './components/ui/input';
+export * from './components/ui/navigation-menu';
 export * from './components/ui/select';
 export * from './components/ui/separator';
 export * from './components/ui/sheet';

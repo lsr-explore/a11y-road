@@ -10,6 +10,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@a11y-road/a11y-kit': path.resolve(__dirname, '../../libs/a11y-kit/src/index.ts'),
+      '@a11y-road/a11y-ui/components/ui/sidebar': path.resolve(
+        __dirname,
+        '../../libs/a11y-ui/src/components/ui/sidebar.tsx',
+      ),
+      '@a11y-road/a11y-ui': path.resolve(__dirname, '../../libs/a11y-ui/src/index.ts'),
     },
   },
   test: {
