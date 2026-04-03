@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { verifySignedValue } from './lib/auth';
 
 const AUTH_COOKIE = 'site-auth';
 const SITE_AUTH_GATE_COOKIE = 'site-auth-gate';
@@ -25,7 +26,10 @@ const parseSession = (
   cookieValue: string,
 ): { username: string; role: string; displayName: string } | null => {
   try {
-    const decoded = Buffer.from(cookieValue, 'base64').toString('utf-8');
+    const encoded = verifySignedValue(cookieValue);
+    if (!encoded) return null;
+
+    const decoded = Buffer.from(encoded, 'base64').toString('utf-8');
     const parsed = JSON.parse(decoded);
     if (parsed.username && parsed.role && parsed.displayName) {
       return parsed;
@@ -42,7 +46,7 @@ export const proxy = (request: NextRequest) => {
   // Site-wide auth gate: when enabled, require gate cookie before anything else
   if (process.env.SITE_AUTH_ENABLED === 'true' && !isStaticAsset(pathname)) {
     const gateCookie = request.cookies.get(SITE_AUTH_GATE_COOKIE);
-    if (!gateCookie?.value) {
+    if (!gateCookie?.value || !verifySignedValue(gateCookie.value)) {
       if (pathname !== '/site-auth') {
         return NextResponse.redirect(new URL('/site-auth', request.url));
       }

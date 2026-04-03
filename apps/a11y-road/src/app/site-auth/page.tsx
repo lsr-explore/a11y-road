@@ -1,9 +1,18 @@
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createSiteAuthGateCookie, verifySiteAuthGate } from '../../lib/auth';
+import { checkRateLimit } from '../../lib/rate-limit';
 import { PasswordInput } from '../login/password-input';
 
 const siteAuthAction = async (formData: FormData) => {
   'use server';
+
+  const headerStore = await headers();
+  const ip = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+
+  if (!checkRateLimit(ip)) {
+    redirect('/site-auth?error=rate-limited');
+  }
 
   const username = formData.get('username') as string;
   const password = formData.get('password') as string;
@@ -19,6 +28,7 @@ const siteAuthAction = async (formData: FormData) => {
 const SiteAuthPage = async ({ searchParams }: { searchParams: Promise<{ error?: string }> }) => {
   const params = await searchParams;
   const hasError = params.error === 'invalid';
+  const isRateLimited = params.error === 'rate-limited';
 
   return (
     <main className="flex-1 flex items-center justify-center px-4 py-16">
@@ -32,6 +42,11 @@ const SiteAuthPage = async ({ searchParams }: { searchParams: Promise<{ error?: 
           {hasError && (
             <p className="text-sm text-red-600" role="alert">
               Invalid credentials.
+            </p>
+          )}
+          {isRateLimited && (
+            <p className="text-sm text-red-600" role="alert">
+              Too many attempts. Please try again later.
             </p>
           )}
 
