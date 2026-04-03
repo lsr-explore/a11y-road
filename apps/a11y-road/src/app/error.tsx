@@ -7,7 +7,9 @@ const ErrorPage = ({ error, reset }: { error: Error & { digest?: string }; reset
       <p className="text-muted-foreground max-w-md text-center">
         An unexpected error occurred. Please try again.
       </p>
-      <p>{error ? error.message : 'Unknown error'}</p>
+      {error?.digest && (
+        <p className="text-muted-foreground text-sm">Error reference: {error.digest}</p>
+      )}
       <button
         type="button"
         onClick={reset}
