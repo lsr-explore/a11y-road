@@ -13,6 +13,11 @@ COPY libs/a11y-ui/package.json libs/a11y-ui/
 
 RUN pnpm install --frozen-lockfile
 
+# Run as non-root user
+RUN groupadd --gid 1001 appuser && useradd --uid 1001 --gid appuser --create-home appuser
+RUN chown -R appuser:appuser /app
+USER appuser
+
 # Source code is volume-mounted at runtime for hot reload
 EXPOSE 3000
 

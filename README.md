@@ -40,12 +40,40 @@ xelatex --version
 
 ## Getting Started
 
+### Local
+
 ```sh
+cp apps/a11y-road/.env.example apps/a11y-road/.env
+# Edit .env — at minimum set COOKIE_SECRET (e.g. output of `openssl rand -hex 32`)
 pnpm install
 pnpm dev
 ```
 
 The dev server runs at `http://localhost:3000` (or the next available port).
+
+### Docker
+
+A development container is available for local development with hot reload.
+
+```sh
+cp apps/a11y-road/.env.example apps/a11y-road/.env
+# Edit .env — at minimum set COOKIE_SECRET
+docker compose -f docker-compose.dev.yml up --build
+```
+
+The container volume-mounts the project directory so file changes are reflected immediately. The container runs as a non-root user (`appuser`).
+
+### Environment Variables
+
+Copy `apps/a11y-road/.env.example` to `apps/a11y-road/.env` and configure:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `COOKIE_SECRET` | Yes | Secret key for HMAC cookie signing. Generate with `openssl rand -hex 32` |
+| `NEXT_PUBLIC_SHOW_A11Y_TOOLS` | No | Set to `"false"` to hide the a11y demo tools. Defaults to visible |
+| `SITE_AUTH_ENABLED` | No | Set to `"true"` to enable the site-wide auth gate |
+| `SITE_AUTH_USERNAME` | When gate enabled | Username for the site auth gate |
+| `SITE_AUTH_PASSWORD` | When gate enabled | Password for the site auth gate |
 
 ## Scripts
 
@@ -91,7 +119,8 @@ This is an Nx monorepo with the following projects:
 
 - **apps/a11y-road** — The main Next.js tutorial application
 - **apps/maple-valley-health-e2e** — Playwright e2e tests
-- **libs/a11y-kit** — Shared accessibility component library
+- **libs/a11y-kit** — Shared accessibility types and utilities
+- **libs/a11y-ui** — Shared UI component library (shadcn-based)
 
 ## Tooling
 
