@@ -19,6 +19,7 @@ import { useSidePanel } from '../providers/side-panel-provider';
 import { useUserRole } from '../providers/user-role-provider';
 
 const showDemoTools = process.env.NEXT_PUBLIC_SHOW_A11Y_TOOLS !== 'false';
+const useIssueLogPage = process.env.NEXT_PUBLIC_ISSUE_LOG_PAGE === 'true';
 
 const isNavLinkActive = (pathname: string, href: string): boolean => {
   if (href === '/maple-valley-health') return pathname === href;
@@ -57,6 +58,22 @@ const SidePanelToggle = () => {
 
 const IssueLoggerToggle = () => {
   const { isOpen, toggle } = useIssueLoggerPanel();
+  const pathname = usePathname();
+
+  if (useIssueLogPage) {
+    const isActive = pathname === '/maple-valley-health/log-issue';
+    return (
+      <Link
+        href="/maple-valley-health/log-issue"
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+          isActive ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
+        }`}
+        aria-current={isActive ? 'page' : undefined}
+      >
+        <span>Log an Issue</span>
+      </Link>
+    );
+  }
 
   return (
     <button

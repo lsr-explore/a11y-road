@@ -14,6 +14,7 @@ import { UserRoleProvider } from '@/components/providers/user-role-provider';
 import { SidePanel } from '@/components/side-panel/side-panel';
 
 const showDemoTools = process.env.NEXT_PUBLIC_SHOW_A11Y_TOOLS !== 'false';
+const useIssueLogPage = process.env.NEXT_PUBLIC_ISSUE_LOG_PAGE === 'true';
 
 interface ClientLayoutProps {
   userRole: UserRole | null;
@@ -32,7 +33,9 @@ export const MapleValleyHealthClientLayout = ({
   const isGuidePage = pathname.startsWith('/maple-valley-health/getting-started');
   const showBanner = showDemoTools && !isTester && !isGuidePage;
   const showSidePanel = showDemoTools && !isTester && !isGuidePage;
-  const showIssueLogger = isTester && !isEvaluationPage && !isGuidePage;
+  const isLogIssuePage = pathname.startsWith('/maple-valley-health/log-issue');
+  const showIssueLogger =
+    isTester && !isEvaluationPage && !isGuidePage && !useIssueLogPage && !isLogIssuePage;
 
   const content = (
     <UserRoleProvider role={userRole} displayName={displayName}>
