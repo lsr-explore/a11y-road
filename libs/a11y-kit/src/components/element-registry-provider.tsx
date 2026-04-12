@@ -18,7 +18,7 @@ interface RegisteredElement {
 
 interface ElementRegistryContextValue {
   register: (entry: RegisteredElement) => void;
-  unregister: (instanceId: string) => void;
+  unregister: (instanceId: string, ref?: RefObject<HTMLDivElement | null>) => void;
   getElement: (instanceId: string) => RegisteredElement | undefined;
   getAllElements: () => RegisteredElement[];
 }
@@ -34,22 +34,37 @@ export const useElementRegistry = () => {
 };
 
 export const ElementRegistryProvider = ({ children }: { children: ReactNode }) => {
-  const registryRef = useRef<Map<string, RegisteredElement>>(new Map());
+  const registryRef = useRef<Map<string, RegisteredElement[]>>(new Map());
 
   const register = useCallback((entry: RegisteredElement) => {
-    registryRef.current.set(entry.instanceId, entry);
+    const existing = registryRef.current.get(entry.instanceId) ?? [];
+    existing.push(entry);
+    registryRef.current.set(entry.instanceId, existing);
   }, []);
 
-  const unregister = useCallback((instanceId: string) => {
-    registryRef.current.delete(instanceId);
+  const unregister = useCallback((instanceId: string, ref?: RefObject<HTMLDivElement | null>) => {
+    if (ref) {
+      const entries = registryRef.current.get(instanceId);
+      if (entries) {
+        const filtered = entries.filter((entry) => entry.ref !== ref);
+        if (filtered.length === 0) {
+          registryRef.current.delete(instanceId);
+        } else {
+          registryRef.current.set(instanceId, filtered);
+        }
+      }
+    } else {
+      registryRef.current.delete(instanceId);
+    }
   }, []);
 
   const getElement = useCallback((instanceId: string) => {
-    return registryRef.current.get(instanceId);
+    const entries = registryRef.current.get(instanceId);
+    return entries?.[0];
   }, []);
 
   const getAllElements = useCallback(() => {
-    return Array.from(registryRef.current.values());
+    return Array.from(registryRef.current.values()).flat();
   }, []);
 
   const value = useMemo(
