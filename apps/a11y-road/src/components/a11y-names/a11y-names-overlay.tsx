@@ -4,8 +4,11 @@ import { useEffect } from 'react';
 import { useA11yNames } from '../providers/a11y-names-provider';
 
 const LABEL_MARKER = 'data-a11y-name-label';
+const ABSOLUTE_MARKER = 'data-a11y-label-absolute';
 const ACTIVE_CLASS = 'show-a11y-names';
 const TAG_ATTR = 'data-a11y-name';
+const INLINE_DISPLAYS = new Set(['inline', 'inline-block', 'inline-flex', 'inline-grid']);
+const FLEX_DISPLAYS = new Set(['flex', 'inline-flex']);
 
 const formatLabel = (element: Element): string => {
   const tag = element.tagName.toLowerCase();
@@ -16,8 +19,45 @@ const formatLabel = (element: Element): string => {
 const isLabelNode = (node: Node): boolean =>
   node instanceof Element && node.hasAttribute(LABEL_MARKER);
 
+const findPositionedAncestor = (element: Element): Element | null => {
+  let parent = element.parentElement;
+  while (parent) {
+    const position = window.getComputedStyle(parent).position;
+    if (position !== 'static') return parent;
+    parent = parent.parentElement;
+  }
+  return null;
+};
+
+const shouldUseAbsolutePosition = (element: Element): boolean => {
+  if (typeof window === 'undefined') return false;
+  const elementStyle = window.getComputedStyle(element);
+  if (INLINE_DISPLAYS.has(elementStyle.display)) return true;
+  const parent = element.parentElement;
+  if (!parent) return false;
+  const parentStyle = window.getComputedStyle(parent);
+  return FLEX_DISPLAYS.has(parentStyle.display);
+};
+
 const positionLabel = (label: HTMLElement, element: Element) => {
+  const useAbsolute = shouldUseAbsolutePosition(element);
+
+  if (!useAbsolute) {
+    label.removeAttribute(ABSOLUTE_MARKER);
+    label.style.removeProperty('top');
+    label.style.removeProperty('left');
+    return;
+  }
+
+  label.setAttribute(ABSOLUTE_MARKER, '');
   const rect = element.getBoundingClientRect();
+  const ancestor = findPositionedAncestor(label);
+  if (ancestor) {
+    const ancestorRect = ancestor.getBoundingClientRect();
+    label.style.top = `${rect.bottom - ancestorRect.top + 4}px`;
+    label.style.left = `${rect.left - ancestorRect.left}px`;
+    return;
+  }
   label.style.top = `${rect.bottom + window.scrollY + 4}px`;
   label.style.left = `${rect.left + window.scrollX}px`;
 };
