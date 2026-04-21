@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
   "files": {
     "includes": [
       "apps/**",
@@ -20,7 +20,9 @@
       "!**/next-env.d.ts",
       "!**/public/pagefind",
       "!.vercel",
-      "!storybook-static"
+      "!storybook-static",
+      "!manifest.json",
+      "!**/test-results"
     ],
     "ignoreUnknown": true
   },

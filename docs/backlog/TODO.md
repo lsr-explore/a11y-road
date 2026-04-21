@@ -74,6 +74,7 @@
 
 ## Demo Maple Valley Health Features
 
+- [ ] Keyboard shortcut for "Show a11y names" toggle (deferred — needs cross-platform choice and collision review; consider making it user-configurable)
 - [ ] Migrate Patient Scheduler experience - tables, calendars
 - [ ] Verify that all pages have examples from the most common issues reported in the Web AIM Million report
 - [ ] Fix responsiveness - evaluate what needs to be adjusted - mobile, tablet, landscape and profile and resizing the browser window

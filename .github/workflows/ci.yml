@@ -99,7 +99,7 @@ jobs:
         run: pnpm vitest run --coverage --config apps/a11y-road/vitest.config.ts
 
       - name: Upload coverage
-        uses: actions/upload-artifact@v7.0.0
+        uses: actions/upload-artifact@v7.0.1
         if: always()
         with:
           name: vitest-coverage
@@ -134,7 +134,7 @@ jobs:
         run: pnpm playwright test --config apps/maple-valley-health-e2e/playwright.config.ts --project chromium
 
       - name: Upload Playwright report
-        uses: actions/upload-artifact@v7.0.0
+        uses: actions/upload-artifact@v7.0.1
         if: always()
         with:
           name: playwright-report
