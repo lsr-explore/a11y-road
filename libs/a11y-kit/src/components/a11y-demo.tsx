@@ -30,7 +30,7 @@ export const A11yDemo = (props: A11yDemoProps) => {
 
   useEffect(() => {
     register({ ref: elementRef, label, instanceId });
-    return () => unregister(instanceId);
+    return () => unregister(instanceId, elementRef);
   }, [register, unregister, instanceId, label]);
 
   if ('children' in props && props.children !== undefined) {
