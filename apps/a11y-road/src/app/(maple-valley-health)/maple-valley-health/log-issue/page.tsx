@@ -1,7 +1,6 @@
 'use client';
 
-import { Badge } from '@a11y-road/a11y-ui/components/ui/badge';
-import { Button } from '@a11y-road/a11y-ui/components/ui/button';
+import { Badge, Button } from '@a11y-road/a11y-ui';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FindingsList } from '@/components/issue-logger/findings-list';
 import { useIssueLogger } from '@/components/issue-logger/issue-logger-provider';

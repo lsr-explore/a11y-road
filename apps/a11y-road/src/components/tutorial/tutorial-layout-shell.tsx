@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@a11y-road/a11y-ui/components/ui/sidebar';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@a11y-road/a11y-ui';
 
 interface TutorialLayoutShellProps {
   sidebar: React.ReactNode;
