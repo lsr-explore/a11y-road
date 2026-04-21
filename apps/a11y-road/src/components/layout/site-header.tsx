@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { registry } from '../../data/issues-registry';
 import { getPageByRoute } from '../../data/page-metadata';
 import { useIssueLoggerPanel } from '../issue-logger/issue-logger-panel-provider';
+import { useA11yNames } from '../providers/a11y-names-provider';
 import { useSidePanel } from '../providers/side-panel-provider';
 import { useUserRole } from '../providers/user-role-provider';
 
@@ -52,6 +53,23 @@ const SidePanelToggle = () => {
           {resolved.length}
         </span>
       )}
+    </button>
+  );
+};
+
+const A11yNamesToggle = () => {
+  const { isOn, toggle } = useA11yNames();
+
+  return (
+    <button
+      onClick={toggle}
+      type="button"
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+        isOn ? 'bg-yellow-400 text-gray-900' : 'bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+      }`}
+      aria-pressed={isOn}
+    >
+      <span>{isOn ? 'Hide a11y names' : 'Show a11y names'}</span>
     </button>
   );
 };
@@ -179,6 +197,7 @@ export const SiteHeader = () => {
 
   const showIssuesToggle = showDemoTools && !isTester && !isGuidePage;
   const showLoggerToggle = isTester && !isGuidePage;
+  const showA11yNamesToggle = showDemoTools && !isGuidePage;
 
   if (isMobile) {
     return (
@@ -188,6 +207,7 @@ export const SiteHeader = () => {
             A11y Road
           </Link>
           <div className="flex items-center gap-2">
+            {showA11yNamesToggle && <A11yNamesToggle />}
             {showIssuesToggle && <SidePanelToggle />}
             {showLoggerToggle && <IssueLoggerToggle />}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -295,6 +315,7 @@ export const SiteHeader = () => {
                 ))}
               </ul>
             </nav>
+            {showA11yNamesToggle && <A11yNamesToggle />}
             {showIssuesToggle && <SidePanelToggle />}
             {showLoggerToggle && <IssueLoggerToggle />}
             {role ? (

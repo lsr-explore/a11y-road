@@ -39,6 +39,7 @@
     "e2e": "nx e2e apps/maple-valley-health-e2e --no-tui",
     "e2e:ui": "nx e2e apps/maple-valley-health-e2e test --ui",
     "e2e:report": "nx e2e apps/maple-valley-health-e2e show-report",
+    "export:manifest": "npx playwright test --config apps/a11y-road/scripts/playwright-export.config.ts",
     "------------------- static analysis -------------------": "noop",
     "circular": "dependency-cruiser --config .dependency-cruiser.js --output-type err apps/a11y-road/src libs/",
     "depcruise": "dependency-cruiser --config .dependency-cruiser.js --output-type dot apps/a11y-road/src libs/ | dot -T svg > deps.svg",
