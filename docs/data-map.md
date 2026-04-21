@@ -327,3 +327,118 @@ graph LR
 ```
 
 Red = answer key, Yellow = shared contracts between apps
+
+### Entity relationship map
+
+```mermaid
+erDiagram
+    A11yIssueDefinition {
+        string id PK
+        string title
+        string description
+        WcagCriterion[] wcagCriteria
+        string[] impactedUsers
+        string[] tags
+        TestingMethod[] testingMethods
+    }
+
+    WcagCriterion {
+        string id
+        string title
+        WcagLevel level "A | AA | AAA"
+    }
+
+    A11yIssueInstance {
+        string id PK
+        string issueId FK
+        string pageId FK
+        string label
+        string description
+        string solutionDescription "optional"
+    }
+
+    PageMeta {
+        string id PK
+        string name
+        string route
+    }
+
+    IssueSet {
+        string id PK
+        string name
+        string description
+        string[] instanceIds "or 'all'"
+    }
+
+    Evaluation {
+        string id PK
+        string issueSetId FK
+        string userId FK
+        string startedAt
+        string submittedAt "optional"
+        EvaluationStatus status "active | submitted"
+        Finding[] findings
+    }
+
+    Finding {
+        string id PK
+        string pageId FK
+        string elementId
+        string issueTypeId FK
+        string wcagCriteria
+        string description
+        string proposedSolution "optional"
+        string timestamp
+        MatchResult matchResult "correct | partial | not-found"
+        string matchedInstanceId "optional FK"
+        MatchDetails matchDetails "optional"
+        Severity severity "optional"
+        ImpactedUser[] impactedUsers "optional"
+        ToolUsed[] toolsUsed "optional"
+    }
+
+    MatchDetails {
+        boolean pageMatched
+        boolean elementMatched
+        boolean wcagMatched
+        string reason
+    }
+
+    UserProfile {
+        string username PK
+        string password
+        UserRole role "learner | tester | content-editor"
+        string displayName
+    }
+
+    IssueDescriptionOption {
+        string id PK
+        string[] wcagCriteria
+        string description
+        string[] fixes
+    }
+
+    %% --- Relationships ---
+
+    A11yIssueDefinition ||--o{ WcagCriterion : "has"
+    A11yIssueDefinition ||--o{ A11yIssueInstance : "issueId"
+    PageMeta ||--o{ A11yIssueInstance : "pageId"
+    IssueSet ||--o{ A11yIssueInstance : "instanceIds"
+    IssueSet ||--|| Evaluation : "issueSetId"
+    Evaluation }o--|| UserProfile : "userId"
+    Evaluation ||--o{ Finding : "contains"
+    Finding ||--o| MatchDetails : "matchDetails"
+    Finding }o--o| A11yIssueInstance : "matchedInstanceId"
+    Finding }o--|| PageMeta : "pageId"
+    Finding }o--o| A11yIssueDefinition : "issueTypeId"
+```
+
+> **Manifest (manifest.json):** A generated artifact, not a core entity. A Playwright script visits the running Demo Site, scrapes all `data-a11y-name` elements, and outputs an element catalog keyed by `PageMeta.id`. Currently includes break annotations linking back to `A11yIssueInstance` and `A11yIssueDefinition` — after separation, these links are removed and the manifest becomes a "dumb" element list consumed by the Test Platform's log-issue form. See [ExportManifest types](#data-artifacts-current-state) and the [system overview diagram](#system-overview-three-apps-and-their-boundaries) for details.
+
+**Key relationships:**
+
+- **A11yIssueDefinition → A11yIssueInstance** — one definition (e.g. "missing alt text") can have many instances across different pages/elements
+- **PageMeta → A11yIssueInstance** — each instance is placed on a specific page via `pageId`
+- **IssueSet → A11yIssueInstance** — a test set scopes which instances are in play for an evaluation (can use `"all"`)
+- **Evaluation → Finding** — a tester's evaluation session contains multiple findings
+- **Finding → A11yIssueInstance** — scoring (`matchFinding()`) links a finding back to the expected instance via `matchedInstanceId`

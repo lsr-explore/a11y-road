@@ -2,6 +2,7 @@
 
 import type { UserRole } from '@a11y-road/a11y-kit';
 import { usePathname } from 'next/navigation';
+import { A11yNamesOverlay } from '@/components/a11y-names/a11y-names-overlay';
 import { IssueLoggerPanel } from '@/components/issue-logger/issue-logger-panel';
 import { IssueLoggerPanelProvider } from '@/components/issue-logger/issue-logger-panel-provider';
 import { IssueLoggerProvider } from '@/components/issue-logger/issue-logger-provider';
@@ -9,6 +10,7 @@ import { DemoBanner } from '@/components/layout/demo-banner';
 import { SiteHeader } from '@/components/layout/site-header';
 import { A11yExportBridge } from '@/components/providers/a11y-export-bridge';
 import { A11yModeProvider } from '@/components/providers/a11y-mode-provider';
+import { A11yNamesProvider } from '@/components/providers/a11y-names-provider';
 import { ElementRegistryProvider } from '@/components/providers/element-registry-provider';
 import { SidePanelProvider } from '@/components/providers/side-panel-provider';
 import { UserRoleProvider } from '@/components/providers/user-role-provider';
@@ -44,17 +46,20 @@ export const MapleValleyHealthClientLayout = ({
       <A11yModeProvider forceBroken={isTester}>
         <ElementRegistryProvider>
           {enableManifestExport && <A11yExportBridge />}
-          <SidePanelProvider>
-            <div className="sticky top-0 z-30">
-              {showBanner && <DemoBanner />}
-              <SiteHeader />
-            </div>
-            <div className="flex-1 flex">
-              <main className="flex-1 min-w-0">{children}</main>
-              {showSidePanel && <SidePanel />}
-              {showIssueLogger && <IssueLoggerPanel />}
-            </div>
-          </SidePanelProvider>
+          <A11yNamesProvider>
+            <A11yNamesOverlay />
+            <SidePanelProvider>
+              <div className="sticky top-0 z-30">
+                {showBanner && <DemoBanner />}
+                <SiteHeader />
+              </div>
+              <div className="flex-1 flex">
+                <main className="flex-1 min-w-0">{children}</main>
+                {showSidePanel && <SidePanel />}
+                {showIssueLogger && <IssueLoggerPanel />}
+              </div>
+            </SidePanelProvider>
+          </A11yNamesProvider>
         </ElementRegistryProvider>
       </A11yModeProvider>
     </UserRoleProvider>
